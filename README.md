@@ -19,6 +19,10 @@ So you can write Objective-C based applications entirely with Node and
 JavaScript! Eventually even iOS native apps as well! So what are you waiting
 for? Get to coding!
 
+**Note:** This lib is still very much under development. It is not ready for
+primetime quite yet. Watch this project to follow the updates!
+
+
 Example
 -------
 
