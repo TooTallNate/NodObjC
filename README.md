@@ -5,15 +5,14 @@ NodObjC
 
 `NodObjC` exposes the Objective-C runtime to [NodeJS][] in a high-level, easy
 to use fashion. It uses the `BridgeSupport` files to dynamically generate an
-API from an Objective-C "Framework" at runtime, and uses `node-objc` to
-interact with Objective-C's runtime.
+API from an Objective-C "Framework" at runtime, and uses `node-ffi` to
+dynamically interact with Objective-C's runtime.
 
 Essentially, `NodObjC` is similar in nature to the other popular Objetive-C
 scripting bridges:
 
  * JSCocoa
  * PyObjC
- * MacRuby
  * CocoaRuby
 
 So you can write Objective-C based applications entirely with Node and
