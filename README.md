@@ -36,14 +36,14 @@ var Foundation = $.import('Foundation');
 var NSMutableArray = Foundation.NSMutableArray;
 
 // Now let's create an NSMutableArray
-var array = NSMutableArray.alloc().initWithCapacity_(3);
+var array = NSMutableArray('alloc')({ 'initWithCapacity': 3 });
 
 // Add some JS objects to the array
-array.addObject_("Hello World!");
-array.addObject_({ an: 'object' });
-array.addObject_(NSMutableArray);
+array({ 'addObject': "Hello World!" });
+array({ 'addObject': { an: 'object' } });
+array({ 'addObject': NSMutableArray });
 
-// Print out the contents (calling [array describe])
+// Print out the contents (calling [array description])
 console.log(array);
 ```
 
