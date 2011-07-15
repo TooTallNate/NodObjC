@@ -1,23 +1,21 @@
-var o = require('objc')
+var objc = require('./core')
   , fs = require('fs')
-  , xml2js = require('xml2js')
+  , sax = require('sax')
   , join = require('path').join
   , exists = require('path').existsSync
-  , dlopen = o.dlopen
   , objc_getClass = o.objc_getClass
 
 exports.PATH = ['/System/Library/Frameworks', '/System/Library/PrivateFrameworks'];
 exports.SUFFIX = '.framework';
 
 exports.resolve = function resolve (framework) {
-  var absolute = ~framework.indexOf('/')
-    , i = 0
-    , l = exports.PATH.length
-    , rtn
-
-  if (absolute) {
+  if (~framework.indexOf('/')) {
     return framework;
   }
+
+  var i = 0
+    , l = exports.PATH.length
+    , rtn
 
   for (; i<l; i++) {
     rtn = join(exports.PATH[i], framework + exports.SUFFIX);
