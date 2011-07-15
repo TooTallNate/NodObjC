@@ -1,6 +1,6 @@
 NodObjC
 =======
-### A high-level Objective-C interpreter for [NodeJS][]
+### The Objective-C bridge for [NodeJS][]
 
 
 `NodObjC` exposes the Objective-C runtime to [NodeJS][] in a high-level, easy
