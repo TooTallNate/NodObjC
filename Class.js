@@ -40,7 +40,7 @@ exports.registerClass = function registerName (name) {
       }
     }
     var rtn = msgSend.apply(null, args);
-    console.error(rtn);
+    //console.error(rtn);
     return rtn;
   }
   objc_class.prototype = {};

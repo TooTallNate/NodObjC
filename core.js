@@ -28,7 +28,7 @@ exports.get_objc_msgSend = function get_objc_msgSend (info) {
   }
   // Stringify the key
   key = key.join('');
-  console.error('msgSend key: %s', key);
+  //console.error('msgSend key: %s', key);
 
   // first check the cache
   if (msgSendCache[key]) return msgSendCache[key];
@@ -37,9 +37,8 @@ exports.get_objc_msgSend = function get_objc_msgSend (info) {
   var lib = new ffi.Library(null, {
     objc_msgSend: types
   })
-    , objc_msgSend = lib.objc_msgSend
-  msgSendCache[key] = objc_msgSend;
-  return objc_msgSend;
+  // return and cache at the same time
+  return msgSendCache[key] = lib.objc_msgSend;
 }
 
 // convert an Objective-C 'type' into an 'ffi' type
@@ -50,6 +49,8 @@ var objcFfiMap = {
 };
 function objcToFfi (type) {
   var t = objcFfiMap[type.declared_type];
+  if (!t && /\*/.test(type.declared_type))
+    return 'pointer';
   // TODO: Add more robust conversions here
   if (!t) throw new Error("Can't determine conversion type");
   return t;
