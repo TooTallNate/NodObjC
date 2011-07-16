@@ -1,4 +1,4 @@
 var $ = require('../')
 
-var Foundation = $.import(process.argv[2] || 'Foundation');
-console.log(Object.keys(Foundation))
+var ScriptingBridge = $.import('ScriptingBridge');
+console.error(Object.keys(ScriptingBridge))

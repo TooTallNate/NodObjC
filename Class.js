@@ -7,8 +7,9 @@
 
 var classCache = {}
   , core = require('./core')
-  , objc_getClass = core.objc_getClass
-  , class_getName = core.class_getName
+  , getClass = core.objc_getClass
+  , getName = core.class_getName
+  , getSuperclass = core.class_getSuperclass
 
 exports.getClass = function getClass (name) {
   return classCache[name];
@@ -16,13 +17,26 @@ exports.getClass = function getClass (name) {
 
 exports.registerClass = function registerName (name) {
 
-  var ptr = objc_getClass(name);
+  var ptr = getClass(name);
   function objc_class (selector) {
-    
   }
   objc_class.prototype = {};
-  objc_class.ptr = ptr;
+  objc_class._ptr = ptr;
 
   classCache[name] = objc_class;
   return objc_class;
+}
+
+exports.setupInheritance = function setupInheritance (clazz) {
+  var superclass = getSuperclass(clazz._ptr)
+  if (!superclass.isNull()) {
+    var name = getName(superclass)
+      , superRef = exports.getClass(name);
+    if (!superRef) {
+      // I don' think this should ever happen but just in case...
+      superRef = exports.registerClass(name);
+    }
+    clazz.__proto__ = superRef;
+    clazz.prototype.__proto__ = superRef.prototype;
+  }
 }
