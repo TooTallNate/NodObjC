@@ -49,6 +49,8 @@ var objcFfiMap = {
 };
 function objcToFfi (type) {
   var t = objcFfiMap[type.declared_type];
+  if (!t && /char\*/.test(type.declared_type))
+    return 'string';
   if (!t && /\*/.test(type.declared_type))
     return 'pointer';
   // TODO: Add more robust conversions here
