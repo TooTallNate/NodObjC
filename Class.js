@@ -7,49 +7,31 @@
 
 var classCache = {}
   , core = require('./core')
+  , wrapId = require('./id').wrapId
   , getClass = core.objc_getClass
   , getName = core.class_getName
   , getSuperclass = core.class_getSuperclass
 
+// Gets a Class from the cache by name, if the cache has not been loaded
+// prevously though 'registerClass()' then this returns undefined.
 exports.getClass = function getClass (name) {
   return classCache[name];
 }
 
+// Register a Class globally. Classes are unique by name so this function
+// should only be called once per class.
 exports.registerClass = function registerName (name) {
-
-  var ptr = getClass(name);
-  function objc_class (selector) {
-
-    var sel = selector
-      , noArgs = typeof selector == 'string'
-
-    if (!noArgs) {
-      // selector with one or more arguments
-      sel = Object.keys(selector).join(':')+':';
-    }
-    // TODO: cache SEL references
-    var selRef = core.sel_registerName(sel)
-      , args = [ objc_class._ptr, selRef ]
-      , method = objc_class[sel]
-      , msgSend = core.get_objc_msgSend(method)
-    if (!noArgs) {
-      for (var arg in selector) {
-        // TODO: Unwrap any wrapped up ObjC objects
-        // TODO: Wrap up regular JS objects so they can be passed to ObjC
-        args.push(selector[arg]);
-      }
-    }
-    var rtn = msgSend.apply(null, args);
-    //console.error(rtn);
-    return rtn;
-  }
-  objc_class.prototype = {};
-  objc_class._ptr = ptr;
-
-  classCache[name] = objc_class;
-  return objc_class;
+  // get a pointer to the native Class
+  var ptr = getClass(name)
+  // wrap the Class pointer up as a nice JS object
+  var wrap = wrapId(ptr)
+  // cache and return all at once
+  return classCache[name] = wrap;
 }
 
+// Calls the C 'class_getSuperclass' function on the given class reference in
+// order to determine it's superclass. It's name is then retrieved and then
+// a reference to the appropriate superclass is setup on the original class.
 exports.setupInheritance = function setupInheritance (clazz) {
   var superclass = getSuperclass(clazz._ptr)
   if (!superclass.isNull()) {

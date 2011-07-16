@@ -1,3 +1,8 @@
+/**
+ * This 'core' module is the `libffi` wrapper. All required native
+ * functionality is instaniated and then exported in this module.
+ */
+
 var ffi = require('node-ffi')
   , objc = new ffi.Library(null, {
       objc_getClass: [ 'pointer', [ 'string' ] ]
