@@ -8,7 +8,7 @@ var ffi = require('node-ffi')
       objc_getClass: [ 'pointer', [ 'string' ] ]
     , class_getName: [ 'string', [ 'pointer' ] ]
     , class_getSuperclass: [ 'pointer', [ 'pointer' ] ]
-    , object_getClassName: [ 'string', [ 'pointer' ] ]
+    , object_getClass: [ 'pointer', [ 'pointer' ] ]
     , sel_registerName: [ 'pointer', [ 'string' ] ]
     , sel_getName: [ 'string', [ 'pointer' ] ]
   })

@@ -13,7 +13,7 @@ var classCache = {}
   , getClass = core.objc_getClass
   , getName = core.class_getName
   , getSuperclass = core.class_getSuperclass
-  , getClassName = core.object_getClassName
+  , getInstanceClass = core.object_getClass
 
 // Gets a Class from the cache by name, if the cache has not been loaded
 // prevously though 'registerClass()' then this returns undefined.
@@ -117,15 +117,24 @@ exports.wrapId = function (ptr) {
       } else {
         // Finally, if we got here, then we can retroactively try to get the
         // class reference by calling the 'object_getClassName' function.
-        console.warn('WARN: retoractively getting class name (slow-case)');
-        var cn = getClassName(rtn._ptr)
-          , c = exports.getClass(rtn._ptr)
+        console.warn('WARN: retroactively getting class name (slow-case)');
+        var cn = getInstanceClass(rtn._ptr)
+          , cname = getName(cn)
+          , c = exports.getClass(cname)
         if (c) {
           rtn.__proto__ = c.prototype;
         } else {
-          console.warn('WARN: could not get Class for retroactively retrieved class name: %s', cn);
-          console.warn('WARN: assuming it is of type: %s', objc_id.className);
-          rtn.__proto__ = objc_id.prototype;
+          console.warn('WARN: could not get Class for retroactively retrieved class name: %s', cname);
+          console.warn('WARN: checking superclass');
+          cn = getSuperclass(cn);
+          c = exports.getClass(getName(cn));
+          if (c) {
+            console.warn('WARN: Found superclass: %s', c.className);
+            rtn.__proto__ = c.prototype;
+          } else {
+            console.warn('WARN: assuming it is of type: %s', objc_id.className);
+            rtn.__proto__ = objc_id.prototype;
+          }
         }
       }
     }
