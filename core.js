@@ -53,6 +53,7 @@ exports.get_objc_msgSend = function get_objc_msgSend (info) {
 var objcFfiMap = {
     'id': 'pointer'
   , 'void': 'void'
+  , 'Class': 'pointer'
   , 'NSInteger': 'int32'
   , 'NSUInteger': 'uint32'
 };
