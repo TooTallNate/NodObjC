@@ -54,6 +54,7 @@ var objcFfiMap = {
     'id': 'pointer'
   , 'void': 'void'
   , 'Class': 'pointer'
+  , 'BOOL': 'char'
   , 'NSInteger': 'int32'
   , 'NSUInteger': 'uint32'
 };

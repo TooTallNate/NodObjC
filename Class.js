@@ -86,6 +86,8 @@ exports.wrapId = function (ptr) {
         if (core.objcToFfi(arg) == 'pointer') {
           console.warn("INFO: Arg %d: Unwrapping ObjC instance", i);
           val = selector[val]._ptr;
+        } else if (arg.declared_type == 'BOOL') {
+          val = selector[val] ? 1 : 0;
         } else {
           // Pass the given argument as-is
           console.warn('INFO: Arg %d: Passing arg as-is', i);
@@ -139,6 +141,8 @@ exports.wrapId = function (ptr) {
           }
         }
       }
+    } else if (method.retval.declared_type == 'BOOL') {
+      rtn = !!rtn;
     }
     //console.error(rtn);
     return rtn;
