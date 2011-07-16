@@ -62,3 +62,4 @@ function objcToFfi (type) {
   if (!t) throw new Error("Can't determine conversion type");
   return t;
 }
+exports.objcToFfi = objcToFfi;
