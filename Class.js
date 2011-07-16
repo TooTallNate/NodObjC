@@ -19,6 +19,29 @@ exports.registerClass = function registerName (name) {
 
   var ptr = getClass(name);
   function objc_class (selector) {
+
+    var sel = selector
+      , noArgs = typeof selector == 'string'
+
+    if (!noArgs) {
+      // selector with one or more arguments
+      sel = Object.keys(selector).join(':')+':';
+    }
+    // TODO: cache SEL references
+    var selRef = core.sel_registerName(sel)
+      , args = [ objc_class._ptr, selRef ]
+      , method = objc_class[sel]
+      , msgSend = core.get_objc_msgSend(method)
+    if (!noArgs) {
+      for (var arg in selector) {
+        // TODO: Unwrap any wrapped up ObjC objects
+        // TODO: Wrap up regular JS objects so they can be passed to ObjC
+        args.push(selector[arg]);
+      }
+    }
+    var rtn = msgSend.apply(null, args);
+    console.error(rtn);
+    return rtn;
   }
   objc_class.prototype = {};
   objc_class._ptr = ptr;
