@@ -8,6 +8,7 @@ var ffi = require('node-ffi')
       objc_getClass: [ 'pointer', [ 'string' ] ]
     , class_getName: [ 'string', [ 'pointer' ] ]
     , class_getSuperclass: [ 'pointer', [ 'pointer' ] ]
+    , object_getClassName: [ 'string', [ 'pointer' ] ]
     , sel_registerName: [ 'pointer', [ 'string' ] ]
     , sel_getName: [ 'string', [ 'pointer' ] ]
   })
@@ -46,7 +47,9 @@ exports.get_objc_msgSend = function get_objc_msgSend (info) {
   return msgSendCache[key] = lib.objc_msgSend;
 }
 
-// convert an Objective-C 'type' into an 'ffi' type
+// convert an Objective-C 'type' into an 'ffi' type. This is an important
+// function and the logic of it is reused throughout the message-passing logic
+// in 'Id.js'.
 var objcFfiMap = {
     'id': 'pointer'
   , 'NSInteger': 'int32'
@@ -59,7 +62,7 @@ function objcToFfi (type) {
   if (!t && /\*/.test(type.declared_type))
     return 'pointer';
   // TODO: Add more robust conversions here
-  if (!t) throw new Error("Can't determine conversion type");
+  if (!t) throw new Error("Can't determine conversion type: "+type.declared_type);
   return t;
 }
 exports.objcToFfi = objcToFfi;
