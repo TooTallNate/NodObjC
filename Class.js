@@ -84,7 +84,7 @@ exports.wrapId = function (ptr) {
         // TODO: Wrap up regular JS objects so they can be passed to ObjC
         var val = keys[i];
         if (core.objcToFfi(arg) == 'pointer') {
-          val = val._ptr;
+          val = selector[val]._ptr;
         } else {
           // Pass the given argument as-is
           val = selector[val];
