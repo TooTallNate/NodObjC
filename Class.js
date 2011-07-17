@@ -28,6 +28,7 @@ exports.registerClass = function registerName (name) {
   var ptr = getClass(name)
   // wrap the Class pointer up as a nice JS object
   var wrap = exports.wrapId(ptr)
+  wrap.__proto__ = {};
   // add a reference to the name of the class
   wrap.className = name;
   // cache and return all at once
@@ -46,7 +47,7 @@ exports.setupInheritance = function setupInheritance (clazz) {
       // I don' think this should ever happen but just in case...
       superRef = exports.registerClass(name);
     }
-    clazz.__proto__ = superRef;
+    clazz.__proto__.__proto__ = superRef;
     clazz.prototype.__proto__ = superRef.prototype;
   }
 }
@@ -76,7 +77,7 @@ exports.wrapId = function (ptr) {
       , args = [ objc_id._ptr, selRef ]
       // TODO: add logic for when an unknown selector is passed. All arguments
       //       and the return value should be assumed to be 'id' in that case.
-      , method = objc_id[sel]
+      , method = objc_id.__proto__[sel]
       , msgSend = core.get_objc_msgSend(method)
     if (!noArgs) {
       method.args.forEach(function (arg, i) {

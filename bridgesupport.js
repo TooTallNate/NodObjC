@@ -94,7 +94,7 @@ exports.import = function import (path) {
           , args: []
         };
         if (node.attributes.class_method) {
-          currentClass[currentMethod.selector] = currentMethod;
+          currentClass.__proto__[currentMethod.selector] = currentMethod;
         } else {
           currentClass.prototype[currentMethod.selector] = currentMethod;
         }
