@@ -1,9 +1,8 @@
 var $ = require('../')
-  , Foundation = $.import('Foundation')
-  , NSMutableArray = Foundation.NSMutableArray
+  , F = $.import('Foundation')
 
-var array = NSMutableArray({ 'arrayWithCapacity': 10 });
+var pool = F.NSAutoreleasePool('alloc')('init');
 
-console.log(array('description')('UTF8String'));
+var array = F.NSMutableArray({ 'arrayWithCapacity': 10 });
 
 console.log(array+'');
