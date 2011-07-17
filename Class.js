@@ -15,6 +15,14 @@ var classCache = {}
   , getSuperclass = core.class_getSuperclass
   , getInstanceClass = core.object_getClass
 
+var classToString = function toString () {
+  return this.className;
+}
+
+var idToString = function toString () {
+  return this('description')('UTF8String');
+}
+
 // Gets a Class from the cache by name, if the cache has not been loaded
 // prevously though 'registerClass()' then this returns undefined.
 exports.getClass = function getClass (name) {
@@ -31,9 +39,11 @@ exports.registerClass = function registerName (name) {
   wrap.__proto__ = {};
   // add a reference to the name of the class
   wrap.className = name;
+  wrap.toString = classToString;
   // cache and return all at once
   return classCache[name] = wrap;
 }
+
 
 // Calls the C 'class_getSuperclass' function on the given class reference in
 // order to determine it's superclass. It's name is then retrieved and then
@@ -149,5 +159,6 @@ exports.wrapId = function (ptr) {
     return rtn;
   }
   objc_id._ptr = ptr;
+  objc_id.toString = idToString;
   return objc_id;
 }
