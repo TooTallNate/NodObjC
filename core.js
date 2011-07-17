@@ -23,18 +23,15 @@ exports.dlopen = function dlopen (path) {
 // Creates and/or returns an appropriately wrapped up 'objc_msgSend' function
 // based on the given Method description info.
 exports.get_objc_msgSend = function get_objc_msgSend (info) {
-  var key = [ info.retval.type ]
-    , type = ['pointer', 'pointer']
+  var type = ['pointer', 'pointer']
     , types = [ objcToFfi(info.retval), type ]
     , i = 0
     , l = info.args.length
   for (; i<l; i++) {
     type.push(objcToFfi(info.args[i]));
-    key.push(info.args[i].type);
   }
-  // Stringify the key
-  key = key.join('');
-  //console.error('msgSend key: %s', key);
+  // Stringify the types
+  var key = types.toString();
 
   // first check the cache
   if (msgSendCache[key]) return msgSendCache[key];
