@@ -137,6 +137,7 @@ exports.wrapId = function (ptr) {
           , cname = getName(cn)
           , c = exports.getClass(cname)
         if (c) {
+          console.warn('INFO: casting result to instance of class: %s', cname);
           rtn.__proto__ = c.prototype;
         } else {
           console.warn('WARN: could not get Class for retroactively retrieved class name: %s', cname);
@@ -144,10 +145,10 @@ exports.wrapId = function (ptr) {
           cn = getSuperclass(cn);
           c = exports.getClass(getName(cn));
           if (c) {
-            console.warn('WARN: Found superclass: %s', c.className);
+            console.warn('WARN: Found superclass: %s, casting result', c.className);
             rtn.__proto__ = c.prototype;
           } else {
-            console.warn('WARN: assuming it is of type: %s', objc_id.className);
+            console.warn('WARN: Falling back to assuming it\'s an instance of: %s (bad-case)', objc_id.className);
             rtn.__proto__ = objc_id.prototype;
           }
         }
