@@ -32,9 +32,11 @@ exports.get_objc_msgSend = function get_objc_msgSend (info) {
   }
   // Stringify the types
   var key = types.toString();
+  console.warn('INFO: types key: %s', key);
 
   // first check the cache
   if (msgSendCache[key]) return msgSendCache[key];
+  console.warn('WARN: key not found in cache, generating new copy: %s', key);
 
   // If we got here, then create a new objc_msgSend ffi wrapper
   var lib = new ffi.Library(null, {
