@@ -52,11 +52,11 @@ exports.import = function import (path) {
     , binaryPath = join(path, shortName)
 
   // ensure the binary for the framework is dynamically loaded
-  new DynamicLibrary(binaryPath);
+  var lib = new DynamicLibrary(binaryPath);
 
   var bridgeSupportPath = join(path, 'Resources', 'BridgeSupport', shortName + 'Full.bridgesupport')
     , hasBridgeSupport = exists(bridgeSupportPath)
-    , framework = {}
+    , framework = { _lib: lib }
 
   // cache the framework representation
   importCache[path] = framework;
