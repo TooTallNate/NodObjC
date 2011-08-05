@@ -11,9 +11,9 @@ dynamically interact with Objective-C's runtime.
 Essentially, `NodObjC` is similar in nature to the other popular Objetive-C
 scripting bridges:
 
- * JSCocoa
- * PyObjC
- * CocoaRuby
+ * [JSCocoa][]
+ * [PyObjC][]
+ * [CocoaRuby][]
 
 So you can write Objective-C based applications entirely with Node and
 JavaScript! Eventually even iOS native apps as well! So what are you waiting
@@ -48,3 +48,6 @@ console.log(array);
 ```
 
 [NodeJS]: http://nodejs.org
+[JSCocoa]: http://inexdo.com/JSCocoa
+[PyObjC]: http://pyobjc.sourceforge.net
+[CocoaRuby]: http://en.wikipedia.org/wiki/RubyCocoa
