@@ -4,17 +4,29 @@
  */
 
 var ffi = require('node-ffi')
+  // TODO: These static ffi bindings could be replaced with native bindings
+  //       for a speed boost.
   , objc = new ffi.Library(null, {
       objc_getClass: [ 'pointer', [ 'string' ] ]
+    , class_copyMethodList: [ 'pointer', [ 'pointer', 'pointer' ] ]
     , class_getName: [ 'string', [ 'pointer' ] ]
     , class_getSuperclass: [ 'pointer', [ 'pointer' ] ]
+    , class_getVersion: [ 'pointer', [ 'pointer' ] ]
+    , method_getName: [ 'pointer', [ 'pointer' ] ]
+    , method_copyReturnType: [ 'pointer', [ 'pointer' ] ]
+    , method_copyArgumentType: [ 'pointer', [ 'pointer', 'uint32' ] ]
+    , method_getNumberOfArguments: [ 'uint32', [ 'pointer' ] ]
+    , objc_getClassList: [ 'int32', [ 'pointer', 'int32' ] ]
     , object_getClass: [ 'pointer', [ 'pointer' ] ]
     , sel_registerName: [ 'pointer', [ 'string' ] ]
     , sel_getName: [ 'string', [ 'pointer' ] ]
+    , free: [ 'void', [ 'pointer' ] ]
   })
   , msgSendCache = {}
 
-for (var i in objc) exports[i] = objc[i]
+exports.__proto__ = objc;
+
+exports.Pointer = ffi.Pointer;
 
 exports.dlopen = function dlopen (path) {
   return new ffi.DynamicLibrary(path);
@@ -22,8 +34,8 @@ exports.dlopen = function dlopen (path) {
 
 // Creates and/or returns an appropriately wrapped up 'objc_msgSend' function
 // based on the given Method description info.
-exports.get_objc_msgSend = function get_objc_msgSend (info) {
-  var type = ['pointer', 'pointer']
+exports.get_objc_msgSend = function get_objc_msgSend (args) {
+  var type = ['pointer', 'pointer'] // id and sel
     , types = [ objcToFfi(info.retval), type ]
     , i = 0
     , l = info.args.length
