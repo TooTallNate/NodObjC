@@ -57,27 +57,3 @@ exports.get_objc_msgSend = function get_objc_msgSend (args) {
   // return and cache at the same time
   return msgSendCache[key] = lib.objc_msgSend;
 }
-
-// convert an Objective-C 'type' into an 'ffi' type. This is an important
-// function and the logic of it is reused throughout the message-passing logic
-// in 'Id.js'.
-var objcFfiMap = {
-    'id': 'pointer'
-  , 'void': 'void'
-  , 'oneway void': 'void' // wtf?
-  , 'Class': 'pointer'
-  , 'BOOL': 'char'
-  , 'NSInteger': 'int32'
-  , 'NSUInteger': 'uint32'
-};
-function objcToFfi (type) {
-  var t = objcFfiMap[type.declared_type];
-  if (!t && /char\*/.test(type.declared_type))
-    return 'string';
-  if (!t && /\*/.test(type.declared_type))
-    return 'pointer';
-  // TODO: Add more robust conversions here
-  if (!t) throw new Error("Can't determine conversion type: "+type.declared_type);
-  return t;
-}
-exports.objcToFfi = objcToFfi;
