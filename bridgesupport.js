@@ -57,15 +57,13 @@ function bridgesupport (fw, _global) {
       case 'arg':
         if (curName) {
           // class methods also have args, we only want functions though
-          // TODO: Get 64-bit type
-          curArgTypes.push(types.map(node.attributes.type));
+          curArgTypes.push(getType(node));
         }
         break;
       case 'retval':
         if (curName) {
           // class methods also have retvals, we only want functions though
-          // TODO: Get 64-bit type
-          curRtnType = types.map(node.attributes.type);
+          curRtnType = getType(node);
         }
         break;
       case 'signatures':
@@ -149,3 +147,8 @@ function bridgesupport (fw, _global) {
   */
 }
 module.exports = bridgesupport;
+
+// TODO: Add 64-bit retrievial, 'type64'
+function getType (node) {
+  return types.map(node.attributes.type);
+}
