@@ -27,26 +27,35 @@ exports.import = function importFramework (framework) {
   framework = exports.resolve(framework);
   //console.error('after resolve: %s', framework);
 
+  var shortName = basename(framework, SUFFIX)
+  //console.error(importCache);
+
   // Return from the framework cache if possible
-  if (framework in importCache) return importCache[framework];
+  var fw = importCache[shortName];
+  if (fw) {
+    //console.error('cached!');
+    return fw;
+  }
 
   // Load the main framework binary file
-  var shortName = basename(framework, SUFFIX)
-    , frameworkPath = join(framework, shortName)
+  var frameworkPath = join(framework, shortName)
     , lib = core.dlopen(frameworkPath)
-    , fw = {
-        lib: lib
-      , name: shortName
-      , basePath: framework
-      , binaryPath: frameworkPath
-    }
+  fw = {
+      lib: lib
+    , name: shortName
+    , basePath: framework
+    , binaryPath: frameworkPath
+  };
   //console.error(fw);
+
+  // cache before loading bridgesupport files
+  importCache[shortName] = fw;
 
   // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
   // and other symbols not introspectable at runtime.
   bridgesupport(fw, exports);
 
-  return importCache[framework] = fw;
+  return fw;
 }
 // also attach the import function into bridgesupport, to avoid a circular
 // dependency
