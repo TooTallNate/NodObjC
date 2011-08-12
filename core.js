@@ -38,6 +38,33 @@ exports.dlopen = function dlopen (path) {
 
 exports.process = exports.dlopen();
 
+/**
+ * Convienience function to return an Array of Strings of the names of every
+ * class currently in the runtime. This gets used at the during the import
+ * process get a name of the new classes that have been loaded.
+ * TODO: Could be replaced with a native binding someday for speed. Not overly
+ *       important as this function is only called during import()
+ */
+exports.getClassList = function getClassList () {
+  // First get just the count
+  var num = objc.objc_getClassList(null, 0)
+    , rtn = []
+  if (num > 0) {
+    var s = ffi.Bindings.TYPE_SIZE_MAP.pointer
+      , c = null
+      , classes = new ffi.Pointer(s * num)
+      , cursor = classes
+    objc.objc_getClassList(classes, num);
+    for (var i=0; i<num; i++) {
+      c = cursor.getPointer()
+      rtn.push(objc.class_getName(c));
+      cursor = cursor.seek(s);
+    }
+    // free() not needed since ffi allocated the buffer, and will GC with JS
+  }
+  return rtn;
+}
+
 // Creates and/or returns an appropriately wrapped up 'objc_msgSend' function
 // based on the given Method description info.
 exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
