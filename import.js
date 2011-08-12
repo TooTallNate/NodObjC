@@ -22,18 +22,13 @@ exports.PATH = ['/System/Library/Frameworks', '/System/Library/PrivateFrameworks
  * Accepts a single framework name and imports it into the current node process
  */
 exports.import = function importFramework (framework) {
-  //console.error('import()');
-  //console.error('input: %s', framework);
   framework = exports.resolve(framework);
-  //console.error('after resolve: %s', framework);
 
   var shortName = basename(framework, SUFFIX)
-  //console.error(importCache);
 
   // Return from the framework cache if possible
   var fw = importCache[shortName];
   if (fw) {
-    //console.error('cached!');
     return fw;
   }
 
@@ -46,7 +41,6 @@ exports.import = function importFramework (framework) {
     , basePath: framework
     , binaryPath: frameworkPath
   };
-  //console.error(fw);
 
   // cache before loading bridgesupport files
   importCache[shortName] = fw;
