@@ -110,8 +110,17 @@ function bridgesupport (fw, _global) {
   parser.onclosetag = function (node) {
     switch (node) {
       case 'function':
-        if (isInline && !fw.inline) throw new Error('declared inline but could not find inline dylib!');
-        _global[curName] = core.Function(curName, curRtnType, curArgTypes, false, isInline ? fw.inline : fw.lib);
+        // Binded functions will be lazy-loaded. We simply define a getter that
+        // does the creation magic the first time, and replaces the getter with
+        // the binded function
+        (function (curName, curRtnType, curArgTypes, isInline) {
+          if (isInline && !fw.inline) throw new Error('declared inline but could not find inline dylib!');
+          _global.__defineGetter__(curName, function () {
+            var f = core.Function(curName, curRtnType, curArgTypes, false, isInline ? fw.inline : fw.lib);
+            delete _global[curName];
+            return global[curName] = f;
+          });
+        })(curName, curRtnType, curArgTypes, isInline);
         curName = null;
         break;
     }
