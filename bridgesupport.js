@@ -51,23 +51,8 @@ function bridgesupport (fw, _global) {
         bridgesupport.import(node.attributes.path);
         break;
       case 'class':
-        /*currentClass = Class.getClass(node.attributes.name);
-        if (!currentClass) {
-          currentClass = Class.registerClass(node.attributes.name);
-          framework[node.attributes.name] = currentClass;
-          classes.push(currentClass);
-        }*/
         break;
       case 'method':
-        /*currentMethod = {
-            selector: node.attributes.selector
-          , args: []
-        };
-        if (node.attributes.class_method) {
-          currentClass.__proto__[currentMethod.selector] = currentMethod;
-        } else {
-          currentClass.prototype[currentMethod.selector] = currentMethod;
-        }*/
         break;
       case 'arg':
         if (curName) {
