@@ -36,6 +36,7 @@ function translate (type) {
   if (type[0] === '^') return 'pointer';
   rtn = map[type[type.length-1]];
   if (rtn) return rtn;
+  if (type[0] === '{') return 'pointer'; // TODO: Better struct parsing
   throw new Error('Could not convert type: ' + type);
 }
 exports.map = translate;
