@@ -138,13 +138,6 @@ function bridgesupport (fw, _global) {
 
 
   /*
-  // Now time to set up the inheritance on all the Classes.
-  // This has to happen after parsing has completed to ensure that all the
-  // required parent classes have been parsed and loaded.
-  classes.forEach(function (c) {
-    Class.setupInheritance(c);
-  });
-
   constants.forEach(function (node) {
     var sym = lib.get(node.attributes.name);
     if (node.attributes.declared_type == 'NSString*') {
