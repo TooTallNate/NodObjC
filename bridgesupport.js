@@ -40,12 +40,12 @@ function bridgesupport (fw, _global) {
     , curName
     , curRtnType
     , curArgTypes
-    , isInline
+    , isInline;
   //console.error(contents);
 
   parser.onerror = function (e) { throw e; }
   parser.onopentag = function (node) {
-    //console.log(node.name);
+    //console.error(node);
     switch (node.name) {
       case 'depends_on':
         bridgesupport.import(node.attributes.path);
