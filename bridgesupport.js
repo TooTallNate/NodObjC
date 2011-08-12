@@ -57,12 +57,14 @@ function bridgesupport (fw, _global) {
       case 'arg':
         if (curName) {
           // class methods also have args, we only want functions though
+          // TODO: Get 64-bit type
           curArgTypes.push(types.map(node.attributes.type));
         }
         break;
       case 'retval':
         if (curName) {
           // class methods also have retvals, we only want functions though
+          // TODO: Get 64-bit type
           curRtnType = types.map(node.attributes.type);
         }
         break;
