@@ -29,14 +29,14 @@ Example
 ``` javascript
 var $ = require('NodObjC');
 
-// First you need to "load" the Framework
-var F = $.import('Foundation');
+// First you need to "import" the Framework
+$.import('Foundation');
 
 // Setup the recommended NSAutoreleasePool instance
-F.NSAutoreleasePool('alloc')('init');
+$.NSAutoreleasePool('alloc')('init');
 
 // Now let's create an NSMutableArray
-var array = F.NSMutableArray('alloc')({ 'initWithCapacity': 3 });
+var array = $.NSMutableArray('alloc')({ 'initWithCapacity': 3 });
 
 // Add some JS objects to the array
 array({ 'addObject': "Hello World!" });
