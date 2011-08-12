@@ -21,7 +21,7 @@ exports.PATH = ['/System/Library/Frameworks', '/System/Library/PrivateFrameworks
 /**
  * Accepts a single framework name and imports it into the current node process
  */
-exports.import = function importFramework (framework) {
+exports.import = function import (framework) {
   var basePath = exports.resolve(framework);
 
   // Return from the framework cache if possible
