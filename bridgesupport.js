@@ -1,95 +1,65 @@
 /**
- * This module takes care of parsing the BridgeSupport XML files into a JS
- * object.
+ * This module takes care of loading the BridgeSupport XML files for a given
+ * framework, and parsing the data into the given framework object.
  */
 
 var fs = require('fs')
   , sax = require('sax')
   , path = require('path')
-  , Class = require('./Class')
-  , DynamicLibrary = require('node-ffi').DynamicLibrary
+  , core = require('./core')
+  , types = require('./types')
   , join = path.join
   , basename = path.basename
   , exists = path.existsSync
-  , importCache = {}
+  , DY_SUFFIX = '.dylib'
+  , BS_SUFFIX = '.bridgesupport'
 
-exports.PATH = ['/System/Library/Frameworks', '/System/Library/PrivateFrameworks'];
-exports.SUFFIX = '.framework';
 
-// Resolve a Framework String into an absolute path. The returned path is the
-// base directory of the Framework (i.e. the directory ending with '.framework')
-exports.resolve = function resolve (framework) {
-  if (~framework.indexOf('/')) {
-    return framework;
-  }
 
-  var i = 0
-    , l = exports.PATH.length
-    , rtn
+function bridgesupport (fw, _global) {
 
-  for (; i<l; i++) {
-    rtn = join(exports.PATH[i], framework + exports.SUFFIX);
-    if (exists(rtn)) return rtn;
-  }
-  throw new Error('Could not resolve framework: '+framework);
-}
-
-// Import a Framework based on the given name. This can be a short name (i.e.
-// "Foundation") or an absolute path to the base dir of the framework (i.e. the
-// result of .resolve() )
-exports.import = function import (path) {
-  //console.error('BEFORE:', path);
-  path = exports.resolve(path);
-  //console.error('AFTER:', path);
-
-  // return from cache if this framework has already been loaded
-  if (path in importCache) {
-    //console.error('CACHED!');
-    return importCache[path];
-  }
-
-  var shortName = basename(path, exports.SUFFIX)
-    , binaryPath = join(path, shortName)
-
-  // ensure the binary for the framework is dynamically loaded
-  var lib = new DynamicLibrary(binaryPath);
-
-  var bridgeSupportPath = join(path, 'Resources', 'BridgeSupport', shortName + '.bridgesupport')
-    , hasBridgeSupport = exists(bridgeSupportPath)
-    , framework = { _lib: lib }
-
-  // cache the framework representation
-  importCache[path] = framework;
+  var bridgeSupportDir = join(fw.basePath, 'Resources', 'BridgeSupport')
+    , bridgeSupportXML = join(bridgeSupportDir, fw.name + BS_SUFFIX)
+    , bridgeSupportDylib = join(bridgeSupportDir, fw.name + DY_SUFFIX)
 
   // If there's no BridgeSupport file, then just return the empty object...
-  if (!hasBridgeSupport) {
-    //console.warn('No BridgeSupport files found for framework "%s"', shortName);
-    return framework;
+  if (!exists(bridgeSupportXML)) {
+    console.warn('No BridgeSupport files found for framework "%s" at: %s', fw.name, bridgeSupportXML);
+    return;
   }
 
-  var contents = fs.readFileSync(bridgeSupportPath, 'utf8')
+  if (exists(bridgeSupportDylib)) {
+    fw.inline = core.dlopen(bridgeSupportDylib);
+  }
+
+  var contents = fs.readFileSync(bridgeSupportXML, 'utf8')
     , parser = sax.parser(true)
     , gotEnd = false
     , classes = []
-    , currentClass
-    , currentMethod
+    , constants = []
+    , curName
+    , curRtnType
+    , curArgTypes
+    , isInline
+  //console.error(contents);
 
-  parser.onerror = throwErr;
+  parser.onerror = function (e) { throw e; }
   parser.onopentag = function (node) {
+    //console.log(node.name);
     switch (node.name) {
       case 'depends_on':
-        import(node.attributes.path);
+        bridgesupport.import(node.attributes.path);
         break;
       case 'class':
-        currentClass = Class.getClass(node.attributes.name);
+        /*currentClass = Class.getClass(node.attributes.name);
         if (!currentClass) {
           currentClass = Class.registerClass(node.attributes.name);
           framework[node.attributes.name] = currentClass;
           classes.push(currentClass);
-        }
+        }*/
         break;
       case 'method':
-        currentMethod = {
+        /*currentMethod = {
             selector: node.attributes.selector
           , args: []
         };
@@ -97,37 +67,53 @@ exports.import = function import (path) {
           currentClass.__proto__[currentMethod.selector] = currentMethod;
         } else {
           currentClass.prototype[currentMethod.selector] = currentMethod;
-        }
+        }*/
         break;
       case 'arg':
-        // TODO: currentFunction
-        if (currentMethod) {
-          currentMethod.args.push(node.attributes);
+        if (curName) {
+          // class methods also have args, we only want functions though
+          curArgTypes.push(types.map(node.attributes.type));
         }
         break;
       case 'retval':
-        // TODO: currentFunction
-        if (currentMethod) {
-          currentMethod.retval = node.attributes;
+        if (curName) {
+          // class methods also have retvals, we only want functions though
+          curRtnType = types.map(node.attributes.type);
         }
         break;
       case 'signatures':
         // ignore
         break;
       case 'string_constant':
-        framework[node.attributes.name] = node.attributes.value;
+        _global[node.attributes.name] = node.attributes.value;
+        break;
+      case 'enum':
+        _global[node.attributes.name] = parseInt(node.attributes.value);
         break;
       case 'struct':
+        break;
       case 'field':
+        //console.error(node);
+        break;
       case 'cftype':
+        break;
       case 'constant':
-      case 'enum':
+        //constants.push(node);
+        break;
       case 'function':
+        curName = node.attributes.name;
+        curRtnType = null;
+        curArgTypes = [];
+        isInline = node.attributes.inline == 'true';
+        // TODO: is variadic? will require a 'function generator'
+        break;
       case 'args':
+        break;
       case 'opaque':
+        break;
       case 'informal_protocol':
+        break;
       case 'function_alias':
-        // TODO
         break;
       default:
         throw new Error('unkown tag: '+ node.name);
@@ -135,6 +121,13 @@ exports.import = function import (path) {
     }
   };
   parser.onclosetag = function (node) {
+    switch (node) {
+      case 'function':
+        if (isInline && !fw.inline) throw new Error('declared inline but could not find inline dylib!');
+        _global[curName] = core.Function(curName, curRtnType, curArgTypes, false, isInline ? fw.inline : fw.lib);
+        curName = null;
+        break;
+    }
   };
   parser.onend = function () {
     gotEnd = true;
@@ -148,6 +141,7 @@ exports.import = function import (path) {
   }
 
 
+  /*
   // Now time to set up the inheritance on all the Classes.
   // This has to happen after parsing has completed to ensure that all the
   // required parent classes have been parsed and loaded.
@@ -155,9 +149,14 @@ exports.import = function import (path) {
     Class.setupInheritance(c);
   });
 
-  return framework;
+  constants.forEach(function (node) {
+    var sym = lib.get(node.attributes.name);
+    if (node.attributes.declared_type == 'NSString*') {
+      sym = Class.wrapId(sym);
+      sym.__proto__ = Class.getClass('NSString').prototype;
+      framework[node.attributes.name] = sym;
+    }
+  });
+  */
 }
-
-
-function throwErr (e) { throw(e); }
-
+module.exports = bridgesupport;

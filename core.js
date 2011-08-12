@@ -36,6 +36,8 @@ exports.dlopen = function dlopen (path) {
   return new ffi.DynamicLibrary(path);
 }
 
+exports.process = exports.dlopen();
+
 // Creates and/or returns an appropriately wrapped up 'objc_msgSend' function
 // based on the given Method description info.
 exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
@@ -61,4 +63,16 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
   })
   // return and cache at the same time
   return msgSendCache[key] = lib.objc_msgSend;
+}
+
+
+exports.Function = function buildFunction (name, rtnType, argTypes, async, lib) {
+  lib || (lib = exports.process);
+  try {
+    var symbol = lib.get(name);
+    if (symbol.isNull()) throw new Error('Symbol not found: ' + name);
+    return ffi.ForeignFunction.build(symbol, rtnType, argTypes, async);
+  } catch (e) {
+    //console.error(name, e.message);
+  }
 }

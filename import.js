@@ -21,21 +21,36 @@ exports.PATH = ['/System/Library/Frameworks', '/System/Library/PrivateFrameworks
 /**
  * Accepts a single framework name and imports it into the current node process
  */
-exports.import = function import (framework) {
-  var basePath = exports.resolve(framework);
+exports.import = function importFramework (framework) {
+  //console.error('import()');
+  //console.error('input: %s', framework);
+  framework = exports.resolve(framework);
+  //console.error('after resolve: %s', framework);
 
   // Return from the framework cache if possible
-  if (basePath in importCache) return importCache[basePath];
+  if (framework in importCache) return importCache[framework];
 
   // Load the main framework binary file
-  var frameworkPath = join(basePath, framework)
+  var shortName = basename(framework, SUFFIX)
+    , frameworkPath = join(framework, shortName)
     , lib = core.dlopen(frameworkPath)
-    , fw = {}
+    , fw = {
+        lib: lib
+      , name: shortName
+      , basePath: framework
+      , binaryPath: frameworkPath
+    }
+  //console.error(fw);
 
-  //bridgesupport(fw, basePath, framework);
+  // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
+  // and other symbols not introspectable at runtime.
+  bridgesupport(fw, exports);
 
-  return importCache[basePath] = fw;
+  return importCache[framework] = fw;
 }
+// also attach the import function into bridgesupport, to avoid a circular
+// dependency
+bridgesupport.import = exports.import;
 
 
 /**
