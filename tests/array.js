@@ -1,8 +1,9 @@
 var $ = require('../')
-  , F = $.import('Foundation')
+  , assert = require('assert')
 
-var pool = F.NSAutoreleasePool('alloc')('init');
+$.import('Foundation')
 
-var array = F.NSMutableArray({ 'arrayWithCapacity': 10 });
+var pool = $.NSAutoreleasePool('alloc')('init');
+  , array = $.NSMutableArray({ 'arrayWithCapacity': 10 });
 
-console.log(array+'');
+console.log(array);

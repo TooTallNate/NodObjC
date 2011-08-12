@@ -25,16 +25,31 @@ for (var i=0; i<numMethods; i++) {
     , rtn = r.getCString()
   b.free(r);
   console.error('  '+name);
-  console.error('    rtn: %s', rtn)
-  console.error('    numArgs: %d', numArgs)
+  console.error('    Returns: %s', rtn)
   for (var j=2; j<numArgs+2; j++) {
     var a = b.method_copyArgumentType(cur, j)
       , s = a.getCString();
     b.free(a);
-    console.error('      %d: %s', j, s);
+    console.error('      Arg %d: %s', j-2, s);
   }
 
   // advance the cursor
   p = p.seek(ffi.Bindings.TYPE_SIZE_MAP.pointer);
 }
 b.free(methods);
+
+
+// Walk the inheritance chain
+var superclass = c
+  , i = 0;
+console.error('\nWalking inheritance chain:');
+console.error('  %s', b.class_getName(superclass));
+do {
+  process.stderr.write('  ');
+  i++;
+  superclass = b.class_getSuperclass(superclass);
+  for (var j=0; j<i; j++) {
+    process.stderr.write('  ');
+  }
+  console.error('↳ %s', b.class_getName(superclass));
+} while(!superclass.isNull());
