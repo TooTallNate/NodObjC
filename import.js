@@ -5,11 +5,13 @@
 var fs = require('fs')
   , path = require('path')
   , core = require('./core')
+  , _class = require('./class')
   , bridgesupport = require('./bridgesupport')
   , join = path.join
   , basename = path.basename
   , exists = path.existsSync
   , SUFFIX = '.framework'
+  , _global = exports
 
 // A cache for the frameworks that have already been imported.
 var importCache = {};
@@ -47,7 +49,17 @@ exports.import = function importFramework (framework) {
 
   // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
   // and other symbols not introspectable at runtime.
-  bridgesupport(fw, exports);
+  bridgesupport(fw, _global);
+
+  // Iterate through the loaded classes list and define "setup getters" for them.
+  core.getClassList().forEach(function (c) {
+    if (!!_global[c]) return;
+    _global.__defineGetter__(c, function () {
+      var clazz = _class.getClass(c);
+      delete _global[c];
+      return _global[c] = clazz;
+    });
+  });
 
   return fw;
 }
