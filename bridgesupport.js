@@ -118,7 +118,7 @@ function bridgesupport (fw, _global) {
           _global.__defineGetter__(curName, function () {
             var f = core.Function(curName, curRtnType, curArgTypes, false, isInline ? fw.inline : fw.lib);
             delete _global[curName];
-            return global[curName] = f;
+            return _global[curName] = f;
           });
         })(curName, curRtnType, curArgTypes, isInline);
         curName = null;
