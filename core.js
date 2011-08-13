@@ -65,6 +65,29 @@ exports.getClassList = function getClassList () {
   return rtn;
 }
 
+/**
+ * Convienience function to get the String return type of a Method pointer.
+ * Takes care of free()ing the returned pointer, as is required.
+ */
+exports.getMethodReturnType = function getMethodReturnType (method) {
+  return getStringAndFree(objc.method_copyReturnType(method));
+}
+
+exports.getMethodArgTypes = function getMethodArgTypes (method) {
+  var num = objc.method_getNumberOfArguments(method)
+    , rtn = []
+  for (var i=2; i<num; i++) {
+    rtn.push(getStringAndFree(objc.method_copyArgumentType(method, i)));
+  }
+  return rtn;
+}
+
+function getStringAndFree (ptr) {
+  var str = ptr.getCString()
+  objc.free(ptr);
+  return str;
+}
+
 // Creates and/or returns an appropriately wrapped up 'objc_msgSend' function
 // based on the given Method description info.
 exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {

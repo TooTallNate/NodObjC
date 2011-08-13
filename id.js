@@ -4,7 +4,9 @@
  */
 
 var proto = exports.proto = Object.create(Function.prototype)
+  , core  = require('./core')
   , types = require('./types')
+  , SEL   = require('./sel')
 
 /**
  * Wraps up an ffi pointer that is expected to be a compatible Objective-C
@@ -23,26 +25,55 @@ exports.wrap = function wrap (pointer) {
     } else {
       
     }
-    return this._msgSend(sel, args);
+    return id.msgSend(sel, args);
   }
 
   // Save a reference to the pointer for msgSend
-  id.__pointer__ = pointer;
-  // The 'types' 
-  id.__types__ = {};
+  id.pointer = pointer;
+  // The 'types' object contains the cached references to the computed return
+  // type and argument types for given selectors. We use prototype inheritance
+  // on it to set up inheritance via superclasses (this way, 'init' on
+  // NSObjects get cached for *all* NSObject instances, not just one.
+  id.types = {};
   // Morph into a MUTANT FUNCTION FREAK!!1!
   id.__proto__ = proto;
   return id;
 }
 
 
-proto._msgSend = function msgSend (sel, args) {
-  var types = this.__types__[sel];
-  if (!types) types = this._getTypes
-  var msgSendFunc = core.get_objc_msgSend(
-  return sel;
+proto.msgSend = function msgSend (sel, args) {
+  var types = this._getTypes(sel)
+    , msgSendFunc = core.get_objc_msgSend(types)
+    , selRef = SEL.toSEL(sel)
+    , rtn = msgSendFunc.apply(null, [ this.pointer, selRef ].concat(args))
+  return rtn;
 }
 
 proto.toString = function toString () {
   return this('description')('UTF8String');
+}
+
+/**
+ * Accepts a SEL and queries the current object for the return type and
+ * argument types for the given selector. If current object does not implment
+ * that selector, then check the superclass, and repeat recursively until
+ * a subclass that responds to the selector is found, or until the base class
+ * is found (in which case the current obj does not respond to 'sel' and we
+ * should throw an Error).
+ */
+proto._getTypes = function getTypes (sel) {
+  var c = this.getClass()
+    , t = c._getTypesClass(sel, this.isClass)
+  if (!t) throw new Error('Object does not respond to selector: '+sel);
+  return t;
+}
+
+/**
+ * Retrieves the Class instance for a given object. If this object is already
+ * a Class instance, then this function return's the Class' "metaclass".
+ * TODO: Caching
+ */
+proto.getClass = function getClass () {
+  var className = core.object_getClassName(this.pointer);
+  return exports._getClass(className);
 }
