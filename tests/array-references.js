@@ -1,12 +1,15 @@
 var $ = require('../')
-  , F = $.import('Foundation')
+$.import('Foundation')
 
-var pool = F.NSAutoreleasePool('alloc')('init');
+var pool = $.NSAutoreleasePool('alloc')('init');
+console.error(pool+'');
+console.error($.NSArray+'');
 
-var array = F.NSMutableArray({ 'arrayWithCapacity': 2 });
+var array = $.NSMutableArray({ 'arrayWithCapacity': 2 });
+console.error(array+'');
 
-array({ 'addObject': F.NSArray });
+array({ 'addObject': $.NSArray });
 
 var nsarray = array({ 'objectAtIndex': 0 });
 
-console.log(nsarray === F.NSArray);
+console.log(nsarray === $.NSArray);
