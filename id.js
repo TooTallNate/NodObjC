@@ -79,8 +79,7 @@ proto._getTypes = function getTypes (sel) {
 }
 
 /**
- * Retrieves the Class instance for a given object. If this object is already
- * a Class instance, then this function return's the Class' "metaclass".
+ * Retrieves the wrapped Class instance for a given object.
  * TODO: Caching
  */
 proto.getClass = function getClass () {
