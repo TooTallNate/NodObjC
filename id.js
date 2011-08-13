@@ -43,9 +43,18 @@ exports.wrap = function wrap (pointer) {
 
 proto.msgSend = function msgSend (sel, args) {
   var types = this._getTypes(sel)
+    , rtnType = types[0]
     , msgSendFunc = core.get_objc_msgSend(types)
     , selRef = SEL.toSEL(sel)
     , rtn = msgSendFunc.apply(null, [ this.pointer, selRef ].concat(args))
+  //console.error(types);
+  //console.error(rtn);
+  // Process the return value into an wrapped value if needed
+  if (rtnType == '@') {
+    rtn = exports.wrap(rtn)
+  } else if (rtnType == '#') {
+    rtn = exports._getClass(core.class_getName(rtn));
+  }
   return rtn;
 }
 
