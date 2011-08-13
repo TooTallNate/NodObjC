@@ -18,14 +18,20 @@ exports.wrap = function wrap (pointer) {
   // it. 'msgSend' is expecting the selector first, an Array of args second, so
   // this function just massages it into place and returns the result.
   function id (arg) {
-    var sel = []
-      , args = []
+    var args = []
+      , sel
     if (arg.constructor.name == 'String') {
-      sel = arg;
+      sel = arg
     } else {
-      
+      sel = []
+      Object.keys(arg).forEach(function (s) {
+        sel.push(s)
+        args.push(arg[s])
+      });
+      sel.push('')
+      sel = sel.join(':')
     }
-    return id.msgSend(sel, args);
+    return id.msgSend(sel, args)
   }
 
   // Save a reference to the pointer for msgSend
