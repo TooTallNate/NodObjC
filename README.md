@@ -27,24 +27,22 @@ Example
 -------
 
 ``` javascript
-var $ = require('NodObjC');
+var $ = require('NodObjC')
 
 // First you need to "import" the Framework
-$.import('Foundation');
+$.import('Foundation')
 
 // Setup the recommended NSAutoreleasePool instance
-$.NSAutoreleasePool('alloc')('init');
+var pool = $.NSAutoreleasePool('alloc')('init')
 
-// Now let's create an NSMutableArray
-var array = $.NSMutableArray('alloc')({ 'initWithCapacity': 3 });
+// NSStrings and JavaScript Strings are distinct objects, you must create an
+// NSString from a JS String when an Objective-C class method requires one.
+var string = $.NSString('stringWithUTF8String', 'Hello Objective-C World!')
 
-// Add some JS objects to the array
-array({ 'addObject': "Hello World!" });
-array({ 'addObject': { an: 'object' } });
-array({ 'addObject': NSMutableArray });
+// Print out the contents (calling [string description])
+console.log('%s', string)
 
-// Print out the contents (calling [array description])
-console.log(array);
+pool('drain')
 ```
 
 [NodeJS]: http://nodejs.org
