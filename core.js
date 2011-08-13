@@ -85,6 +85,7 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
   console.warn('WARN: key not found in cache, generating new copy: %s', key);
 
   // If we got here, then create a new objc_msgSend ffi wrapper
+  // TODO: Don't use the Library helper, use ffi low-level API
   var lib = new ffi.Library(null, {
     objc_msgSend: rtn
   })
