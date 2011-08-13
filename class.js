@@ -42,7 +42,7 @@ proto.getClassMethod = function getClassMethod (sel) {
 
 
 proto._getTypesClass = function getTypesClass (sel, isClass) {
-  console.error('_getTypesClass: %s', sel);
+  //console.error('_getTypesClass: %s, isClass: %d', sel, isClass);
   var method = this['get'+(isClass ? 'Class' : 'Instance')+'Method'](sel);
   if (method.isNull()) return null;
   return [ core.getMethodReturnType(method), core.getMethodArgTypes(method) ];
