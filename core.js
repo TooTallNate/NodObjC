@@ -7,7 +7,7 @@ var ffi = require('node-ffi')
   , types = require('./types')
   // TODO: These static ffi bindings could be replaced with native bindings
   //       for a speed boost.
-  , objc = new ffi.Library(null, {
+  , objc = new ffi.Library('libobjc', {
       class_copyMethodList: [ 'pointer', [ 'pointer', 'pointer' ] ]
     , class_getClassMethod: [ 'pointer', [ 'pointer', 'pointer' ] ]
     , class_getInstanceMethod: [ 'pointer', [ 'pointer', 'pointer' ] ]
