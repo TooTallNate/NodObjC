@@ -60,7 +60,7 @@ exports.getClassList = function getClassList () {
       rtn.push(objc.class_getName(c));
       cursor = cursor.seek(s);
     }
-    // free() not needed since ffi allocated the buffer, and will GC with JS
+    // free() not needed since ffi allocated the buffer, and will free() with V8's GC
   }
   return rtn;
 }
