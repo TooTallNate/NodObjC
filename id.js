@@ -17,17 +17,29 @@ exports.wrap = function wrap (pointer) {
   // This 'id' function is syntax sugar around the msgSend function attached to
   // it. 'msgSend' is expecting the selector first, an Array of args second, so
   // this function just massages it into place and returns the result.
-  function id (arg) {
+  function id () {
     var args = []
       , sel
-    if (arg.constructor.name == 'String') {
-      sel = arg
+    if (arguments.length === 1) {
+      var arg = arguments[0]
+      if (arg.constructor.name == 'String') {
+        sel = arg
+      } else {
+        sel = []
+        Object.keys(arg).forEach(function (s) {
+          sel.push(s)
+          args.push(arg[s])
+        })
+        sel.push('')
+        sel = sel.join(':')
+      }
     } else {
       sel = []
-      Object.keys(arg).forEach(function (s) {
-        sel.push(s)
-        args.push(arg[s])
-      });
+      var len = arguments.length
+      for (var i=0; i<len; i+=2) {
+        sel.push(arguments[i])
+        args.push(arguments[i+1])
+      }
       sel.push('')
       sel = sel.join(':')
     }
