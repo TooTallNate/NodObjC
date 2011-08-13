@@ -41,6 +41,7 @@ var string = $.NSString('stringWithUTF8String', 'Hello Objective-C World!')
 
 // Print out the contents (calling [string description])
 console.log('%s', string)
+  → Prints "Hello Objective-C World"
 
 pool('drain')
 ```
