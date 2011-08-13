@@ -36,11 +36,6 @@ exports.wrap = function wrap (pointer) {
 
   // Save a reference to the pointer for msgSend
   id.pointer = pointer;
-  // The 'types' object contains the cached references to the computed return
-  // type and argument types for given selectors. We use prototype inheritance
-  // on it to set up inheritance via superclasses (this way, 'init' on
-  // NSObjects get cached for *all* NSObject instances, not just one.
-  id.types = {};
   // Morph into a MUTANT FUNCTION FREAK!!1!
   id.__proto__ = proto;
   return id;
