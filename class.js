@@ -13,6 +13,7 @@ id._getClass = exports.getClass;
 
 exports.wrap = function wrap (pointer) {
   var w = id.wrap(pointer);
+  w.isClass = true;
   w.__proto__ = proto;
   return pointer;
 }
