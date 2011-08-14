@@ -37,6 +37,28 @@ exports.wrap = function wrap (pointer, className) {
 }
 
 /**
+ * Creates a subclass of the current class with the given name and optionally
+ * a number of extra bytes that need to be allocated with each instance.
+ * The returned Class instance should have 'addMethod()' and 'addIvar()' called
+ * on it as needed, and then 'register()' when you're ready to use it.
+ */
+proto.extend = function extend (className, extraBytes) {
+  var c = core.objc_allocateClassPair(this.pointer, className, extraBytes || 0);
+  if (c.isNull()) throw new Error('New class could not be allocated!');
+  return exports.wrap(c, className);
+}
+
+/**
+ * Calls objc_registerClassPair() on the class pointer.
+ * This must be called on the class *after* all 'addMethod()' and 'addIvar()'
+ * calls are made, and *before* the newly created class is used for real.
+ */
+proto.register = function register () {
+  core.objc_registerClassPair(this.pointer);
+  // TODO: Attach 'this' to the global exports, for access from there
+}
+
+/**
  * Get's a Class instance's superclass. If the current class is a base class,
  * then this will return null.
  */
