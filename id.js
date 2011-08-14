@@ -53,23 +53,22 @@ exports.wrap = function wrap (pointer) {
   id.__proto__ = proto;
   return id;
 }
-
+// Avoid a circular dep.
+core._idwrap = exports.wrap;
 
 proto.msgSend = function msgSend (sel, args) {
   var types = this._getTypes(sel)
-    , rtnType = types[0]
+    , argTypes = types[1]
     , msgSendFunc = core.get_objc_msgSend(types)
     , selRef = SEL.toSEL(sel)
-    , rtn = msgSendFunc.apply(null, [ this.pointer, selRef ].concat(args))
+    , unwrappedArgs = args.map(function (a, i) {
+        return core.unwrapValue(a, argTypes[i]);
+      })
+    , rtn = msgSendFunc.apply(null, [ this.pointer, selRef ].concat(unwrappedArgs))
   //console.error(types);
   //console.error(rtn);
-  // Process the return value into an wrapped value if needed
-  if (rtnType == '@') {
-    rtn = exports.wrap(rtn)
-  } else if (rtnType == '#') {
-    rtn = exports._getClass(core.class_getName(rtn));
-  }
-  return rtn;
+  // Process the return value into a wrapped value if needed
+  return core.wrapValue(rtn, types[0]);
 }
 
 proto.toString = function toString () {

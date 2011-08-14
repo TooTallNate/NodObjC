@@ -19,6 +19,7 @@ var ffi = require('node-ffi')
     , method_copyReturnType: [ 'pointer', [ 'pointer' ] ]
     , method_copyArgumentType: [ 'pointer', [ 'pointer', 'uint32' ] ]
     , method_getNumberOfArguments: [ 'uint32', [ 'pointer' ] ]
+    , objc_allocateClassPair: [ 'pointer', [ 'pointer', 'string', 'size_t' ] ]
     , objc_getClass: [ 'pointer', [ 'string' ] ]
     , objc_getClassList: [ 'int32', [ 'pointer', 'int32' ] ]
     , object_getClass: [ 'pointer', [ 'pointer' ] ]
@@ -131,3 +132,21 @@ exports.Function = function buildFunction (name, rtnType, argTypes, async, lib) 
 // Wrap the global free() function. Some of the ObjC runtime objects need
 // explicit freeing.
 exports.free = exports.Function('free', 'void', [ 'pointer' ], false);
+
+
+exports.wrapValue = function wrapValue (val, type) {
+  if (val === null || (val.isNull && val.isNull())) return null;
+  if (type == '@') {
+    val = exports._idwrap(val);
+  } else if (type == '#') {
+    val = exports._getClass(objc.class_getName(val));
+  }
+  return val;
+}
+
+exports.unwrapValue = function unwrapValue (val, type) {
+  if (type == '@' || type == '#') {
+    val = val.pointer;
+  }
+  return val;
+}
