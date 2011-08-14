@@ -23,6 +23,7 @@ var ffi = require('node-ffi')
     , objc_allocateClassPair: [ 'pointer', [ 'pointer', 'string', 'size_t' ] ]
     , objc_getClass: [ 'pointer', [ 'string' ] ]
     , objc_getClassList: [ 'int32', [ 'pointer', 'int32' ] ]
+    , objc_registerClassPair: [ 'void', [ 'pointer' ] ]
     , object_getClass: [ 'pointer', [ 'pointer' ] ]
     , object_getClassName: [ 'string', [ 'pointer' ] ]
     , sel_registerName: [ 'pointer', [ 'string' ] ]
