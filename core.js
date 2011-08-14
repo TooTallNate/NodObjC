@@ -5,6 +5,7 @@
 
 var ffi = require('node-ffi')
   , types = require('./types')
+  , SEL = require('./sel')
   // TODO: These static ffi bindings could be replaced with native bindings
   //       for a speed boost.
   , objc = new ffi.Library('libobjc', {
@@ -135,18 +136,28 @@ exports.free = exports.Function('free', 'void', [ 'pointer' ], false);
 
 
 exports.wrapValue = function wrapValue (val, type) {
+  //console.error('wrapValue(): %s, %s', val, type);
   if (val === null || (val.isNull && val.isNull())) return null;
+  var rtn = val;
   if (type == '@') {
-    val = exports._idwrap(val);
+    rtn = exports._idwrap(val);
   } else if (type == '#') {
-    val = exports._getClass(objc.class_getName(val));
+    rtn = exports._getClass(objc.class_getName(val));
+  } else if (type == ':') {
+    rtn = SEL.toString(val);
+  } else if (type == 'B') {
+    rtn = val ? true : false;
   }
-  return val;
+  return rtn;
 }
 
 exports.unwrapValue = function unwrapValue (val, type) {
+  //console.error('unwrapValue(): %s, %s', val, type);
+  var rtn = val;
   if (type == '@' || type == '#') {
-    val = val.pointer;
+    rtn = val.pointer;
+  } else if (type == ':') {
+    rtn = SEL.toSEL(val);
   }
-  return val;
+  return rtn;
 }
