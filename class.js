@@ -22,7 +22,6 @@ exports.wrap = function wrap (pointer) {
 /**
  * Get's a Class instance's superclass. If the current class is a base class,
  * then this will return null.
- * TODO: Caching
  */
 proto.getSuperclass = function getSuperclass () {
   var superclassPointer = core.class_getSuperclass(this.pointer)
@@ -39,7 +38,6 @@ proto.getInstanceMethod = function getInstanceMethod (sel) {
 proto.getClassMethod = function getClassMethod (sel) {
   return core.class_getClassMethod(this.pointer, SEL.toSEL(sel));
 }
-
 
 proto._getTypesClass = function getTypesClass (sel, isClass) {
   //console.error('_getTypesClass: %s, isClass: %d', sel, isClass);
