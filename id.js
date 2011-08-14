@@ -97,3 +97,7 @@ proto.getClass = function getClass () {
   var className = core.object_getClassName(this.pointer);
   return exports._getClass(className);
 }
+
+proto.getClassPointer = function getClassPointer () {
+  return core.object_getClass(this.pointer)
+}
