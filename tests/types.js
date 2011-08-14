@@ -7,3 +7,6 @@ var type = 'v@:'
 
 assert.deepEqual(parsed, [ 'v', [ '@', ':' ] ])
 assert.deepEqual(converted, [ 'void', [ 'pointer', 'pointer' ] ])
+
+// test types.map()
+assert.equal(types.map('r^^{__CFData}'), 'pointer')
