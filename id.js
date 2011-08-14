@@ -92,7 +92,6 @@ proto._getTypes = function getTypes (sel) {
 
 /**
  * Retrieves the wrapped Class instance for a given object.
- * TODO: Caching
  */
 proto.getClass = function getClass () {
   var className = core.object_getClassName(this.pointer);
