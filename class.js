@@ -1,4 +1,5 @@
 var core = require('./core')
+  , types = require('./types')
   , SEL = require('./sel')
   , id = require('./id')
   , classCache = {}
@@ -57,6 +58,18 @@ proto.register = function register () {
   core.objc_registerClassPair(this.pointer);
   // TODO: Attach 'this' to the global exports, for access from there
 }
+
+proto.addMethod = function addMethod (selector, type, callback) {
+  var parsed = types.parse(type)
+    , selRef = SEL.toSEL(selector)
+    , ffiCb = new core.Callback(types.convert(parsed), callback)
+  core.class_addMethod(this.pointer, selRef, ffiCb.getPointer(), type)
+}
+
+proto.addIVar = function addIVar () {
+  throw new Error("TODO");
+}
+
 
 /**
  * Get's a Class instance's superclass. If the current class is a base class,
