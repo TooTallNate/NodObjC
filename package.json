@@ -1,5 +1,5 @@
 { "name": "NodObjC"
-, "description": "A high-level Objective-C interpreter for NodeJS"
+, "description": "The Objective-C ⇆ NodeJS bridge"
 , "version": "0.0.1"
 , "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"
 , "repository": { "type": "git", "url": "git://github.com/TooTallNate/NodObjC.git" }
