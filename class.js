@@ -61,8 +61,18 @@ proto.register = function register () {
 
 proto.addMethod = function addMethod (selector, type, callback) {
   var parsed = types.parse(type)
+    , rtnType = parsed[0]
+    , argTypes = parsed[1]
     , selRef = SEL.toSEL(selector)
-    , ffiCb = new core.Callback(types.convert(parsed), callback)
+    , ffiCb = new core.Callback(types.convert(parsed), wrapper)
+    , self = this
+  // the wrapper function is required to wrap passed in arguments and to unwrap
+  // the return value (when necessary).
+  function wrapper () {
+    var args = core.wrapValues(arguments, argTypes)
+      , rtn = callback.apply(self, args)
+    return core.unwrapValue(rtn, rtnType)
+  }
   core.class_addMethod(this.pointer, selRef, ffiCb.getPointer(), type)
 }
 
