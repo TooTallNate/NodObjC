@@ -6,9 +6,11 @@ $.NSAutoreleasePool('alloc')('init')
 
 // Subclass 'NSObject', creating a new class named 'NRTest'
 var NRTest = $.NSObject.extend('NRTest')
+  , counter = 0
 
 // Add a new method to the NRTest class responding to the "description" selector
-NRTest.addMethod('description', '@@:', function () {
+NRTest.addMethod('description', '@@:', function (id, sel) {
+  counter++
   return $.NSString('stringWithUTF8String', 'test')
 })
 
@@ -21,5 +23,8 @@ var instance = NRTest('alloc')('init')
 // call [instance description]
 console.log(instance('description')+'')
 console.log(instance.toString())
-console.log(instance.toString+'')
-console.log(instance+'') // This segfaults, WTF?
+console.log(String(instance))
+//console.log(''+instance) // Either of these
+//console.log(instance+'') // segfault, WTF?
+
+assert.equal(counter, 3)
