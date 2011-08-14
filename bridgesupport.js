@@ -24,7 +24,7 @@ function bridgesupport (fw, _global) {
 
   // If there's no BridgeSupport file, then just return the empty object...
   if (!exists(bridgeSupportXML)) {
-    console.warn('No BridgeSupport files found for framework "%s" at: %s', fw.name, bridgeSupportXML);
+    //console.warn('No BridgeSupport files found for framework "%s" at: %s', fw.name, bridgeSupportXML);
     return;
   }
 
