@@ -4,6 +4,7 @@
  */
 
 var proto = exports.proto = Object.create(Function.prototype)
+  , ffi   = require('node-ffi')
   , core  = require('./core')
   , types = require('./types')
   , SEL   = require('./sel')
@@ -100,4 +101,20 @@ proto.getClass = function getClass () {
 
 proto.getClassPointer = function getClassPointer () {
   return core.object_getClass(this.pointer)
+}
+
+proto.listMethods = function listMethods () {
+  var numMethods = new ffi.Pointer(ffi.Bindings.TYPE_SIZE_MAP.uint32)
+    , methods = core.class_copyMethodList(this.getClassPointer(), numMethods)
+    , rtn = []
+    , p = methods
+  numMethods = numMethods.getUInt32()
+  for (var i=0; i<numMethods; i++) {
+    var cur = p.getPointer()
+      , name = SEL.toString(core.method_getName(cur))
+    rtn.push(name)
+    p = p.seek(ffi.Bindings.TYPE_SIZE_MAP.pointer)
+  }
+  core.free(methods)
+  return rtn
 }
