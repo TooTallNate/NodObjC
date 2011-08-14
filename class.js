@@ -5,17 +5,34 @@ var core = require('./core')
 
 var proto = exports.proto = Object.create(id.proto);
 
+/**
+ * Gets a wrapped Class instance based off the given name.
+ * Also takes care of returning a cached version when available.
+ */
 exports.getClass = function (c) {
-  var pointer = core.objc_getClass(c);
-  return classCache[c] = exports.wrap(pointer);
+  var rtn = classCache[c];
+  if (!rtn) {
+    var pointer = core.objc_getClass(c);
+    rtn = exports.wrap(pointer, c);
+  }
+  return rtn;
 }
 // Making the getClass function available to the id module, to avoid circular deps
 id._getClass = core._getClass = exports.getClass;
 
-exports.wrap = function wrap (pointer) {
+
+/**
+ * Wraps a Class pointer.
+ */
+exports.wrap = function wrap (pointer, className) {
   var w = id.wrap(pointer);
   w.isClass = true;
   w.__proto__ = proto;
+  // optionally cache when a class name is given
+  if (className) {
+    w.className = className;
+    classCache[className] = w;
+  }
   return w;
 }
 
