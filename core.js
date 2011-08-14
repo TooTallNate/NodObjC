@@ -24,7 +24,6 @@ var ffi = require('node-ffi')
     , object_getClassName: [ 'string', [ 'pointer' ] ]
     , sel_registerName: [ 'pointer', [ 'string' ] ]
     , sel_getName: [ 'string', [ 'pointer' ] ]
-    , free: [ 'void', [ 'pointer' ] ]
   })
   , msgSendCache = {}
 
@@ -84,7 +83,7 @@ exports.getMethodArgTypes = function getMethodArgTypes (method) {
 
 function getStringAndFree (ptr) {
   var str = ptr.getCString()
-  objc.free(ptr);
+  exports.free(ptr);
   return str;
 }
 
@@ -127,3 +126,7 @@ exports.Function = function buildFunction (name, rtnType, argTypes, async, lib) 
     //console.error(name, e.message);
   }
 }
+
+// Wrap the global free() function. Some of the ObjC runtime objects need
+// explicit freeing.
+exports.free = exports.Function('free', 'void', [ 'pointer' ], false);
