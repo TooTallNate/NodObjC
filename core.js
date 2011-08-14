@@ -156,6 +156,19 @@ exports.wrapValue = function wrapValue (val, type) {
   return rtn;
 }
 
+/**
+ * Accepts an Array of raw objc pointers and other values, and an array of ObjC
+ * types, and returns an array of wrapped values where appropriate.
+ */
+exports.wrapValues = function wrapValues (values, types) {
+  var len = values.length
+    , rtn = []
+  for (var i=0; i<len; i++) {
+    rtn.push(exports.wrapValue(values[i], types[i]))
+  }
+  return rtn
+}
+
 exports.unwrapValue = function unwrapValue (val, type) {
   //console.error('unwrapValue(): %s, %s', val, type);
   var rtn = val;
