@@ -98,13 +98,13 @@ proto.getClass = function getClass () {
   return exports._getClass(className);
 }
 
-proto.getClassPointer = function getClassPointer () {
+proto._getClassPointer = function getClassPointer () {
   return core.object_getClass(this.pointer)
 }
 
 proto.listMethods = function listMethods () {
   var numMethods = new ffi.Pointer(ffi.Bindings.TYPE_SIZE_MAP.uint32)
-    , methods = core.class_copyMethodList(this.getClassPointer(), numMethods)
+    , methods = core.class_copyMethodList(this._getClassPointer(), numMethods)
     , rtn = []
     , p = methods
   numMethods = numMethods.getUInt32()
