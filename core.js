@@ -21,6 +21,7 @@ var ffi = require('node-ffi')
     , method_getNumberOfArguments: [ 'uint32', [ 'pointer' ] ]
     , objc_getClass: [ 'pointer', [ 'string' ] ]
     , objc_getClassList: [ 'int32', [ 'pointer', 'int32' ] ]
+    , object_getClass: [ 'pointer', [ 'pointer' ] ]
     , object_getClassName: [ 'string', [ 'pointer' ] ]
     , sel_registerName: [ 'pointer', [ 'string' ] ]
     , sel_getName: [ 'string', [ 'pointer' ] ]
