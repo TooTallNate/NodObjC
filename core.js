@@ -33,7 +33,10 @@ var ffi = require('node-ffi')
 
 exports.__proto__ = objc;
 
+// Expose `node-ffi` stuff so we don't have to require node-ffi elsewhere
 exports.Pointer = ffi.Pointer;
+exports.Callback = ffi.Callback;
+exports.TYPE_SIZE_MAP = ffi.Bindings.TYPE_SIZE_MAP;
 
 exports.dlopen = function dlopen (path) {
   return new ffi.DynamicLibrary(path);

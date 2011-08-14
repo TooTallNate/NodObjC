@@ -4,13 +4,12 @@
  */
 
 var proto = exports.proto = Object.create(Function.prototype)
-  , ffi   = require('node-ffi')
   , core  = require('./core')
   , types = require('./types')
   , SEL   = require('./sel')
 
 /**
- * Wraps up an ffi pointer that is expected to be a compatible Objective-C
+ * Wraps up a pointer that is expected to be a compatible Objective-C
  * object that can recieve messages.
  */
 exports.wrap = function wrap (pointer) {
@@ -103,7 +102,7 @@ proto._getClassPointer = function getClassPointer () {
 }
 
 proto.listMethods = function listMethods () {
-  var numMethods = new ffi.Pointer(ffi.Bindings.TYPE_SIZE_MAP.uint32)
+  var numMethods = new core.Pointer(core.TYPE_SIZE_MAP.uint32)
     , methods = core.class_copyMethodList(this._getClassPointer(), numMethods)
     , rtn = []
     , p = methods
@@ -112,7 +111,7 @@ proto.listMethods = function listMethods () {
     var cur = p.getPointer()
       , name = SEL.toString(core.method_getName(cur))
     rtn.push(name)
-    p = p.seek(ffi.Bindings.TYPE_SIZE_MAP.pointer)
+    p = p.seek(core.TYPE_SIZE_MAP.pointer)
   }
   core.free(methods)
   return rtn
