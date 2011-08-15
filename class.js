@@ -74,10 +74,12 @@ proto.addMethod = function addMethod (selector, type, callback) {
     return core.unwrapValue(rtn, rtnType)
   }
   core.class_addMethod(this.pointer, selRef, ffiCb.getPointer(), type)
+  return this
 }
 
 proto.addIVar = function addIVar () {
-  throw new Error("TODO");
+  throw new Error("TODO")
+  return this
 }
 
 
