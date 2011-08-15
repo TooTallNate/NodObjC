@@ -101,18 +101,26 @@ proto._getClassPointer = function getClassPointer () {
   return core.object_getClass(this.pointer)
 }
 
-proto.listMethods = function listMethods () {
+proto.listMethods = function listMethods (maxDepth) {
   var numMethods = new core.Pointer(core.TYPE_SIZE_MAP.uint32)
-    , methods = core.class_copyMethodList(this._getClassPointer(), numMethods)
     , rtn = []
-    , p = methods
-  numMethods = numMethods.getUInt32()
-  for (var i=0; i<numMethods; i++) {
-    var cur = p.getPointer()
-      , name = SEL.toString(core.method_getName(cur))
-    rtn.push(name)
-    p = p.seek(core.TYPE_SIZE_MAP.pointer)
+    , classPointer = this._getClassPointer()
+    , md = maxDepth || 1
+    , depth = 0
+  while (depth++ < md && !classPointer.isNull()) {
+    var methods = core.class_copyMethodList(classPointer, numMethods)
+      , p = methods
+      , count = numMethods.getUInt32()
+    for (var i=0; i<count; i++) {
+      var cur = p.getPointer()
+        , name = SEL.toString(core.method_getName(cur))
+      if (!~rtn.indexOf(name)) {
+        rtn.push(name)
+      }
+      p = p.seek(core.TYPE_SIZE_MAP.pointer)
+    }
+    core.free(methods)
+    classPointer = core.class_getSuperclass(classPointer)
   }
-  core.free(methods)
   return rtn
 }
