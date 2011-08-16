@@ -90,17 +90,31 @@ proto._getTypes = function getTypes (sel) {
 }
 
 /**
- * Retrieves the wrapped Class instance for a given object.
+ * Retrieves the wrapped Class instance for this object.
  */
 proto.getClass = function getClass () {
-  var className = core.object_getClassName(this.pointer);
-  return exports._getClass(className);
+  return exports._getClass(this.getClassName());
 }
 
+/**
+ * Returns the node-ffi pointer for the class of this object.
+ */
 proto._getClassPointer = function getClassPointer () {
   return core.object_getClass(this.pointer)
 }
 
+/**
+ * Calls 'object_getClassName()' on this object.
+ */
+proto.getClassName = function () {
+  return core.object_getClassName(this.pointer);
+}
+
+/**
+ * Returns an Array of Strings of the names of methods that the current object
+ * will respond to. This function can iterate through the object's superclasses
+ * recursively, if a specify a 'maxDepth' number argument.
+ */
 proto.methods = function methods (maxDepth) {
   var numMethods = new core.Pointer(core.TYPE_SIZE_MAP.uint32)
     , rtn = []
