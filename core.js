@@ -173,6 +173,7 @@ exports.unwrapValue = function unwrapValue (val, type) {
   //console.error('unwrapValue(): %s, %s', val, type);
   var rtn = val;
   if (type == '@' || type == '#') {
+    if (!val) return null;
     rtn = val.pointer;
   } else if (type == ':') {
     rtn = SEL.toSEL(val);
