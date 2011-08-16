@@ -101,7 +101,7 @@ proto._getClassPointer = function getClassPointer () {
   return core.object_getClass(this.pointer)
 }
 
-proto.listMethods = function listMethods (maxDepth) {
+proto.methods = function methods (maxDepth) {
   var numMethods = new core.Pointer(core.TYPE_SIZE_MAP.uint32)
     , rtn = []
     , classPointer = this._getClassPointer()
