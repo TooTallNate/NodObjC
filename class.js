@@ -97,7 +97,7 @@ proto.isMetaClass = function isMetaClass () {
  * then this will return null.
  */
 proto.getSuperclass = function getSuperclass () {
-  var superclassPointer = core.class_getSuperclass(this.pointer)
+  var superclassPointer = this._getSuperclassPointer()
   if (superclassPointer.isNull()) return null;
   var name = core.class_getName(superclassPointer)
     , superclass = exports.getClass(name)
