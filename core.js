@@ -130,13 +130,8 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
 
 exports.Function = function buildFunction (name, rtnType, argTypes, async, lib) {
   lib || (lib = exports.process);
-  try {
-    var symbol = lib.get(name);
-    if (symbol.isNull()) throw new Error('Symbol not found: ' + name);
-    return ffi.ForeignFunction.build(symbol, rtnType, argTypes, async);
-  } catch (e) {
-    //console.error(name, e.message);
-  }
+  var symbol = lib.get(name);
+  return ffi.ForeignFunction.build(symbol, rtnType, argTypes, async);
 }
 
 // Wrap the global free() function. Some of the ObjC runtime objects need
