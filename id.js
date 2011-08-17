@@ -93,7 +93,7 @@ proto._getTypes = function getTypes (sel) {
  * Retrieves the wrapped Class instance for this object.
  */
 proto.getClass = function getClass () {
-  return exports._getClass(this.getClassName());
+  return exports._wrapClass(this._getClassPointer());
 }
 
 /**
