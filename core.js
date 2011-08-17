@@ -181,3 +181,16 @@ exports.unwrapValue = function unwrapValue (val, type) {
   }
   return rtn;
 }
+
+/**
+ * Accepts an Array of wrapped NodObjC objects and other values, and an array
+ * of their cooresponding ObjC types, and returns an array of unwrapped values.
+ */
+exports.unwrapValues = function unwrapValues (values, types) {
+  var len = values.length
+    , rtn = []
+  for (var i=0; i<len; i++) {
+    rtn.push(exports.unwrapValue(values[i], types[i]))
+  }
+  return rtn
+}
