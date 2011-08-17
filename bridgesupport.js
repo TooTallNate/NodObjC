@@ -97,6 +97,15 @@ function bridgesupport (fw, _global) {
       case 'cftype':
         break;
       case 'constant':
+        try {
+          var ptr = fw.lib.get(node.attributes.name);
+          // TODO: I'm like 99% sure I need to deref the pointer before wrapping,
+          //       but I haven't tested yet...
+          _global[node.attributes.name] = core.wrapValue(ptr, node.attributes.type);
+        } catch (e) {
+          //console.error(e);
+          //console.error(node);
+        }
         break;
       case 'function':
         curName = node.attributes.name;
