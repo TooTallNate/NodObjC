@@ -15,6 +15,10 @@ var fs = require('fs')
   , BS_SUFFIX = '.bridgesupport'
 
 
+/**
+ * Architecture-specific function that returns the Obj-C type from one of
+ * these BridgeSupport XML nodes.
+ */
 var getType;
 if (process.arch == 'x64')
   getType = function (node) {
