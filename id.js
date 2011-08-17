@@ -70,10 +70,6 @@ proto.msgSend = function msgSend (sel, args) {
   return core.wrapValue(rtn, types[0]);
 }
 
-proto.toString = function toString () {
-  return this('description')('UTF8String');
-}
-
 /**
  * Accepts a SEL and queries the current object for the return type and
  * argument types for the given selector. If current object does not implment
@@ -137,4 +133,12 @@ proto.methods = function methods (maxDepth) {
     classPointer = core.class_getSuperclass(classPointer)
   }
   return rtn
+}
+
+/**
+ * The id wrap's overidden toString() function proxies up to the id's
+ * description method:  [[id descrption] UTF8String]
+ */
+proto.toString = function toString () {
+  return this('description')('UTF8String');
 }
