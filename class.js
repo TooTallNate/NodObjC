@@ -46,7 +46,7 @@ id._wrapClass = core._wrapClass = exports.wrap;
  */
 proto.extend = function extend (className, extraBytes) {
   var c = core.objc_allocateClassPair(this.pointer, className, extraBytes || 0);
-  if (c.isNull()) throw new Error('New class could not be allocated!');
+  if (c.isNull()) throw new Error('New Class could not be allocated: ' + className);
   return exports.wrap(c, className);
 }
 
