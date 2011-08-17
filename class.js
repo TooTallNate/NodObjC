@@ -84,6 +84,9 @@ proto.addIVar = function addIVar () {
   return this
 }
 
+proto._getSuperclassPointer = function getSuperclassPointer () {
+  return core.class_getSuperclass(this.pointer);
+}
 
 /**
  * Get's a Class instance's superclass. If the current class is a base class,
