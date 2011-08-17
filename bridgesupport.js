@@ -136,9 +136,23 @@ function bridgesupport (fw, _global) {
         (function (curName, curRtnType, curArgTypes, isInline) {
           if (isInline && !fw.inline) throw new Error('declared inline but could not find inline dylib!');
           _global.__defineGetter__(curName, function () {
-            var f = core.Function(curName, curRtnType, curArgTypes, false, isInline ? fw.inline : fw.lib);
+            // TODO: Handle 'variadic' arg functions (NSLog), will require
+            //       a "function generator" to get a Function from the passed
+            //       in args (and guess at the types that were passed in...)
+            var f = core.Function(curName, types.map(curRtnType), curArgTypes.map(types.map), false, isInline ? fw.inline : fw.lib);
             delete _global[curName];
-            return _global[curName] = f;
+            // The unwrapper function unwraps passed in arguments,
+            // and wraps up the result if necessary.
+            function unwrapper () {
+              var args = core.unwrapValues(arguments, curArgTypes)
+                , rtn = f.apply(null, args)
+              return core.wrapValue(rtn, curRtnType)
+            }
+            // attach the rtn and arg types to the result Function, nice in the REPL
+            unwrapper.func = curName;
+            unwrapper.rtn = curRtnType;
+            unwrapper.args = curArgTypes;
+            return _global[curName] = unwrapper;
           });
         })(curName, curRtnType, curArgTypes, isInline);
         curName = null;
