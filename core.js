@@ -152,6 +152,8 @@ exports.wrapValue = function wrapValue (val, type) {
   } else if (type == 'B') {
     rtn = val ? true : false;
   }
+  // If possible, attach the 'type' to the wrapped object. Nice for the REPL.
+  rtn.type = type;
   return rtn;
 }
 
