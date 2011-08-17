@@ -79,7 +79,7 @@ proto.addMethod = function addMethod (selector, type, callback) {
   return this
 }
 
-proto.addIVar = function addIVar () {
+proto.addIvar = function addIvar () {
   throw new Error("TODO")
   return this
 }
@@ -88,8 +88,16 @@ proto._getSuperclassPointer = function getSuperclassPointer () {
   return core.class_getSuperclass(this.pointer);
 }
 
+proto.getName = function getName () {
+  return core.class_getName(this.pointer);
+}
+
 proto.isMetaClass = function isMetaClass () {
   return !!core.class_isMetaClass(this.pointer);
+}
+
+proto.getInstanceSize = function getInstanceSize () {
+  return core.class_getInstanceSize(this.pointer);
 }
 
 /**
@@ -100,6 +108,14 @@ proto.getSuperclass = function getSuperclass () {
   var superclassPointer = this._getSuperclassPointer()
   if (superclassPointer.isNull()) return null;
   return exports.wrap(superclassPointer);
+}
+
+proto.setSuperclass = function setSuperclass (superclass) {
+  return exports.wrap(this._setSuperclassPointer(superclass.pointer));
+}
+
+proto._setSuperclassPointer = function setSuperclassPointer (superclassPointer) {
+  return core.class_setSuperclass(this.pointer, superclassPointer);
 }
 
 proto.getInstanceMethod = function getInstanceMethod (sel) {

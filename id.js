@@ -109,7 +109,7 @@ proto.getClassName = function () {
 /**
  * Returns an Array of Strings of the names of methods that the current object
  * will respond to. This function can iterate through the object's superclasses
- * recursively, if a specify a 'maxDepth' number argument.
+ * recursively, if you specify a 'maxDepth' number argument.
  */
 proto.methods = function methods (maxDepth) {
   var numMethods = new core.Pointer(core.TYPE_SIZE_MAP.uint32)
@@ -137,7 +137,7 @@ proto.methods = function methods (maxDepth) {
 
 /**
  * The id wrap's overidden toString() function proxies up to the id's
- * description method:  [[id descrption] UTF8String]
+ * description method:  [[id description] UTF8String]
  */
 proto.toString = function toString () {
   return this('description')('UTF8String');
