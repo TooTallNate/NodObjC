@@ -17,6 +17,7 @@ var ffi = require('node-ffi')
     , class_getName: [ 'string', [ 'pointer' ] ]
     , class_getSuperclass: [ 'pointer', [ 'pointer' ] ]
     , class_getVersion: [ 'pointer', [ 'pointer' ] ]
+    , class_isMetaClass: [ 'uint8', [ 'pointer' ] ]
     , method_getName: [ 'pointer', [ 'pointer' ] ]
     , method_copyReturnType: [ 'pointer', [ 'pointer' ] ]
     , method_copyArgumentType: [ 'pointer', [ 'pointer', 'uint32' ] ]
