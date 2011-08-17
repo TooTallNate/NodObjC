@@ -36,6 +36,7 @@ exports.wrap = function wrap (pointer, className) {
   }
   return w;
 }
+id._wrapClass = core._wrapClass = exports.wrap;
 
 /**
  * Creates a subclass of the current class with the given name and optionally
