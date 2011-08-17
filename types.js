@@ -32,6 +32,7 @@ var map = {
  * Translates a single Obj-C 'type' into a valid node-ffi type.
  */
 exports.map = function translate (type) {
+  if (!type) return 'void';
   var rtn = map[type];
   if (rtn) return rtn;
   // Meh, need better testing here
