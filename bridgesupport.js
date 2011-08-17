@@ -51,13 +51,11 @@ function bridgesupport (fw, _global) {
   var contents = fs.readFileSync(bridgeSupportXML, 'utf8')
     , parser = sax.parser(true)
     , gotEnd = false
-    , classes = []
-    , constants = []
+    // For processing C functions
     , curName
     , curRtnType
     , curArgTypes
-    , isInline;
-  //console.error(contents);
+    , isInline
 
   parser.onerror = function (e) { throw e; }
   parser.onopentag = function (node) {
@@ -99,7 +97,6 @@ function bridgesupport (fw, _global) {
       case 'cftype':
         break;
       case 'constant':
-        //constants.push(node);
         break;
       case 'function':
         curName = node.attributes.name;
