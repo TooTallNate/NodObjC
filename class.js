@@ -99,9 +99,7 @@ proto.isMetaClass = function isMetaClass () {
 proto.getSuperclass = function getSuperclass () {
   var superclassPointer = this._getSuperclassPointer()
   if (superclassPointer.isNull()) return null;
-  var name = core.class_getName(superclassPointer)
-    , superclass = exports.getClass(name)
-  return superclass;
+  return exports.wrap(superclassPointer);
 }
 
 proto.getInstanceMethod = function getInstanceMethod (sel) {
