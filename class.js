@@ -58,6 +58,7 @@ proto.extend = function extend (className, extraBytes) {
 proto.register = function register () {
   core.objc_registerClassPair(this.pointer);
   // TODO: Attach 'this' to the global exports, for access from there
+  return this
 }
 
 proto.addMethod = function addMethod (selector, type, callback) {
