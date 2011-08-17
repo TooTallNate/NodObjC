@@ -88,6 +88,10 @@ proto._getSuperclassPointer = function getSuperclassPointer () {
   return core.class_getSuperclass(this.pointer);
 }
 
+proto.isMetaClass = function isMetaClass () {
+  return !!core.class_isMetaClass(this.pointer);
+}
+
 /**
  * Get's a Class instance's superclass. If the current class is a base class,
  * then this will return null.
