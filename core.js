@@ -146,7 +146,7 @@ exports.wrapValue = function wrapValue (val, type) {
   if (type == '@') {
     rtn = exports._idwrap(val);
   } else if (type == '#') {
-    rtn = exports._getClass(objc.class_getName(val));
+    rtn = exports._wrapClass(val);
   } else if (type == ':') {
     rtn = SEL.toString(val);
   } else if (type == 'B') {
