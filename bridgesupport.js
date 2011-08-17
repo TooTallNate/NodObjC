@@ -15,7 +15,23 @@ var fs = require('fs')
   , BS_SUFFIX = '.bridgesupport'
 
 
+var getType;
+if (process.arch == 'x64')
+  getType = function (node) {
+    var a = node.attributes;
+    return a.type64 || a.type;
+  }
+else
+  getType = function (node) {
+    return node.attributes.type;
+  }
 
+/**
+ * Attempts to retrieve the BridgeSupport files for the given framework.
+ * It synchronously reads the contents of the bridgesupport files and parses
+ * them in order to add the symbols that the Obj-C runtime functions cannot
+ * determine.
+ */
 function bridgesupport (fw, _global) {
 
   var bridgeSupportDir = join(fw.basePath, 'Resources', 'BridgeSupport')
@@ -147,8 +163,3 @@ function bridgesupport (fw, _global) {
   */
 }
 module.exports = bridgesupport;
-
-// TODO: Add 64-bit retrievial, 'type64'
-function getType (node) {
-  return types.map(node.attributes.type);
-}
