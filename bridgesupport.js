@@ -149,17 +149,5 @@ function bridgesupport (fw, _global) {
   if (!gotEnd) {
     throw new Error('could not parse BridgeSupport files synchronously');
   }
-
-
-  /*
-  constants.forEach(function (node) {
-    var sym = lib.get(node.attributes.name);
-    if (node.attributes.declared_type == 'NSString*') {
-      sym = Class.wrapId(sym);
-      sym.__proto__ = Class.getClass('NSString').prototype;
-      framework[node.attributes.name] = sym;
-    }
-  });
-  */
 }
 module.exports = bridgesupport;
