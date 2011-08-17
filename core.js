@@ -127,7 +127,11 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
   return msgSendCache[key] = lib.objc_msgSend;
 }
 
-
+/**
+ * Accepts the name of an exported symbol, the ffi return type, an array of ffi
+ * argument types, an Bool specifying if this is async of not, and finally the
+ * library pointer to get the sybol from. Turns it into a JS function.
+ */
 exports.Function = function buildFunction (name, rtnType, argTypes, async, lib) {
   lib || (lib = exports.process);
   var symbol = lib.get(name);
@@ -139,6 +143,9 @@ exports.Function = function buildFunction (name, rtnType, argTypes, async, lib) 
 exports.free = exports.Function('free', 'void', [ 'pointer' ], false);
 
 
+/**
+ * Wraps up a node-ffi pointer if needed (not needed for Numbers, etc.)
+ */
 exports.wrapValue = function wrapValue (val, type) {
   //console.error('wrapValue(): %s, %s', val, type);
   if (val === null || (val.isNull && val.isNull())) return null;
@@ -170,6 +177,9 @@ exports.wrapValues = function wrapValues (values, types) {
   return rtn
 }
 
+/**
+ * Unwraps a previously wrapped NodObjC object.
+ */
 exports.unwrapValue = function unwrapValue (val, type) {
   //console.error('unwrapValue(): %s, %s', val, type);
   var rtn = val;
