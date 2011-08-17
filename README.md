@@ -23,8 +23,8 @@ for? Get to coding!
 primetime quite yet. Watch this project to follow the updates!
 
 
-Example
--------
+Hello World
+-----------
 
 ``` javascript
 var $ = require('NodObjC')
@@ -41,10 +41,63 @@ var string = $.NSString('stringWithUTF8String', 'Hello Objective-C World!')
 
 // Print out the contents (calling [string description])
 console.log('%s', string)
-//   → Prints "Hello Objective-C World"
+//   → Prints "Hello Objective-C World!"
 
 pool('drain')
 ```
+
+
+Introduction
+------------
+
+This module offers a bi-directional bridge between NodeJS and the Objective-C
+runtime. What does that mean exactly? Well due to the design of the Objective-C
+runtime, it is possible to _port_ the entire API to other languages. There are
+quite a few bridges for Obj-C so one for node was a necessity.
+
+So with this module, you get access to _all_ of the Objective-C APIs, but you
+invoke them through JavaScript. Obj-C has a concept of "message passing" to
+invoke methods on objects. The way that you pass messages around is probably a
+little bit different than the kind of JavaScript you're used to:
+
+``` javascript
+// In JavaScript, you invoke a function on an object like:
+obj.func(arg)
+```
+
+Compared to:
+
+``` javascript
+// In NodObjC, you send a message to an object like:
+obj('func', arg)
+```
+
+In Objective-C, the names of methods are part of the arguments that you pass
+along, so let's look at a method that takes more than one argument:
+
+``` javascript
+array('insertObject', obj, 'atIndex', 5)
+```
+
+So the even numbered arguments are the parts of the method name that will be
+invoked, and the odd numbered arguments are the Obj-C arguments themselves. In
+the above example, the `insertObject:atIndex:` function will be invoked.
+
+In `NodObjC`, not only is the Objective-C runtime exposed, but so are the
+corresponding C functions that usually go along with these APIs (thanks to
+BridgeSupport). So for example, we can make an `NSRect` by calling the
+`NSMakeRect()` C function:
+
+``` javascript
+$.NSMakeRect(5, 10, 8, 30)
+// -> NSRect struct
+```
+
+There's literally thousands of other Objective-C resources and tutorials out
+there, especially Apple's offial documentation. So hopefully you get the gist
+of it here.
+
+
 
 [NodeJS]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
