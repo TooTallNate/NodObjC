@@ -68,7 +68,7 @@ var ffi = require('node-ffi')
     , protocol_copyPropertyList: [ 'pointer', [ 'pointer', 'pointer' ] ]
     , protocol_copyProtocolList: [ 'pointer', [ 'pointer', 'pointer' ] ]
     , protocol_getMethodDescription: [ 'pointer', [ 'pointer', 'pointer', 'uint8', 'uint8' ] ]
-    , protocol_getName: [ 'string': [ 'pointer' ] ]
+    , protocol_getName: [ 'string', [ 'pointer' ] ]
     , protocol_getProperty: [ 'pointer', [ 'pointer', 'string', 'uint8', 'uint8' ] ]
     , sel_getName: [ 'string', [ 'pointer' ] ]
     , sel_registerName: [ 'pointer', [ 'string' ] ]
