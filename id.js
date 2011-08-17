@@ -46,7 +46,7 @@ exports.wrap = function wrap (pointer) {
     return id.msgSend(sel, args)
   }
 
-  // Save a reference to the pointer for msgSend
+  // Save a reference to the pointer for use by the prototype functions
   id.pointer = pointer;
   // Morph into a MUTANT FUNCTION FREAK!!1!
   id.__proto__ = proto;
