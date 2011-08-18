@@ -149,3 +149,7 @@ proto.getVersion = function getVersion () {
 proto.setVersion = function setVersion (v) {
   return core.class_setVersion(this.pointer, v);
 }
+
+proto.toString = function toString () {
+  return '[Class: ' + this.getName() + ']'
+}
