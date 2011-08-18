@@ -63,7 +63,6 @@ function bridgesupport (fw, _global) {
 
   parser.onerror = function (e) { throw e; }
   parser.onopentag = function (node) {
-    //console.error(node);
     switch (node.name) {
       case 'depends_on':
         bridgesupport.import(node.attributes.path);
@@ -85,7 +84,6 @@ function bridgesupport (fw, _global) {
         }
         break;
       case 'signatures':
-        // ignore
         break;
       case 'string_constant':
         _global[node.attributes.name] = node.attributes.value;
@@ -96,7 +94,6 @@ function bridgesupport (fw, _global) {
       case 'struct':
         break;
       case 'field':
-        //console.error(node);
         break;
       case 'cftype':
         break;
@@ -172,8 +169,6 @@ function bridgesupport (fw, _global) {
   // Parse the contents of the file. This should happen synchronously.
   parser.write(contents).close();
 
-  if (!gotEnd) {
-    throw new Error('could not parse BridgeSupport files synchronously');
-  }
+  if (!gotEnd) throw new Error('could not parse BridgeSupport files synchronously');
 }
 module.exports = bridgesupport;
