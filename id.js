@@ -59,13 +59,8 @@ proto.msgSend = function msgSend (sel, args) {
   var types = this._getTypes(sel)
     , argTypes = types[1]
     , msgSendFunc = core.get_objc_msgSend(types)
-    , selRef = SEL.toSEL(sel)
-    , unwrappedArgs = args.map(function (a, i) {
-        return core.unwrapValue(a, argTypes[i+2]);
-      })
-    , rtn = msgSendFunc.apply(null, [ this.pointer, selRef ].concat(unwrappedArgs))
-  //console.error(types);
-  //console.error(rtn);
+    , unwrappedArgs = core.unwrapValues([this, sel].concat(args), argTypes)
+    , rtn = msgSendFunc.apply(null, unwrappedArgs)
   // Process the return value into a wrapped value if needed
   return core.wrapValue(rtn, types[0]);
 }
