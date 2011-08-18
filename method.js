@@ -75,3 +75,7 @@ proto.setImplementation = function setImplementation (func) {
     , oldFuncPointer = core.method_setImplementation(wrapperPtr)
   return imp.createWrapperFunc(oldFuncPointer)
 }
+
+proto.toString = function toString () {
+  return '[Method: '+this.getName()+' '+this.getReturnType()+'('+this.getArgumentTypes()+') ]'
+}
