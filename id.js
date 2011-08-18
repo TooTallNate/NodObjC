@@ -151,3 +151,7 @@ proto.methods = function methods (maxDepth) {
 proto.toString = function toString () {
   return this('description')('UTF8String');
 }
+
+proto.inspect = function inspect () {
+  return this.toString()
+}
