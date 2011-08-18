@@ -1,5 +1,6 @@
 var core = require('./core')
   , types = require('./types')
+  , method = require('./method')
   , SEL = require('./sel')
   , id = require('./id')
   , classCache = {}
@@ -119,18 +120,27 @@ proto._setSuperclassPointer = function setSuperclassPointer (superclassPointer) 
 }
 
 proto.getInstanceMethod = function getInstanceMethod (sel) {
-  return core.class_getInstanceMethod(this.pointer, SEL.toSEL(sel));
+  return method.wrap(this._getInstanceMethod(SEL.toSEL(sel)))
+}
+
+proto._getInstanceMethod = function _getInstanceMethod (selPtr) {
+  return core.class_getInstanceMethod(this.pointer, selPtr)
 }
 
 proto.getClassMethod = function getClassMethod (sel) {
-  return core.class_getClassMethod(this.pointer, SEL.toSEL(sel));
+  return method.wrap(this._getClassMethod(SEL.toSEL(sel)))
+}
+
+proto._getClassMethod = function _getClassMethod (selPtr) {
+  return core.class_getClassMethod(this.pointer, selPtr)
 }
 
 proto._getTypesClass = function getTypesClass (sel, isClass) {
   //console.error('_getTypesClass: %s, isClass: %d', sel, isClass);
-  var method = this['get'+(isClass ? 'Class' : 'Instance')+'Method'](sel);
-  if (method.isNull()) return null;
-  return [ core.getMethodReturnType(method), core.getMethodArgTypes(method) ];
+  var method = this['get'+(isClass ? 'Class' : 'Instance')+'Method'](sel)
+  if (!method) return null;
+  return method.getTypes();
+}
 
 proto.getVersion = function getVersion () {
   return core.class_getVersion(this.pointer);

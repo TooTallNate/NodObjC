@@ -141,7 +141,7 @@ function getStringAndFree (ptr) {
 // Creates and/or returns an appropriately wrapped up 'objc_msgSend' function
 // based on the given Method description info.
 exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
-  var type = ['pointer', 'pointer'] // id and SEL
+  var type = []
     , rtn = [ types.map(objcTypes[0]), type ]
     , args = objcTypes[1]
     , i = 0

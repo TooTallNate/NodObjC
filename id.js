@@ -61,7 +61,7 @@ proto.msgSend = function msgSend (sel, args) {
     , msgSendFunc = core.get_objc_msgSend(types)
     , selRef = SEL.toSEL(sel)
     , unwrappedArgs = args.map(function (a, i) {
-        return core.unwrapValue(a, argTypes[i]);
+        return core.unwrapValue(a, argTypes[i+2]);
       })
     , rtn = msgSendFunc.apply(null, [ this.pointer, selRef ].concat(unwrappedArgs))
   //console.error(types);
