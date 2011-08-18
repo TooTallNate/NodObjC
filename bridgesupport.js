@@ -156,6 +156,8 @@ function bridgesupport (fw, _global) {
             unwrapper.func = curName;
             unwrapper.rtn = curRtnType;
             unwrapper.args = curArgTypes;
+            unwrapper.inline = isInline;
+            unwrapper.pointer = f.pointer;
             return _global[curName] = unwrapper;
           });
         })(curName, curRtnType, curArgTypes, isInline);
