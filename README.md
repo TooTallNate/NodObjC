@@ -98,6 +98,13 @@ there, especially Apple's offial documentation. So hopefully you get the gist
 of it here.
 
 
+Get Involved
+------------
+
+If you're looking for support for developing with/for `NodObjC` you might want
+to check out `#nodobjc` channel in the freenode IRC server.
+
+
 
 [NodeJS]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
