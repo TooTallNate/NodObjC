@@ -55,6 +55,20 @@ exports.wrap = function wrap (pointer) {
 // Avoid a circular dep.
 core._idwrap = exports.wrap;
 
+
+/**
+ * A very important function that *does the message sending* between
+ * Objective-C objects. When you do `array('addObject', anObject)`, this
+ * `msgSend` function is the one that finally gets called to do the dirty work.
+ *
+ * This function accepts a String selector as the first argument, and an Array
+ * of (wrapped) values that get passed to the the message. This function takes
+ * care of unwrapping the passing in arguments an wrapping up the result value,
+ * if necessary.
+ *
+ * If you wanted to monkey-patch *every* message that got sent out from an
+ * object though NodObjC, this is the place to do it.
+ */
 proto.msgSend = function msgSend (sel, args) {
   var types = this._getTypes(sel)
     , argTypes = types[1]
