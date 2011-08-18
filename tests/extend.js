@@ -27,5 +27,6 @@ console.log(instance.toString())
 console.log(String(instance))
 console.log(''+instance)
 console.log(instance+'')
+console.log(instance)
 
-assert.equal(counter, 5)
+assert.equal(counter, 6)
