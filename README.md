@@ -102,7 +102,7 @@ Get Involved
 ------------
 
 If you're looking for support for developing with/for `NodObjC` you might want
-to check out `#nodobjc` channel in the freenode IRC server.
+to check out the `#nodobjc` channel in the freenode IRC server.
 
 
 
