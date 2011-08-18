@@ -24,7 +24,7 @@ var ffi = require('node-ffi')
     , class_getName: [ 'string', [ 'pointer' ] ]
     , class_getProperty: [ 'pointer', [ 'pointer', 'string' ] ]
     , class_getSuperclass: [ 'pointer', [ 'pointer' ] ]
-    , class_getVersion: [ 'pointer', [ 'pointer' ] ]
+    , class_getVersion: [ 'int32', [ 'pointer' ] ]
     , class_getWeakIvarLayout: [ 'string', [ 'pointer' ] ]
     , class_isMetaClass: [ 'uint8', [ 'pointer' ] ]
     , class_setIvarLayout: [ 'void', [ 'pointer', 'string' ] ]
