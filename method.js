@@ -79,3 +79,7 @@ proto.setImplementation = function setImplementation (func) {
 proto.toString = function toString () {
   return '[Method: '+this.getName()+' '+this.getReturnType()+'('+this.getArgumentTypes()+') ]'
 }
+
+proto.inspect = function inspect () {
+  return '\033[35m' + this.toString() + '\033[39m'
+}
