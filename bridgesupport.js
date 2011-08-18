@@ -113,7 +113,7 @@ function bridgesupport (fw, _global) {
         break;
       case 'function':
         curName = node.attributes.name;
-        curRtnType = null;
+        curRtnType = 'v';
         curArgTypes = [];
         isInline = node.attributes.inline == 'true';
         // TODO: is variadic? will require a 'function generator'
