@@ -153,3 +153,8 @@ proto.setVersion = function setVersion (v) {
 proto.toString = function toString () {
   return '[Class: ' + this.getName() + ']'
 }
+
+proto.inspect = function inspect () {
+  // yellow
+  return '\033[33m' + this.toString() + '\033[39m'
+}
