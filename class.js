@@ -131,4 +131,11 @@ proto._getTypesClass = function getTypesClass (sel, isClass) {
   var method = this['get'+(isClass ? 'Class' : 'Instance')+'Method'](sel);
   if (method.isNull()) return null;
   return [ core.getMethodReturnType(method), core.getMethodArgTypes(method) ];
+
+proto.getVersion = function getVersion () {
+  return core.class_getVersion(this.pointer);
+}
+
+proto.setVersion = function setVersion (v) {
+  return core.class_setVersion(this.pointer, v);
 }
