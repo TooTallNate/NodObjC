@@ -42,7 +42,7 @@ function bridgesupport (fw, _global) {
     , bridgeSupportXML = join(bridgeSupportDir, fw.name + BS_SUFFIX)
     , bridgeSupportDylib = join(bridgeSupportDir, fw.name + DY_SUFFIX)
 
-  // If there's no BridgeSupport file, then just return the empty object...
+  // If there's no BridgeSupport file, then just return...
   if (!exists(bridgeSupportXML)) {
     //console.warn('No BridgeSupport files found for framework "%s" at: %s', fw.name, bridgeSupportXML);
     return;
