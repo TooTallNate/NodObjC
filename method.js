@@ -83,5 +83,6 @@ proto.toString = function toString () {
 }
 
 proto.inspect = function inspect () {
+  // magenta
   return '\033[35m' + this.toString() + '\033[39m'
 }
