@@ -3,6 +3,7 @@
  * messages, so it does not inherit from idWrap
  */
 var core = require('./core')
+  , IMP = require('./imp')
   , SEL = require('./sel')
 
 exports.wrap = function wrap (pointer) {
@@ -55,7 +56,7 @@ proto._exchangeImplementations = function exchangeImplementations (otherPointer)
 }
 
 proto.getImplementation = function getImplementation () {
-  return imp.createUnwrapperFunc(core.method_getImplementation(this.pointer), this.getTypes())
+  return IMP.createUnwrapperFunction(core.method_getImplementation(this.pointer), this.getTypes())
 }
 
 proto.getName = function getName () {
@@ -71,9 +72,10 @@ proto.getTypeEncoding = function getTypeEncoding () {
 }
 
 proto.setImplementation = function setImplementation (func) {
-  var wrapperPtr = imp.createUnwrapperFunc(func)
+  var types = this.getTypes()
+    , wrapperPtr = IMP.createWrapperPointer(func, types)
     , oldFuncPointer = core.method_setImplementation(wrapperPtr)
-  return imp.createWrapperFunc(oldFuncPointer)
+  return IMP.createUnwapperFunction(oldFuncPointer, types)
 }
 
 proto.toString = function toString () {
