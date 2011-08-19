@@ -141,7 +141,7 @@ proto.methods = function methods (maxDepth) {
     core.free(methods)
     classPointer = core.class_getSuperclass(classPointer)
   }
-  return rtn
+  return rtn.sort()
 }
 
 /**
