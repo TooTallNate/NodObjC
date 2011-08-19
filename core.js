@@ -43,9 +43,7 @@ var ffi = require('node-ffi')
     , method_getTypeEncoding: [ 'string', [ 'pointer' ] ]
     , method_setImplementation: [ 'pointer', [ 'pointer', 'pointer' ] ]
     , objc_allocateClassPair: [ 'pointer', [ 'pointer', 'string', 'size_t' ] ]
-    , objc_begin_catch: [ 'void', [ 'pointer' ] ] // Maybe
     , objc_copyProtocolList: [ 'pointer', [ 'pointer' ] ]
-    , objc_end_catch: [ 'void', [ 'void' ] ] // Maybe
     , objc_getAssociatedObject: [ 'pointer', [ 'pointer', 'pointer' ] ]
     , objc_getClass: [ 'pointer', [ 'string' ] ]
     , objc_getClassList: [ 'int32', [ 'pointer', 'int32' ] ]
