@@ -73,7 +73,13 @@ obj('func', arg)
 ```
 
 In Objective-C, the names of methods are part of the arguments that you pass
-along, so let's look at a method that takes more than one argument:
+along:
+
+``` objective-c
+[array insertObject:obj atIndex:5];
+```
+
+The equivalent of the above message invocation in NodObjC syntax would be:
 
 ``` javascript
 array('insertObject', obj, 'atIndex', 5)
