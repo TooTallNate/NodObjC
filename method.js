@@ -74,8 +74,8 @@ proto.getTypeEncoding = function getTypeEncoding () {
 proto.setImplementation = function setImplementation (func) {
   var types = this.getTypes()
     , wrapperPtr = IMP.createWrapperPointer(func, types)
-    , oldFuncPointer = core.method_setImplementation(wrapperPtr)
-  return IMP.createUnwapperFunction(oldFuncPointer, types)
+    , oldFuncPointer = core.method_setImplementation(this.pointer, wrapperPtr)
+  return IMP.createUnwrapperFunction(oldFuncPointer, types)
 }
 
 proto.toString = function toString () {
