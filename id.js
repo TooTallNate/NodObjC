@@ -116,6 +116,13 @@ proto.getClassName = function getClassName () {
 }
 
 /**
+ * Dynamically changes the object's Class.
+ */
+proto.setClass = function setClass (newClass) {
+  return exports._wrapClass(core.object_setClass(newClass.pointer));
+}
+
+/**
  * Returns an Array of Strings of the names of methods that the current object
  * will respond to. This function can iterate through the object's superclasses
  * recursively, if you specify a 'maxDepth' number argument.
