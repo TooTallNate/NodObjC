@@ -119,7 +119,7 @@ proto.getClassName = function getClassName () {
  * Dynamically changes the object's Class.
  */
 proto.setClass = function setClass (newClass) {
-  return exports._wrapClass(core.object_setClass(newClass.pointer));
+  return exports._wrapClass(core.object_setClass(this.pointer, newClass.pointer));
 }
 
 /**
