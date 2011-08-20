@@ -62,7 +62,6 @@ exports.import = function importFramework (framework) {
   });
 
   //console.error('Finished importing framework: %s', shortName);
-  return fw;
 }
 // also attach the import function into bridgesupport, to avoid a circular
 // dependency
