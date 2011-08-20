@@ -111,7 +111,7 @@ proto._getClassPointer = function getClassPointer () {
 /**
  * Calls 'object_getClassName()' on this object.
  */
-proto.getClassName = function () {
+proto.getClassName = function getClassName () {
   return core.object_getClassName(this.pointer);
 }
 
