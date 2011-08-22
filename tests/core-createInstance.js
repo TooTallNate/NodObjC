@@ -1,5 +1,4 @@
 var b = require('../core')
-  , ffi = require('node-ffi')
 
 var NSMutableArray = b.objc_getClass('NSMutableArray')
   , NSString = b.objc_getClass('NSString')
@@ -32,7 +31,7 @@ console.error(msgSend2(msgSend(instance, describe), UTF8String));
 
 // we can sort, using a JavaScript function to do the sorting logic!!!
 // In this simple example we sort based on the length of the class name
-var callback = new ffi.Callback([ 'int32', [ 'pointer', 'pointer', 'pointer' ]], function (obj1, obj2, context) {
+var callback = new b.Callback([ 'int32', [ 'pointer', 'pointer', 'pointer' ]], function (obj1, obj2, context) {
   var n1 = b.class_getName(obj1)
     , n2 = b.class_getName(obj2)
   return n1.length < n2.length ? -1
@@ -57,7 +56,7 @@ function getTypes (method) {
   b.free(rtnTypePtr);
   types.push(rtnType);
   types.push(args);
-  for (var i=2; i<numArgs; i++) {
+  for (var i=0; i<numArgs; i++) {
     var argPtr = b.method_copyArgumentType(method, i)
     args.push(argPtr.getCString());
     b.free(argPtr);
