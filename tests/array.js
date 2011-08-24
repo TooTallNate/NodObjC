@@ -4,7 +4,6 @@ var $ = require('../')
 $.import('Foundation')
 
 var pool = $.NSAutoreleasePool('alloc')('init')
-  , array = $.NSMutableArray({ 'arrayWithCapacity': 10 })
+  , array = $.NSMutableArray('arrayWithCapacity', 10)
 
 console.log(array)
-console.log(array+'');
