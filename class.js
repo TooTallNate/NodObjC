@@ -143,6 +143,7 @@ proto.setVersion = function setVersion (v) {
 
 /**
  * Returns an Array of all the class methods this Class responds to.
+ * This function returns the raw, unsorted result of copyMethodList().
  */
 proto.getClassMethods = function getClassMethods () {
   // getClassPointer() on a Class actually gets a pointer to the metaclass
@@ -152,6 +153,7 @@ proto.getClassMethods = function getClassMethods () {
 /**
  * Returns an Array of all the instance methods an instance of this Class will
  * respond to.
+ * This function returns the raw, unsorted result of copyMethodList().
  */
 proto.getInstanceMethods = function getInstanceMethods () {
   return core.copyMethodList(this.pointer)
