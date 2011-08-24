@@ -76,6 +76,7 @@ var ffi = require('node-ffi')
 exports.__proto__ = objc;
 
 // Expose `node-ffi` stuff so we don't have to require node-ffi elsewhere
+exports.Struct = ffi.Struct;
 exports.Pointer = ffi.Pointer;
 exports.Callback = ffi.Callback;
 exports.ForeignFunction = ffi.ForeignFunction;
