@@ -104,11 +104,13 @@ there, especially Apple's offial documentation. So hopefully you get the gist
 of it here.
 
 
-Get Involved
-------------
+Support / Gettting Involved
+---------------------------
 
 If you're looking for support for developing with/for `NodObjC` you might want
-to check out the `#nodobjc` channel in the freenode IRC server.
+to check out the [#nodobjc][IRC] channel in the freenode IRC server.
+
+Additional topics of discussion can be found on the [Wiki][] page.
 
 
 
@@ -116,3 +118,5 @@ to check out the `#nodobjc` channel in the freenode IRC server.
 [JSCocoa]: http://inexdo.com/JSCocoa
 [PyObjC]: http://pyobjc.sourceforge.net
 [CocoaRuby]: http://en.wikipedia.org/wiki/RubyCocoa
+[IRC]: http://webchat.freenode.net/?channels=nodobjc
+[Wiki]: https://github.com/TooTallNate/NodObjC/wiki
