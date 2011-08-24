@@ -141,6 +141,22 @@ proto.setVersion = function setVersion (v) {
   return core.class_setVersion(this.pointer, v);
 }
 
+/**
+ * Returns an Array of all the class methods this Class responds to.
+ */
+proto.getClassMethods = function getClassMethods () {
+  // getClassPointer() on a Class actually gets a pointer to the metaclass
+  return core.copyMethodList(this._getClassPointer())
+}
+
+/**
+ * Returns an Array of all the instance methods an instance of this Class will
+ * respond to.
+ */
+proto.getInstanceMethods = function getInstanceMethods () {
+  return core.copyMethodList(this.pointer)
+}
+
 proto.toString = function toString () {
   return '[Class: ' + this.getName() + ']'
 }
