@@ -127,28 +127,16 @@ proto.setClass = function setClass (newClass) {
  * will respond to. This function can iterate through the object's superclasses
  * recursively, if you specify a 'maxDepth' number argument.
  */
-proto.methods = function methods (maxDepth) {
-  var numMethods = new core.Pointer(core.TYPE_SIZE_MAP.uint32)
-    , rtn = []
-    , classPointer = this._getClassPointer()
+proto.methods = function methods (maxDepth, sort) {
+  var rtn = []
+    , c = this.getClass()
     , md = maxDepth || 1
     , depth = 0
-  while (depth++ < md && !classPointer.isNull()) {
-    var methods = core.class_copyMethodList(classPointer, numMethods)
-      , p = methods
-      , count = numMethods.getUInt32()
-    for (var i=0; i<count; i++) {
-      var cur = p.getPointer()
-        , name = SEL.toString(core.method_getName(cur))
-      if (!~rtn.indexOf(name)) {
-        rtn.push(name)
-      }
-      p = p.seek(core.TYPE_SIZE_MAP.pointer)
-    }
-    core.free(methods)
-    classPointer = core.class_getSuperclass(classPointer)
+  while (c && depth++ < md) {
+    rtn.push.apply(rtn, c.getInstanceMethods())
+    c = c.getSuperclass()
   }
-  return rtn.sort()
+  return sort === false ? rtn : rtn.sort()
 }
 
 /**
