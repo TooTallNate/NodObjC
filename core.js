@@ -116,6 +116,26 @@ exports.getClassList = function getClassList () {
 }
 
 /**
+ * Copies and returns an Array of the instance methods the given Class pointer
+ * implements. To get class methods, call this function with a metaclass.
+ */
+exports.copyMethodList = function copyMethodList (classPtr) {
+  var numMethods = new ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
+    , rtn = []
+    , methods = exports.class_copyMethodList(classPtr, numMethods)
+    , p = methods
+    , count = numMethods.getUInt32()
+  for (var i=0; i<count; i++) {
+    var cur = p.getPointer()
+      , name = SEL.toString(exports.method_getName(cur))
+    rtn.push(name)
+    p = p.seek(exports.TYPE_SIZE_MAP.pointer)
+  }
+  exports.free(methods)
+  return rtn
+}
+
+/**
  * Convienience function to get the String return type of a Method pointer.
  * Takes care of free()ing the returned pointer, as is required.
  */
