@@ -100,9 +100,10 @@ $.NSMakeRect(5, 10, 8, 30)
 ```
 
 There's literally thousands of other Objective-C resources and tutorials out
-there, especially Apple's offial documentation. So hopefully you get the gist
-of it here.
+there.
 
+You should definitely have Apple's official [Mac][MacDev] or [iOS][MacDev] API
+docs handy at all times.
 
 Support / Gettting Involved
 ---------------------------
@@ -120,3 +121,5 @@ Additional topics of discussion can be found on the [Wiki][] page.
 [CocoaRuby]: http://en.wikipedia.org/wiki/RubyCocoa
 [IRC]: http://webchat.freenode.net/?channels=nodobjc
 [Wiki]: https://github.com/TooTallNate/NodObjC/wiki
+[MacDev]: http://developer.apple.com/library/mac/navigation/
+[iOSDev]: http://developer.apple.com/library/ios/navigation/
