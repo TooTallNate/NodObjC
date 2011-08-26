@@ -6,7 +6,8 @@
  * node-ffi Type List: https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list
  */
 
-var map = {
+var struct = require('./struct')
+  , map = {
     'c': 'char'
   , 'i': 'int32'
   , 's': 'short'
@@ -38,7 +39,7 @@ exports.map = function translate (type) {
   if (type[0] === '^') return 'pointer';
   rtn = map[type[type.length-1]];
   if (rtn) return rtn;
-  if (/\{/.test(type)) return 'pointer'; // TODO: Better struct parsing
+  if (struct.isStruct(type)) return struct.getStruct(type);
   throw new Error('Could not convert type: ' + type);
 }
 
