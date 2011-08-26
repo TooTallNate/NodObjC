@@ -42,6 +42,7 @@ exports.map = function translate (type) {
   if (struct.isStruct(type)) return struct.getStruct(type);
   throw new Error('Could not convert type: ' + type);
 }
+struct._typeMap = exports.map;
 
 /**
  * Accepts an Array of ObjC return type and argument types (i.e. the result of
