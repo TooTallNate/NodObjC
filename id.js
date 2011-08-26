@@ -123,6 +123,20 @@ proto.setClass = function setClass (newClass) {
 }
 
 /**
+ * Walks up the inheritance chain and returns an Array of Strings of
+ * superclasses.
+ */
+proto.ancestors = function ancestors () {
+  var rtn = []
+    , c = this.getClass()
+  while (c) {
+    rtn.push(c.getName())
+    c = c.getSuperclass()
+  }
+  return rtn
+}
+
+/**
  * Returns an Array of Strings of the names of methods that the current object
  * will respond to. This function can iterate through the object's superclasses
  * recursively, if you specify a 'maxDepth' number argument.
