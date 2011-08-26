@@ -101,7 +101,7 @@ function bridgesupport (fw, _global) {
         (function (name, type) {
           _global.__defineGetter__(name, function () {
             var ptr = fw.lib.get(name)
-              , val = core.Pointer.getDispatchTable[types.map(type)]
+              , val = core.Pointer.getDispatchTable[types.map(type)].call(ptr)
             delete _global[name];
             return _global[name] = core.wrapValue(val, type);
           });
