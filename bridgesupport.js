@@ -100,11 +100,10 @@ function bridgesupport (fw, _global) {
       case 'constant':
         (function (name, type) {
           _global.__defineGetter__(name, function () {
-            var ptr = fw.lib.get(name);
-            // TODO: I'm like 99% sure I need to deref the pointer before
-            //       wrapping, but I haven't tested yet...
+            var ptr = fw.lib.get(name)
+              , val = core.Pointer.getDispatchTable[types.map(type)]
             delete _global[name];
-            return _global[name] = core.wrapValue(ptr, type);
+            return _global[name] = core.wrapValue(val, type);
           });
         })(node.attributes.name, getType(node));
         break;
