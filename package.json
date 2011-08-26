@@ -1,7 +1,7 @@
 { "name": "NodObjC"
 , "description": "The Objective-C ⇆ NodeJS bridge"
 , "keywords": [ "obj", "objective", "c", "mac", "apple", "osx", "cocoa", "ffi", "bridge" ]
-, "version": "0.0.4"
+, "version": "0.0.5"
 , "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"
 , "repository": { "type": "git", "url": "git://github.com/TooTallNate/NodObjC.git" }
 , "main": "./index.js"
