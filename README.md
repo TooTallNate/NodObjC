@@ -102,7 +102,7 @@ $.NSMakeRect(5, 10, 8, 30)
 There's literally thousands of other Objective-C resources and tutorials out
 there.
 
-You should definitely have Apple's official [Mac][MacDev] or [iOS][MacDev] API
+You should definitely have Apple's official [Mac][MacDev] or [iOS][iOSDev] API
 docs handy at all times.
 
 Support / Gettting Involved
