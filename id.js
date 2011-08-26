@@ -133,7 +133,11 @@ proto.methods = function methods (maxDepth, sort) {
     , md = maxDepth || 1
     , depth = 0
   while (c && depth++ < md) {
-    rtn.push.apply(rtn, c.getInstanceMethods())
+    var ms = c.getInstanceMethods()
+      , i = ms.length
+    while (i--) {
+      if (!~rtn.indexOf(ms[i])) rtn.push(ms[i]);
+    }
     c = c.getSuperclass()
   }
   return sort === false ? rtn : rtn.sort()
