@@ -20,19 +20,30 @@ var fs = require('fs')
 
 
 /**
- * Architecture-specific function that returns the Obj-C type from one of
- * these BridgeSupport XML nodes.
+ * Architecture-specific functions that return the Obj-C type or value from one
+ * of these BridgeSupport XML nodes.
  */
-var getType;
-if (process.arch == 'x64')
+var getType
+  , getValue
+if (process.arch == 'x64') {
+  // 64-bit specific functions
   getType = function (node) {
-    var a = node.attributes;
-    return a.type64 || a.type;
+    var a = node.attributes
+    return a.type64 || a.type
   }
-else
+  getValue = function (node) {
+    var a = node.attributes
+    return a.value64 || a.value
+  }
+} else {
+  // 32-bit / ARM specific functions
   getType = function (node) {
-    return node.attributes.type;
+    return node.attributes.type
   }
+  getValue = function (node) {
+    return node.attributes.value
+  }
+}
 
 /**
  * Attempts to retrieve the BridgeSupport files for the given framework.
