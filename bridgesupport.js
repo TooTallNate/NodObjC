@@ -101,10 +101,10 @@ function bridgesupport (fw, _global) {
       case 'signatures':
         break;
       case 'string_constant':
-        _global[node.attributes.name] = node.attributes.value;
+        _global[node.attributes.name] = getValue(node);
         break;
       case 'enum':
-        _global[node.attributes.name] = parseInt(node.attributes.value);
+        _global[node.attributes.name] = Number(getValue(node));
         break;
       case 'struct':
         //console.error(node)
