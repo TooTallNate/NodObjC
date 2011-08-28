@@ -11,11 +11,15 @@ proto.__proto__ = id.proto
 exports.wrap = function wrap (pointer) {
   var w = id.wrap(pointer)
   w.__proto__ = proto
-  // We have to do a little workaround to get a nice 'stack' property, since
-  // the 'name' property on the id wraps is non-configurable
-  var stacker = new Error(String(w('reason')))
-  stacker.name = String(w('name'))
-  Err.captureStackTrace(stacker, exports.wrap)
-  Object.defineProperty(w, 'stack', Object.getOwnPropertyDescriptor(stacker, 'stack'))
+  // `name` is non-configurable on Functions, so don't bother
+  w.message = String(w('reason'))
+  Err.captureStackTrace(w, exports.wrap)
   return w
+}
+
+/**
+ * Make a toString override that mimics V8's Error object's toString()
+ */
+proto.toString = function toString () {
+  return this('name') + ': ' + this('reason')
 }
