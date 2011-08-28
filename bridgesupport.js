@@ -8,6 +8,7 @@ var fs = require('fs')
   , path = require('path')
   , core = require('./core')
   , types = require('./types')
+  , struct = require('./struct')
   , join = path.join
   , basename = path.basename
   , exists = path.existsSync
@@ -92,6 +93,8 @@ function bridgesupport (fw, _global) {
         _global[node.attributes.name] = parseInt(node.attributes.value);
         break;
       case 'struct':
+        //console.error(node)
+        //_global[node.attributes.name] = struct.getStruct(getType(node));
         break;
       case 'field':
         break;
