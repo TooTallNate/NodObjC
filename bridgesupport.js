@@ -130,8 +130,6 @@ function bridgesupport (fw, _global) {
         isInline = node.attributes.inline == 'true';
         // TODO: is variadic? will require a 'function generator'
         break;
-      case 'args':
-        break;
       case 'opaque':
         break;
       case 'informal_protocol':
