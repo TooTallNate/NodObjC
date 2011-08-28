@@ -23,4 +23,8 @@ try {
   array('objectAtIndex', 100)
 } catch (e) {
   assert.equal('NSRangeException', e('name'))
+
+  assert.throws(function () {
+    e('raise')
+  })
 }
