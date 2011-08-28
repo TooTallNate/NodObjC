@@ -73,6 +73,9 @@ var ffi = require('node-ffi')
   })
   , msgSendCache = {}
 
+// export core to the struct module
+require('./struct')._core = exports;
+
 exports.__proto__ = objc;
 
 // Expose `node-ffi` stuff so we don't have to require node-ffi elsewhere
