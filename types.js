@@ -31,15 +31,16 @@ var struct = require('./struct')
 
 /**
  * Translates a single Obj-C 'type' into a valid node-ffi type.
+ * This mapping logic is kind of a mess...
  */
 exports.map = function translate (type) {
+  if (!type) throw new Error('got falsey "type" to map. this should NOT happen!');
+  if (struct.isStruct(type)) return struct.getStruct(type);
   var rtn = map[type];
   if (rtn) return rtn;
-  // Meh, need better testing here
   if (type[0] === '^') return 'pointer';
   rtn = map[type[type.length-1]];
   if (rtn) return rtn;
-  if (struct.isStruct(type)) return struct.getStruct(type);
   throw new Error('Could not convert type: ' + type);
 }
 struct._typeMap = exports.map;
