@@ -1,6 +1,9 @@
 /**
  * This module takes care of loading the BridgeSupport XML files for a given
  * framework, and parsing the data into the given framework object.
+ *
+ * Reference:
+ *   http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html
  */
 
 var fs = require('fs')
