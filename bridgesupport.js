@@ -13,7 +13,6 @@ var fs = require('fs')
   , types = require('./types')
   , struct = require('./struct')
   , join = path.join
-  , basename = path.basename
   , exists = path.existsSync
   , DY_SUFFIX = '.dylib'
   , BS_SUFFIX = '.bridgesupport'
