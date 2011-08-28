@@ -7,6 +7,7 @@ var proto = exports.proto = Object.create(Function.prototype)
   , core  = require('./core')
   , types = require('./types')
   , SEL   = require('./sel')
+  , exception = require('./exception')
 
 /**
  * Wraps up a pointer that is expected to be a compatible Objective-C
@@ -74,9 +75,14 @@ proto.msgSend = function msgSend (sel, args) {
     , argTypes = types[1]
     , msgSendFunc = core.get_objc_msgSend(types)
     , unwrappedArgs = core.unwrapValues([this, sel].concat(args), argTypes)
-    , rtn = msgSendFunc.apply(null, unwrappedArgs)
+    , rtn
+  try {
+    rtn = msgSendFunc.apply(null, unwrappedArgs)
+  } catch (e) {
+    throw exception.wrap(e)
+  }
   // Process the return value into a wrapped value if needed
-  return core.wrapValue(rtn, types[0]);
+  return core.wrapValue(rtn, types[0])
 }
 
 /**
