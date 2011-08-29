@@ -20,6 +20,7 @@ var ffi = require('node-ffi')
     , class_getClassVariable: [ 'pointer', [ 'pointer', 'string' ] ]
     , class_getInstanceMethod: [ 'pointer', [ 'pointer', 'pointer' ] ]
     , class_getInstanceSize: [ 'size_t', [ 'pointer' ] ]
+    , class_getInstanceVariable: [ 'pointer', [ 'pointer', 'string' ] ]
     , class_getIvarLayout: [ 'string', [ 'pointer' ] ]
     , class_getName: [ 'string', [ 'pointer' ] ]
     , class_getProperty: [ 'pointer', [ 'pointer', 'string' ] ]
