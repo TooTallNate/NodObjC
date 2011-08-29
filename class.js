@@ -97,6 +97,10 @@ proto.getInstanceSize = function getInstanceSize () {
   return core.class_getInstanceSize(this.pointer);
 }
 
+proto.getIvarLayout = function getIvarLayout () {
+  return core.class_getIvarLayout(this.pointer)
+}
+
 /**
  * Get's a Class instance's superclass. If the current class is a base class,
  * then this will return null.
