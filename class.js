@@ -81,6 +81,10 @@ proto.addIvar = function addIvar (name, type, size, alignment) {
   return this
 }
 
+proto.addProtocol = function addProtocol (protocol) {
+  throw new Error('TODO')
+}
+
 proto._getSuperclassPointer = function getSuperclassPointer () {
   return core.class_getSuperclass(this.pointer);
 }
