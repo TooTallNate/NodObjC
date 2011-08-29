@@ -1,6 +1,7 @@
 var core = require('./core')
   , types = require('./types')
   , method = require('./method')
+  , ivar = require('./ivar')
   , IMP = require('./imp')
   , SEL = require('./sel')
   , id = require('./id')
@@ -71,8 +72,12 @@ proto.addMethod = function addMethod (selector, type, func) {
   return this
 }
 
-proto.addIvar = function addIvar () {
-  throw new Error("TODO")
+/**
+ * Adds an Ivar to the Class. Instances of the class will contain the specified
+ * instance variable. This MUST be called after .extend() but BEFORE .register()
+ */
+proto.addIvar = function addIvar (name, type, size, alignment) {
+  var good = core.class_addIvar(this.pointer, size || 8, alignment || 8, type)
   return this
 }
 
