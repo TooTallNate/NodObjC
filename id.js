@@ -142,6 +142,22 @@ proto.ancestors = function ancestors () {
   return rtn
 }
 
+proto.ivars = function ivars (maxDepth, sort) {
+  var rtn = []
+    , c = this.getClass()
+    , md = maxDepth || 1
+    , depth = 0
+  while (c && depth++ < md) {
+    var is = c.getInstanceVariables()
+      , i = is.length
+    while (i--) {
+      if (!~rtn.indexOf(is[i])) rtn.push(is[i])
+    }
+    c = c.getSuperclass()
+  }
+  return sort === false ? rtn : rtn.sort()
+}
+
 /**
  * Returns an Array of Strings of the names of methods that the current object
  * will respond to. This function can iterate through the object's superclasses
