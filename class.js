@@ -167,6 +167,22 @@ proto.setVersion = function setVersion (v) {
 }
 
 /**
+ * Returns an Array of the class variables this Class has. Superclass variables
+ * are not included.
+ */
+proto.getClassVariables = function getClassVariables () {
+  return core.copyIvarList(this._getClassPointer())
+}
+
+/**
+ * Returns an Array of the instance variables this Class has. Superclass
+ * variables are not included.
+ */
+proto.getInstanceVariables = function getInstanceVariables () {
+  return core.copyIvarList(this.pointer)
+}
+
+/**
  * Returns an Array of all the class methods this Class responds to.
  * This function returns the raw, unsorted result of copyMethodList().
  */
