@@ -120,6 +120,26 @@ exports.getClassList = function getClassList () {
 }
 
 /**
+ * Copies and returns an Array of the instance variables defined by a given
+ * Class pointer. To get class variables, call this function on a metaclass.
+ */
+exports.copyIvarList = function copyIvarList (classPtr) {
+  var numIvars = new ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
+    , rtn = []
+    , ivars = exports.class_copyIvarList(classPtr, numIvars)
+    , p = ivars
+    , count = numIvars.getUInt32()
+  for (var i=0; i<count; i++) {
+    var cur = p.getPointer()
+      , name = exports.ivar_getName(cur)
+    rtn.push(name)
+    p = p.seek(exports.TYPE_SIZE_MAP.pointer)
+  }
+  exports.free(ivars)
+  return rtn
+}
+
+/**
  * Copies and returns an Array of the instance methods the given Class pointer
  * implements. To get class methods, call this function with a metaclass.
  */
