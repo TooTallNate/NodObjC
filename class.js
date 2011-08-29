@@ -119,6 +119,22 @@ proto._setSuperclassPointer = function setSuperclassPointer (superclassPointer) 
   return core.class_setSuperclass(this.pointer, superclassPointer);
 }
 
+proto.getInstanceVariable = function getInstanceVariable (name) {
+  return ivar.wrap(this._getInstanceVariable(name))
+}
+
+proto._getInstanceVariable = function _getInstanceVariable (name) {
+  return core.class_getInstanceVariable(this.pointer, name)
+}
+
+proto.getClassVariable = function getClassVariable (name) {
+  return ivar.wrap(this._getClassVariable(name))
+}
+
+proto._getClassVariable = function _getClassVariable (name) {
+  return core.class_getClassVariable(this.pointer, name)
+}
+
 proto.getInstanceMethod = function getInstanceMethod (sel) {
   return method.wrap(this._getInstanceMethod(SEL.toSEL(sel)))
 }
