@@ -90,8 +90,8 @@ proto.msgSend = function msgSend (sel, args) {
  * argument types for the given selector. If current object does not implment
  * that selector, then check the superclass, and repeat recursively until
  * a subclass that responds to the selector is found, or until the base class
- * is found (in which case the current obj does not respond to 'sel' and we
- * should throw an Error).
+ * is found.
+ * TODO: Just merge this logic with `msgSend()`? It's not used anywhere else
  */
 proto._getTypes = function getTypes (sel, args) {
   var c = this.getClass()
