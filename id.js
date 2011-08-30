@@ -71,7 +71,7 @@ core._idwrap = exports.wrap;
  * object though NodObjC, this is the place to do it.
  */
 proto.msgSend = function msgSend (sel, args) {
-  var types = this._getTypes(sel)
+  var types = this._getTypes(sel, args)
     , argTypes = types[1]
     , msgSendFunc = core.get_objc_msgSend(types)
     , unwrappedArgs = core.unwrapValues([this, sel].concat(args), argTypes)
@@ -93,11 +93,16 @@ proto.msgSend = function msgSend (sel, args) {
  * is found (in which case the current obj does not respond to 'sel' and we
  * should throw an Error).
  */
-proto._getTypes = function getTypes (sel) {
+proto._getTypes = function getTypes (sel, args) {
   var c = this.getClass()
     , t = c._getTypesClass(sel, this.isClass)
-  if (!t) throw new Error('Object does not respond to selector: '+sel);
-  return t;
+  if (!t) {
+    // Unknown selector being send to object. This *may* still be valid, we
+    // assume all args are type 'id' and return is 'id'.
+    //console.error('unknown selector being sent: %s', sel)
+    t = [ '@', [ '@', ':', ].concat(args.map(function () { return '@' })) ]
+  }
+  return t
 }
 
 /**
