@@ -30,7 +30,6 @@ id._getClass = core._getClass = exports.getClass;
  */
 exports.wrap = function wrap (pointer, className) {
   var w = id.wrap(pointer);
-  w.isClass = true;
   w.__proto__ = proto;
   // optionally cache when a class name is given
   if (className) {
@@ -40,6 +39,9 @@ exports.wrap = function wrap (pointer, className) {
   return w;
 }
 id._wrapClass = core._wrapClass = exports.wrap;
+
+// Flag used by id#msgSend()
+proto.isClass = true
 
 /**
  * Creates a subclass of the current class with the given name and optionally
