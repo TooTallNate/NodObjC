@@ -147,6 +147,28 @@ proto.ancestors = function ancestors () {
   return rtn
 }
 
+/**
+ * Getter/setter function for instance variables (ivars) of the object,
+ * If just a name is passed in, then this function gets the ivar current value.
+ * If a name and a new value are passed in, then this function sets the ivar.
+ */
+proto.ivar = function ivar (name, value) {
+  // TODO: Add support for passing in a wrapped Ivar instance as the `name`
+  if (arguments.length > 1) {
+    // setter
+    var ivar = this.isClass
+             ? this.getClassVariable(name)
+             : this.getClass().getInstanceVariable(name)
+      , unwrapped = core.unwrapValue(value, ivar.getTypeEncoding())
+    return core.object_setIvar(this.pointer, ivar.pointer, unwrapped)
+  } else {
+    // getter
+    var ptr = new core.Pointer(core.TYPE_SIZE_MAP.pointer)
+      , ivar = core.object_getInstanceVariable(this.pointer, name, ptr)
+    return core.wrapValue(ptr.getPointer(), core.ivar_getTypeEncoding(ivar))
+  }
+}
+
 proto.ivars = function ivars (maxDepth, sort) {
   var rtn = []
     , c = this.getClass()
