@@ -27,3 +27,12 @@ proto.getOffset = function getOffset () {
 proto.getTypeEncoding = function getTypeEncoding () {
   return core.ivar_getTypeEncoding(this.pointer)
 }
+
+proto.toString = function toString () {
+  return '[Ivar: ' + [this.getName(), this.getTypeEncoding(), this.getOffset()].join(', ') +']'
+}
+
+proto.inspect = function inspect () {
+  // red
+  return '\033[31m' + this.toString() + '\033[39m'
+}
