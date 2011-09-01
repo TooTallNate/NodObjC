@@ -33,7 +33,6 @@ exports.wrap = function wrap (pointer, className) {
   w.__proto__ = proto;
   // optionally cache when a class name is given
   if (className) {
-    w.className = className;
     classCache[className] = w;
   }
   return w;
