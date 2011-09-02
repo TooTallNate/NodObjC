@@ -207,6 +207,17 @@ proto.methods = function methods (maxDepth, sort) {
 }
 
 /**
+ * Returns a node-ffi pointer pointing to this object. This is a convenience
+ * function for methods that take pointers to pointers (i.e. NSError**).
+ */
+proto.ref = function ref () {
+  var ptr = this.pointer.ref()
+  ptr._type = this.isClass ? '#' : '@'
+  return ptr
+}
+
+
+/**
  * The id wrap's overidden toString() function proxies up to the id's
  * description method:  [[id description] UTF8String]
  */
