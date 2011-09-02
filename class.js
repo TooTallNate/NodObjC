@@ -211,7 +211,7 @@ proto.getInstanceMethods = function getInstanceMethods () {
  * to it into a method that accepts an 'error' double pointer.
  */
 proto.createPointer = function createPointer () {
-  var ptr = new core.Pointer(core.Bindings.TYPE_SIZE_MAP.pointer)
+  var ptr = new core.Pointer(core.TYPE_SIZE_MAP.pointer)
   ptr.putPointer(core.Pointer.NULL)
   ptr._type = '@'
   return ptr
