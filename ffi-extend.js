@@ -12,7 +12,7 @@ var ffi = require('node-ffi')
  */
 Pointer.prototype.ref = function ref () {
   var ptr = new Pointer(SIZE_MAP.pointer)
-  ptr.setPointer(this)
+  ptr.putPointer(this)
   return ptr
 }
 
