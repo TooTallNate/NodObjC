@@ -211,7 +211,7 @@ proto.methods = function methods (maxDepth, sort) {
  * description method:  [[id description] UTF8String]
  */
 proto.toString = function toString () {
-  return this('description')('UTF8String');
+  return this('description')('UTF8String')
 }
 
 proto.inspect = function inspect () {
