@@ -205,6 +205,18 @@ proto.getInstanceMethods = function getInstanceMethods () {
   return core.copyMethodList(this.pointer)
 }
 
+/**
+ * Allocates a new pointer to this type. The pointer points to `nil` initially.
+ * This is meant for creating a pointer to hold an NSError*, and pass a ref()
+ * to it into a method that accepts an 'error' double pointer.
+ */
+proto.createPointer = function createPointer () {
+  var ptr = new core.Pointer(core.Bindings.TYPE_SIZE_MAP.pointer)
+  ptr.putPointer(core.Pointer.NULL)
+  ptr._type = '@'
+  return ptr
+}
+
 proto.toString = function toString () {
   return '[Class: ' + this.getName() + ']'
 }
