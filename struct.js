@@ -43,24 +43,24 @@ exports.parseStruct = function parseStruct (struct) {
     }
   s = s.substring(equalIndex+1)
   var curProp = null
-    , hasBracket = false
+    , numBrackets = 0
     , entries = []
   addProp()
   for (var i=0; i < s.length; i++) {
     var cur = s[i]
     switch (cur) {
       case '"':
-        if (hasBracket)
+        if (numBrackets > 0)
           curProp.push(cur)
         else
           addProp()
         break;
       case '{':
-        hasBracket = true
+        numBrackets++
         curProp.push(cur)
         break;
       case '}':
-        hasBracket = false
+        numBrackets--
         curProp.push(cur)
         break;
       default:
@@ -73,7 +73,7 @@ exports.parseStruct = function parseStruct (struct) {
     if (curProp)
       entries.push(curProp.join(''))
     curProp = []
-    hasBracket = false
+    numBrackets = 0
   }
   for (var i=1; i < entries.length; i+=2) {
     rtn.props.push([entries[i], entries[i+1]])
