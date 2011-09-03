@@ -80,3 +80,18 @@ exports.parseStruct = function parseStruct (struct) {
   }
   return rtn
 }
+
+/* Here's an alternate 'parseStruct' thanks to @austinbv
+TODO: Benchmark this against the current version someday...
+
+x = '"origin"{CGPoint="x"d"y"d}"size"{CGSize="width"d"height"d}';
+var z = []
+y = x.split(/([{][^}]+}|")/ig)
+for(var i = 0; i < y.length; i++) {
+  if (y[i] != '"' && y[i] != '') {
+    z.push(y[i])
+  }
+}
+console.log(z)
+
+*/
