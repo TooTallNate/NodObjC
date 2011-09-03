@@ -30,11 +30,15 @@ exports.getStruct = function getStruct (type) {
   return rtn[props.name] = Struct(props)
 }
 
+exports.parseStruct = function parseStruct (struct) {
+  
+}
+
 /**
  * Parses a struct type string into an Object with a `name` String and
  * a `props` Array (entries are a type string, or another parsed struct object)
  */
-exports.parseStruct = function parseStruct (type) {
+/*exports.parseStruct = function parseStruct (type) {
   var rtn = null
     , cur = null
     , curProp = null
@@ -102,4 +106,4 @@ exports.parseStruct = function parseStruct (type) {
     return rtn
   }
   return rtn
-}
+}*/

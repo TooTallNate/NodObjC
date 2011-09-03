@@ -26,7 +26,7 @@ Pointer.prototype.ref = function ref () {
  */
 Pointer.prototype.deref = function deref () {
   var t = this._type
-  if (t[0] !== '^') throw new Error('cannot dereference')
+  if (t[0] !== '^') throw new Error('cannot dereference non-pointer')
   // since we're dereferencing, remove the leading ^ char
   t = t.substring(1)
   var ffiType = types.map(t)
