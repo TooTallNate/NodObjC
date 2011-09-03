@@ -13,7 +13,7 @@ var ffi = require('node-ffi')
 Pointer.prototype.ref = function ref () {
   var ptr = new Pointer(SIZE_MAP.pointer)
   ptr.putPointer(this)
-  ptr._type = this._type
+  ptr._type = '^' + this._type
   return ptr
 }
 
@@ -24,9 +24,13 @@ Pointer.prototype.ref = function ref () {
  * Equivalent to the "value at" operator:
  *   type = *ptr
  */
-Pointer.prototype.deref = function deref (type) {
-  var t = type || this._type
-    , ffiType = types.map(t)
+Pointer.prototype.deref = function deref () {
+  var t = this._type
+  if (t[0] !== '^') throw new Error('cannot dereference')
+  // since we're dereferencing, remove the leading ^ char
+  t = t.substring(1)
+  var ffiType = types.map(t)
     , val = this['get' + FUNC_MAP[ffiType] ]()
+  val._type = t
   return core.wrapValue(val, t)
 }

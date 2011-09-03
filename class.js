@@ -31,6 +31,7 @@ id._getClass = core._getClass = exports.getClass;
 exports.wrap = function wrap (pointer, className) {
   var w = id.wrap(pointer);
   w.__proto__ = proto;
+  pointer._type = '#'
   // optionally cache when a class name is given
   if (className) {
     classCache[className] = w;

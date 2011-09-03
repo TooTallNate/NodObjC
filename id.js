@@ -47,6 +47,8 @@ exports.wrap = function wrap (pointer) {
     return id.msgSend(sel, args)
   }
 
+  // Set the "type" on the pointer. This is used by 'ref()' and 'unref()'.
+  pointer._type = '@'
   // Save a reference to the pointer for use by the prototype functions
   id.pointer = pointer;
   // Morph into a MUTANT FUNCTION FREAK!!1!
@@ -212,7 +214,6 @@ proto.methods = function methods (maxDepth, sort) {
  */
 proto.ref = function ref () {
   var ptr = this.pointer.ref()
-  ptr._type = this.isClass ? '#' : '@'
   return ptr
 }
 
