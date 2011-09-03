@@ -30,80 +30,53 @@ exports.getStruct = function getStruct (type) {
   return rtn[props.name] = Struct(props)
 }
 
-exports.parseStruct = function parseStruct (struct) {
-  
-}
-
 /**
  * Parses a struct type string into an Object with a `name` String and
  * a `props` Array (entries are a type string, or another parsed struct object)
  */
-/*exports.parseStruct = function parseStruct (type) {
-  var rtn = null
-    , cur = null
-    , curProp = null
-    , par = null
-    , name = null
-    , l = type.length
-  for (var i=0; i<l; i++) {
-    var c = type[i]
-    switch (c) {
-      case '{': // beginning of new struct, set to cur
-        cur = { props: [] }
-        name = []
-        curProp = null
-        if (!rtn) rtn = cur // this is the outer struct
-        else par = rtn
+exports.parseStruct = function parseStruct (struct) {
+  var s = struct.substring(1, struct.length-1)
+    , equalIndex = s.indexOf('=')
+    , rtn = {
+        name: s.substring(0, equalIndex)
+      , props: []
+    }
+  s = s.substring(equalIndex+1)
+  var curProp = null
+    , hasBracket = false
+    , entries = []
+  addProp()
+  for (var i=0; i < s.length; i++) {
+    var cur = s[i]
+    switch (cur) {
+      case '"':
+        if (hasBracket)
+          curProp.push(cur)
+        else
+          addProp()
         break;
-      case '}': // end of cur struct
-        endOfProp();
-        if (par && cur !== par) {
-          var prop = par.props[par.props.length-1]
-          prop && (prop.val = cur)
-        }
-        cur = par
+      case '{':
+        hasBracket = true
+        curProp.push(cur)
         break;
-      case '"': // begin/end of prop name
-        if (!curProp) {
-          //console.error('creating new Prop')
-          curProp = {}
-          cur.props.push(curProp)
-        }
-        endOfProp()
-        name = []
-        break;
-      case '=': // end of cur name
-        cur.name = getName()
-        //console.error('got struct name: %s', cur.name)
+      case '}':
+        hasBracket = false
+        curProp.push(cur)
         break;
       default:
-        name.push(c)
+        curProp.push(cur)
         break;
     }
   }
-
-  function endOfProp () {
-    if (name) { // end
-      var str = getName()
-      //console.error('endOfProp: %s', str)
-      if (curProp.name) {
-        //console.error('  setting prop val')
-        setVal(str)
-      } else {
-        //console.error('  setting prop name')
-        curProp.name = str
-      }
-    }
+  addProp()
+  function addProp () {
+    if (curProp)
+      entries.push(curProp.join(''))
+    curProp = []
+    hasBracket = false
   }
-  function setVal (val) {
-    //console.error('setVal: %j', val);
-    curProp.val = val
-    curProp = null
-  }
-  function getName () {
-    var rtn = name.join('')
-    name = null
-    return rtn
+  for (var i=1; i < entries.length; i+=2) {
+    rtn.props.push([entries[i], entries[i+1]])
   }
   return rtn
-}*/
+}
