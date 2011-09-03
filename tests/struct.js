@@ -43,9 +43,8 @@ test('{AEDesc="descriptorType"I"dataHandle"^^{OpaqueAEDataStorageType}}', {
 
 
 function test (input, output) {
-  console.log('Input:\n\t%s', input)
+  console.log('Input:\t%s', input)
   var parsed = struct.parseStruct(input)
-  console.log('Output:\n\t'+inspect(parsed, true, 10, true))
-  console.log('\n')
+  console.log('Output:\t'+inspect(parsed, true, 10, true)+'\n')
   assert.deepEqual(parsed, output)
 }
