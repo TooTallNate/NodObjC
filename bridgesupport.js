@@ -106,8 +106,12 @@ function bridgesupport (fw, _global) {
         _global[node.attributes.name] = Number(getValue(node));
         break;
       case 'struct':
-        //console.error(node)
-        //_global[node.attributes.name] = struct.getStruct(getType(node));
+        try {
+          _global[node.attributes.name] = struct.getStruct(getType(node));
+        } catch (e) {
+          //console.error('FAILED:\n', node)
+          //console.error(e.stack)
+        }
         break;
       case 'field':
         break;
@@ -154,6 +158,7 @@ function bridgesupport (fw, _global) {
             // TODO: Handle 'variadic' arg functions (NSLog), will require
             //       a "function generator" to get a Function from the passed
             //       in args (and guess at the types that were passed in...)
+            console.error(curName, curRtnType, curArgTypes)
             var f = core.Function(curName, types.map(curRtnType), curArgTypes.map(types.map), false, isInline ? fw.inline : fw.lib);
             delete _global[curName];
             // The unwrapper function unwraps passed in arguments,

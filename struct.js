@@ -1,5 +1,4 @@
-var Struct = require('./core').Struct
-  , structs = {}
+var structs = {}
   , test = /^\{.*?\}$/
 
 /**
@@ -17,17 +16,30 @@ exports.getStruct = function getStruct (type) {
   // First check if a regular name was passed in
   var rtn = structs[type];
   if (rtn) return rtn;
+  // If the struct type name has already been created, return that one
+  var name = exports.parseStructName(type)
+  console.error('name: %s', name)
+  rtn = structs[name];
+  if (rtn) {
+    console.error('returning cached Struct')
+    return rtn;
+  }
   // Next parse the type structure
   var parsed = exports.parseStruct(type);
-  // If the struct type name has already been created, return that one
-  rtn = structs[parsed.name];
-  if (rtn) return rtn;
   // Otherwise we need to create a new Struct constructor
   var props = [];
   parsed.props.forEach(function (prop) {
-    props.push([ exports._typeMap(prop.type), prop.name ])
+    props.push([ exports._typeMap(prop[1]), prop[0] ])
   })
-  return rtn[props.name] = Struct(props)
+  return structs[parsed.name] = exports._core.Struct(props)
+}
+
+exports.parseStructName = function parseStructName (struct) {
+  var s = struct.substring(1, struct.length-1)
+    , equalIndex = s.indexOf('=')
+  if (~equalIndex)
+    s = s.substring(0, equalIndex)
+  return s
 }
 
 /**
