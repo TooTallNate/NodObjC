@@ -105,7 +105,7 @@ there.
 You should definitely have Apple's official [Mac][MacDev] or [iOS][iOSDev] API
 docs handy at all times.
 
-Support / Gettting Involved
+Support / Getting Involved
 ---------------------------
 
 If you're looking for support for developing with/for `NodObjC` you might want
