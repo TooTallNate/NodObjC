@@ -121,7 +121,7 @@ function bridgesupport (fw, _global) {
         (function (name, type) {
           _global.__defineGetter__(name, function () {
             var ptr = fw.lib.get(name)
-            ptr._type = type
+            ptr._type = '^' + type
             var val = ptr.deref()
             delete _global[name]
             return _global[name] = val
