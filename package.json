@@ -10,4 +10,7 @@
     "node-ffi": "0.2.x"
   , "sax": "0.1.x"
   }
+, "bundledDependencies": [
+    "node-ffi"
+  ]
 }
