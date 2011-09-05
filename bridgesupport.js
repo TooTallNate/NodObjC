@@ -158,7 +158,7 @@ function bridgesupport (fw, _global) {
             // TODO: Handle 'variadic' arg functions (NSLog), will require
             //       a "function generator" to get a Function from the passed
             //       in args (and guess at the types that were passed in...)
-            console.error(curName, curRtnType, curArgTypes)
+            //console.error(curName, curRtnType, curArgTypes)
             var f = core.Function(curName, types.map(curRtnType), curArgTypes.map(types.map), false, isInline ? fw.inline : fw.lib);
             delete _global[curName];
             // The unwrapper function unwraps passed in arguments,

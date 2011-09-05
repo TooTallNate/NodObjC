@@ -18,10 +18,10 @@ exports.getStruct = function getStruct (type) {
   if (rtn) return rtn;
   // If the struct type name has already been created, return that one
   var name = exports.parseStructName(type)
-  console.error('name: %s', name)
+  //console.error('name: %s', name)
   rtn = structs[name];
   if (rtn) {
-    console.error('returning cached Struct')
+    //console.error('returning cached Struct')
     return rtn;
   }
   // Next parse the type structure
