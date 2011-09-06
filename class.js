@@ -70,7 +70,8 @@ proto.addMethod = function addMethod (selector, type, func) {
   var parsed = types.parse(type)
     , selRef = SEL.toSEL(selector)
     , funcPtr = IMP.createWrapperPointer(func, parsed)
-  core.class_addMethod(this.pointer, selRef, funcPtr, type)
+  var good = core.class_addMethod(this.pointer, selRef, funcPtr, type)
+  if (!good) throw new Error('method "' + selector + '" was NOT sucessfully added to Class: ' + this.getName())
   return this
 }
 
