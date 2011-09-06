@@ -9,11 +9,15 @@ var NRTest = $.NSObject.extend('NRTest')
   , counter = 0
 
 // Add a new method to the NRTest class responding to the "description" selector
-NRTest.addMethod('description', '@@:', function (self, _cmd) {
+assert.ok(NRTest.addMethod('description', '@@:', function (self, _cmd) {
   counter++
   console.log(_cmd)
+  console.log(self.ivar('name'))
   return $.NSString('stringWithUTF8String', 'test')
-})
+}))
+
+// Add an instance variable, an NSString* instance.
+assert.ok(NRTest.addIvar('name', '@'))
 
 // Finalize the class so the we can make instances of it
 NRTest.register()
@@ -24,9 +28,10 @@ var instance = NRTest('alloc')('init')
 // call [instance description] in a variety of ways (via toString())
 console.log(instance('description')+'')
 console.log(instance.toString())
-//console.log(String(instance)) // now this one segfaults? WTF!?!?!
+instance.ivar('name', $._('NodObjC Rules!'))
+console.log(String(instance))
 console.log(''+instance)
 console.log(instance+'')
 console.log(instance)
 
-assert.equal(counter, 5)
+assert.equal(counter, 6)
