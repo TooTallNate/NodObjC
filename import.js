@@ -47,10 +47,6 @@ exports.import = function importFramework (framework) {
   // cache before loading bridgesupport files
   importCache[shortName] = fw;
 
-  // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
-  // and other symbols not introspectable at runtime.
-  bridgesupport(fw, _global);
-
   // Iterate through the loaded classes list and define "setup getters" for them.
   core.getClassList().forEach(function (c) {
     if (!!_global[c]) return;
@@ -60,6 +56,10 @@ exports.import = function importFramework (framework) {
       return _global[c] = clazz;
     });
   });
+
+  // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
+  // and other symbols not introspectable at runtime.
+  bridgesupport(fw, _global);
 
   //console.error('Finished importing framework: %s', shortName);
 }
