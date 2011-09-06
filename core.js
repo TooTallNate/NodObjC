@@ -120,6 +120,25 @@ exports.getClassList = function getClassList () {
 }
 
 /**
+ * Gets a list of the currently loaded Protocols in the runtime.
+ */
+exports.copyProtocolList = function copyProtocolList () {
+  var num = new ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
+    , rtn = []
+    , protos = objc.objc_copyProtocolList(num)
+    , p = protos
+    , count = num.getUInt32()
+  for (var i=0; i<count; i++) {
+    var cur = p.getPointer()
+      , name = objc.protocol_getName(cur)
+    rtn.push(name)
+    p = p.seek(exports.TYPE_SIZE_MAP.pointer)
+  }
+  exports.free(protos)
+  return rtn
+}
+
+/**
  * Copies and returns an Array of the instance variables defined by a given
  * Class pointer. To get class variables, call this function on a metaclass.
  */
