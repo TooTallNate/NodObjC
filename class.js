@@ -80,7 +80,18 @@ proto.addMethod = function addMethod (selector, type, func) {
  * instance variable. This MUST be called after .extend() but BEFORE .register()
  */
 proto.addIvar = function addIvar (name, type, size, alignment) {
-  var good = core.class_addIvar(this.pointer, size || 8, alignment || 8, type)
+  if (!size) {
+    // Lookup the size of the type when needed
+    var ffiType = types.map(type)
+    size = core.TYPE_SIZE_MAP[ffiType]
+  }
+  if (!alignment) {
+    // Also set the alignment when needed. This formula is from Apple's docs:
+    //   For variables of any pointer type, pass log2(sizeof(pointer_type)).
+    alignment = Math.log(size) / Math.log(2)
+  }
+  var good = core.class_addIvar(this.pointer, name, size, alignment, type)
+  if (!good) throw new Error('ivar "' + name + '" was NOT sucessfully added to Class: ' + this.getName())
   return this
 }
 
