@@ -14,6 +14,10 @@ var core = require('./core')
  * arguments, and unwraps the return value.
  */
 exports.createWrapperPointer = function createWrapperPointer (func, type) {
+  if (func.pointer) {
+    // When an 'unwrapper' funtion is passed in, return the original pointer
+    return func.pointer
+  }
   var rtnType = type[0]
     , argTypes = type[1]
     , ffiCb = new core.Callback(types.convert(type), wrapper)
@@ -43,5 +47,6 @@ exports.createUnwrapperFunction = function createUnwrapperFunction (funcPtr, typ
     return core.wrapValue(rtn, rtnType)
   }
   unwrapper.types = type
+  unwrapper.pointer = funcPtr
   return unwrapper
 }
