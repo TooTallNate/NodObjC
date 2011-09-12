@@ -1,6 +1,9 @@
 /**
  * Provides a transparent bridge between JS Strings and the Obj-C SELs.
  */
+
+exports.toSEL = toSEL
+exports.toString = toString
 var core = require('./core')
   , cache = {}
 
@@ -8,7 +11,7 @@ var core = require('./core')
  * Transforms a JS String selector into a SEL pointer reference.
  * This function does caching internally.
  */
-exports.toSEL = function toSEL (sel) {
+function toSEL (sel) {
   var rtn = cache[sel];
   if (rtn) return rtn;
   return cache[sel] = core.sel_registerName(sel);
@@ -17,6 +20,6 @@ exports.toSEL = function toSEL (sel) {
 /**
  * Transforms a SEL reference to a JS String.
  */
-exports.toString = function toString (SEL) {
+function toString (SEL) {
   return core.sel_getName(SEL);
 }

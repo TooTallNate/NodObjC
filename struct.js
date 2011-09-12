@@ -1,18 +1,24 @@
-var structs = {}
+exports.isStruct = isStruct
+exports.getStruct = getStruct
+exports.parseStructName = parseStructName
+exports.parseStruct = parseStruct
+var Struct = require('./core').Struct
+  , types = require('./types')
   , test = /^\{.*?\}$/
+  , structs = {}
 
 /**
  * Tests if the given arg is a Struct constructor or a string type describing
  * a struct (then true), otherwise false.
  */
-exports.isStruct = function isStruct (type) {
+function isStruct (type) {
   return !!type.__isStructType__ || test.test(type)
 }
 
 /**
  * Returns the struct constructor function for the given struct name or type.
  */
-exports.getStruct = function getStruct (type) {
+function getStruct (type) {
   // First check if a regular name was passed in
   var rtn = structs[type];
   if (rtn) return rtn;
@@ -34,7 +40,7 @@ exports.getStruct = function getStruct (type) {
   return structs[parsed.name] = Struct(props)
 }
 
-exports.parseStructName = function parseStructName (struct) {
+function parseStructName (struct) {
   var s = struct.substring(1, struct.length-1)
     , equalIndex = s.indexOf('=')
   if (~equalIndex)
@@ -46,7 +52,7 @@ exports.parseStructName = function parseStructName (struct) {
  * Parses a struct type string into an Object with a `name` String and
  * a `props` Array (entries are a type string, or another parsed struct object)
  */
-exports.parseStruct = function parseStruct (struct) {
+function parseStruct (struct) {
   var s = struct.substring(1, struct.length-1)
     , equalIndex = s.indexOf('=')
     , rtn = {
@@ -92,9 +98,6 @@ exports.parseStruct = function parseStruct (struct) {
   }
   return rtn
 }
-
-var Struct = require('./core').Struct
-  , types = require('./types')
 
 /* Here's an alternate 'parseStruct' thanks to @austinbv
 TODO: Benchmark this against the current version someday...

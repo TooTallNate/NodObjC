@@ -2,9 +2,12 @@
  * Represents an Objective-C class "ivar", or instance variable.
  */
 
+exports.wrap = wrap
+exports.Ivar = Ivar
 var core = require('./core')
+  , proto = Ivar.prototype
 
-exports.wrap = function wrap (pointer) {
+function wrap (pointer) {
   if (pointer.isNull()) return null
   return new Ivar(pointer)
 }
@@ -12,9 +15,6 @@ exports.wrap = function wrap (pointer) {
 function Ivar (pointer) {
   this.pointer = pointer
 }
-exports.Ivar = Ivar
-
-var proto = Ivar.prototype
 
 proto.getName = function getName () {
   return core.ivar_getName(this.pointer)

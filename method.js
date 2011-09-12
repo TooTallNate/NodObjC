@@ -2,11 +2,14 @@
  * Represents an Objective-C "Method" instance. These do not respond to regular
  * messages, so it does not inherit from idWrap
  */
+exports.wrap = wrap
+exports.Method = Method
 var core = require('./core')
   , IMP = require('./imp')
   , SEL = require('./sel')
+  , proto = Method.prototype
 
-exports.wrap = function wrap (pointer) {
+function wrap (pointer) {
   if (pointer.isNull()) return null
   return new Method(pointer)
 }
@@ -14,9 +17,6 @@ exports.wrap = function wrap (pointer) {
 function Method (pointer) {
   this.pointer = pointer
 }
-exports.Method = Method
-
-var proto = Method.prototype;
 
 proto.getArgumentType = function getArgumentType (index) {
   var ptr = core.method_copyArgumentType(this.pointer, index)

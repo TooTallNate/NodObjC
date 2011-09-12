@@ -52,9 +52,9 @@ function wrap (pointer) {
   // Set the "type" on the pointer. This is used by 'ref()' and 'unref()'.
   pointer._type = '@'
   // Save a reference to the pointer for use by the prototype functions
-  id.pointer = pointer;
+  id.pointer = pointer
   // Morph into a MUTANT FUNCTION FREAK!!1!
-  id.__proto__ = proto;
+  id.__proto__ = proto
   return id;
 }
 
