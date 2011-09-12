@@ -6,12 +6,14 @@
  *   http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html
  */
 
+module.exports = bridgesupport;
 var fs = require('fs')
   , sax = require('sax')
   , path = require('path')
   , core = require('./core')
   , types = require('./types')
   , struct = require('./struct')
+  , Import = require('./import').import
   , join = path.join
   , exists = path.existsSync
   , DY_SUFFIX = '.dylib'
@@ -79,7 +81,7 @@ function bridgesupport (fw, _global) {
   parser.onopentag = function (node) {
     switch (node.name) {
       case 'depends_on':
-        bridgesupport.import(node.attributes.path);
+        Import(node.attributes.path);
         break;
       case 'class':
         break;
@@ -190,4 +192,3 @@ function bridgesupport (fw, _global) {
 
   if (!gotEnd) throw new Error('could not parse BridgeSupport files synchronously');
 }
-module.exports = bridgesupport;

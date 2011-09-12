@@ -5,6 +5,8 @@
  * that were passed in when invoked.
  */
 
+exports.createWrapperPointer = createWrapperPointer
+exports.createUnwrapperFunction = createUnwrapperFunction
 var core = require('./core')
   , types = require('./types')
 
@@ -13,7 +15,7 @@ var core = require('./core')
  * function gets wrapped in an "wrapper" function, which wraps the passed in
  * arguments, and unwraps the return value.
  */
-exports.createWrapperPointer = function createWrapperPointer (func, type) {
+function createWrapperPointer (func, type) {
   if (func.pointer) {
     // When an 'unwrapper' funtion is passed in, return the original pointer
     return func.pointer
@@ -35,7 +37,7 @@ exports.createWrapperPointer = function createWrapperPointer (func, type) {
  * passed to the native function, and the return value is wrapped up before
  * being returned for real.
  */
-exports.createUnwrapperFunction = function createUnwrapperFunction (funcPtr, type) {
+function createUnwrapperFunction (funcPtr, type) {
   var rtnType = type[0]
     , argTypes = type[1]
     , converted = types.convert(type)

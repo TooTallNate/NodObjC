@@ -1,14 +1,16 @@
 /**
  * Creates a JS Error object from an NSException pointer.
  */
-var id = require('./id')
-  , Err = require('vm').runInNewContext('Error')
 
-var proto = exports.proto = Err.prototype
+exports.wrap = wrap
+var Err = require('vm').runInNewContext('Error')
+  , proto = exports.proto = Err.prototype
+  , id = require('./id')
+
 // Make the Error objects inherit from our id class
 proto.__proto__ = id.proto
 
-exports.wrap = function wrap (pointer) {
+function wrap (pointer) {
   var w = id.wrap(pointer)
   w.__proto__ = proto
   // `name` is non-configurable on Functions, so don't bother

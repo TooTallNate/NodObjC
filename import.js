@@ -2,6 +2,12 @@
  * Logic for importing a Framework into the node process.
  */
 
+exports.import = importFramework
+exports.resolve = resolve
+
+// The Framework PATH. Equivalent to the -F switch with gcc.
+exports.PATH = ['/System/Library/Frameworks', '/System/Library/PrivateFrameworks']
+
 var fs = require('fs')
   , path = require('path')
   , core = require('./core')
@@ -16,14 +22,11 @@ var fs = require('fs')
 // A cache for the frameworks that have already been imported.
 var importCache = {};
 
-// The Framework PATH. Equivalent to the -F switch with gcc.
-exports.PATH = ['/System/Library/Frameworks', '/System/Library/PrivateFrameworks'];
-
 
 /**
  * Accepts a single framework name and imports it into the current node process
  */
-exports.import = function importFramework (framework) {
+function importFramework (framework) {
   framework = exports.resolve(framework);
 
   var shortName = basename(framework, SUFFIX)
@@ -63,16 +66,13 @@ exports.import = function importFramework (framework) {
 
   //console.error('Finished importing framework: %s', shortName);
 }
-// also attach the import function into bridgesupport, to avoid a circular
-// dependency
-bridgesupport.import = exports.import;
 
 
 /**
  * Accepts a single framework name and resolves it into an absolute path
  * to the base directory of the framework.
  */
-exports.resolve = function resolve (framework) {
+function resolve (framework) {
   // already absolute, return as-is
   if (~framework.indexOf('/')) return framework;
   var i = 0
