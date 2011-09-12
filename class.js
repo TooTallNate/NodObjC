@@ -1,19 +1,21 @@
-var core = require('./core')
+exports.getClass = getClass
+exports.wrap = wrap
+var id = require('./id')
+  , proto = exports.proto = Object.create(id.proto)
+  , core = require('./core')
   , types = require('./types')
   , method = require('./method')
   , ivar = require('./ivar')
   , IMP = require('./imp')
   , SEL = require('./sel')
-  , id = require('./id')
   , classCache = {}
 
-var proto = exports.proto = Object.create(id.proto);
 
 /**
  * Gets a wrapped Class instance based off the given name.
  * Also takes care of returning a cached version when available.
  */
-exports.getClass = function (c) {
+function getClass (c) {
   var rtn = classCache[c];
   if (!rtn) {
     var pointer = core.objc_getClass(c);
@@ -21,14 +23,12 @@ exports.getClass = function (c) {
   }
   return rtn;
 }
-// Making the getClass function available to the id module, to avoid circular deps
-id._getClass = core._getClass = exports.getClass;
 
 
 /**
  * Wraps a Class pointer.
  */
-exports.wrap = function wrap (pointer, className) {
+function wrap (pointer, className) {
   var w = id.wrap(pointer);
   w.__proto__ = proto;
   pointer._type = '#'
@@ -38,7 +38,6 @@ exports.wrap = function wrap (pointer, className) {
   }
   return w;
 }
-id._wrapClass = core._wrapClass = exports.wrap;
 
 // Flag used by id#msgSend()
 proto.isClass = true

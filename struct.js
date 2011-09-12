@@ -29,9 +29,9 @@ exports.getStruct = function getStruct (type) {
   // Otherwise we need to create a new Struct constructor
   var props = [];
   parsed.props.forEach(function (prop) {
-    props.push([ exports._typeMap(prop[1]), prop[0] ])
+    props.push([ types.map(prop[1]), prop[0] ])
   })
-  return structs[parsed.name] = exports._core.Struct(props)
+  return structs[parsed.name] = Struct(props)
 }
 
 exports.parseStructName = function parseStructName (struct) {
@@ -92,6 +92,9 @@ exports.parseStruct = function parseStruct (struct) {
   }
   return rtn
 }
+
+var Struct = require('./core').Struct
+  , types = require('./types')
 
 /* Here's an alternate 'parseStruct' thanks to @austinbv
 TODO: Benchmark this against the current version someday...

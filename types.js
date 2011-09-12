@@ -6,8 +6,7 @@
  * node-ffi Type List: https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list
  */
 
-var struct = require('./struct')
-  , map = {
+var map = {
     'c': 'char'
   , 'i': 'int32'
   , 's': 'short'
@@ -43,7 +42,6 @@ exports.map = function translate (type) {
   if (rtn) return rtn;
   throw new Error('Could not convert type: ' + type);
 }
-struct._typeMap = exports.map;
 
 /**
  * Accepts an Array of ObjC return type and argument types (i.e. the result of
@@ -66,3 +64,5 @@ exports.parse = function parse (types) {
     throw new Error('Invalid types string: '+types)
   return [ types[0], types.substring(1).split('') ]
 }
+
+var struct = require('./struct')

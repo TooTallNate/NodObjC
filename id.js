@@ -3,8 +3,10 @@
  * objects that get passed around JS-land.
  */
 
+exports.wrap = wrap
 var proto = exports.proto = Object.create(Function.prototype)
   , core  = require('./core')
+  , Class = require('./class')
   , types = require('./types')
   , SEL   = require('./sel')
   , exception = require('./exception')
@@ -13,7 +15,7 @@ var proto = exports.proto = Object.create(Function.prototype)
  * Wraps up a pointer that is expected to be a compatible Objective-C
  * object that can recieve messages.
  */
-exports.wrap = function wrap (pointer) {
+function wrap (pointer) {
 
   // This 'id' function is syntax sugar around the msgSend function attached to
   // it. 'msgSend' is expecting the selector first, an Array of args second, so
@@ -55,8 +57,6 @@ exports.wrap = function wrap (pointer) {
   id.__proto__ = proto;
   return id;
 }
-// Avoid a circular dep.
-core._idwrap = exports.wrap;
 
 
 /**
@@ -111,7 +111,7 @@ proto._getTypes = function getTypes (sel, args) {
  * Retrieves the wrapped Class instance for this object.
  */
 proto.getClass = function getClass () {
-  return exports._wrapClass(this._getClassPointer());
+  return Class.wrap(this._getClassPointer());
 }
 
 /**
@@ -132,7 +132,7 @@ proto.getClassName = function getClassName () {
  * Dynamically changes the object's Class.
  */
 proto.setClass = function setClass (newClass) {
-  return exports._wrapClass(core.object_setClass(this.pointer, newClass.pointer));
+  return Class.wrap(core.object_setClass(this.pointer, newClass.pointer));
 }
 
 /**

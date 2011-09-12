@@ -4,8 +4,6 @@
  */
 
 var ffi = require('node-ffi')
-  , types = require('./types')
-  , SEL = require('./sel')
   // TODO: These static ffi bindings could be replaced with native bindings
   //       for a speed boost.
   , objc = new ffi.Library('libobjc', {
@@ -73,9 +71,6 @@ var ffi = require('node-ffi')
     , sel_registerName: [ 'pointer', [ 'string' ] ]
   })
   , msgSendCache = {}
-
-// export core to the struct module
-require('./struct')._core = exports;
 
 exports.__proto__ = objc;
 
@@ -255,9 +250,9 @@ exports.wrapValue = function wrapValue (val, type) {
   if (val === null || (val.isNull && val.isNull())) return null;
   var rtn = val;
   if (type == '@') {
-    rtn = exports._idwrap(val);
+    rtn = id.wrap(val);
   } else if (type == '#') {
-    rtn = exports._wrapClass(val);
+    rtn = Class.wrap(val);
   } else if (type == ':') {
     rtn = SEL.toString(val);
   } else if (type == 'B') {
@@ -306,3 +301,8 @@ exports.unwrapValues = function unwrapValues (values, types) {
   }
   return rtn
 }
+
+var types = require('./types')
+  , SEL = require('./sel')
+  , id = require('./id')
+  , Class = require('./class')
