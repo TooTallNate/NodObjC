@@ -19,8 +19,6 @@ Pointer.prototype.ref = function ref () {
 
 /**
  * Dereferences the pointer. Includes wrapping up id instances when necessary.
- * Accepts a "type" argument, but that is attempted to be determined
- * automatically by the _type prop if it exists.
  * Equivalent to the "value at" operator:
  *   type = *ptr
  */
