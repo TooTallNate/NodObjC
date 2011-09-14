@@ -1,5 +1,5 @@
 { "name": "NodObjC"
-, "description": "The Objective-C ⇆ NodeJS bridge"
+, "description": "The NodeJS ⇆ Objective-C bridge"
 , "keywords": [ "obj", "objective", "c", "mac", "apple", "ios", "osx", "cocoa", "ffi", "bridge" ]
 , "version": "0.0.6"
 , "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"

@@ -1,6 +1,6 @@
 NodObjC
 =======
-### The Objective-C ⇆ [NodeJS][] bridge
+### The [NodeJS][] ⇆ Objective-C bridge
 
 
 `NodObjC` exposes the Objective-C runtime to [NodeJS][] in a high-level, easy
