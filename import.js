@@ -12,12 +12,12 @@ var fs = require('fs')
   , path = require('path')
   , core = require('./core')
   , _class = require('./class')
+  , _global = require('./index')
   , bridgesupport = require('./bridgesupport')
   , join = path.join
   , basename = path.basename
   , exists = path.existsSync
   , SUFFIX = '.framework'
-  , _global = exports
 
 // A cache for the frameworks that have already been imported.
 var importCache = {};
@@ -62,7 +62,7 @@ function importFramework (framework) {
 
   // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
   // and other symbols not introspectable at runtime.
-  bridgesupport(fw, _global);
+  bridgesupport(fw);
 
   //console.error('Finished importing framework: %s', shortName);
 }

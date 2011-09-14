@@ -13,6 +13,7 @@ var fs = require('fs')
   , core = require('./core')
   , types = require('./types')
   , struct = require('./struct')
+  , _global = require('./index')
   , Import = require('./import').import
   , join = path.join
   , exists = path.existsSync
@@ -52,7 +53,7 @@ if (process.arch == 'x64') {
  * them in order to add the symbols that the Obj-C runtime functions cannot
  * determine.
  */
-function bridgesupport (fw, _global) {
+function bridgesupport (fw) {
 
   var bridgeSupportDir = join(fw.basePath, 'Resources', 'BridgeSupport')
     , bridgeSupportXML = join(bridgeSupportDir, fw.name + BS_SUFFIX)
