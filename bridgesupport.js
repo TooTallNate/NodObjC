@@ -122,10 +122,9 @@ function bridgesupport (fw, _global) {
       case 'constant':
         (function (name, type) {
           _global.__defineGetter__(name, function () {
-            var ptr = fw.lib.get(name)
+            var ptr = fw.lib.get(name) // TODO: Cache the pointer after the 1st call
             ptr._type = '^' + type
             var val = ptr.deref()
-            delete _global[name]
             return _global[name] = val
           });
         })(node.attributes.name, getType(node));
