@@ -5,6 +5,11 @@ var ffi = require('node-ffi')
   , SIZE_MAP = ffi.Bindings.TYPE_SIZE_MAP
   , FUNC_MAP = ffi.TYPE_TO_POINTER_METHOD_MAP
 
+// We include a polyfil for `process.arch` on node 0.4.x
+if (!process.arch) {
+  process.arch = ffi.Bindings.POINTER_SIZE == 8 ? 'x64' : 'ia32'
+}
+
 /**
  * Returns a new Pointer that points to this pointer.
  * Equivalent to the "address of" operator:
