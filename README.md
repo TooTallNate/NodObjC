@@ -1,6 +1,6 @@
 NodObjC
 =======
-### The [NodeJS][] ⇆ Objective-C bridge
+### The [NodeJS][] ⇆ [Objective-C][ObjCWikipedia] bridge
 
 
 `NodObjC` exposes the Objective-C runtime to [NodeJS][] in a high-level, easy
@@ -123,3 +123,4 @@ Additional topics of discussion can be found on the [Wiki][] page.
 [Wiki]: https://github.com/TooTallNate/NodObjC/wiki
 [MacDev]: http://developer.apple.com/library/mac/navigation/
 [iOSDev]: http://developer.apple.com/library/ios/navigation/
+[ObjCWikipedia]: http://en.wikipedia.org/wiki/Objective-C
