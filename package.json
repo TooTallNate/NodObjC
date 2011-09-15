@@ -7,7 +7,7 @@
 , "main": "./index.js"
 , "engines": { "node": ">= 0.5.0 && < 0.7.0" }
 , "dependencies": {
-    "node-ffi": "0.2.x"
+    "node-ffi": "0.3.x"
   , "sax": "0.1.x"
   }
 , "bundledDependencies": [
