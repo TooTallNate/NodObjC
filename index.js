@@ -22,7 +22,7 @@ function $ (o) {
   } else if (isDate(o)) {
     return $.NSDate('dateWithTimeIntervalSince1970', o / 1000)
   }
-  throw new Error('Unsupported object passed in to convert')
+  throw new Error('Unsupported object passed in to convert: ' + o)
 }
 
 
