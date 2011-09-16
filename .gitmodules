@@ -1,3 +1,0 @@
-[submodule "node_modules/node-ffi"]
-	path = node_modules/node-ffi
-	url = git://github.com/TooTallNate/node-ffi.git
