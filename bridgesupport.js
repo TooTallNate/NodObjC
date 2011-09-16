@@ -126,7 +126,7 @@ function bridgesupport (fw) {
             var ptr = fw.lib.get(name) // TODO: Cache the pointer after the 1st call
             ptr._type = '^' + type
             var val = ptr.deref()
-            return _global[name] = val
+            return val
           });
         })(node.attributes.name, getType(node));
         break;
