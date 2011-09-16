@@ -5,7 +5,7 @@ require('./ffi-extend')
 module.exports = $
 $._ = $ // legacy. TODO: remove by 0.1.0
 
-// exports the exports from the 'import' module
+// export the exports from the 'import' module
 var Import = require('./import')
 $.import  = Import.import
 $.resolve = Import.resolve
