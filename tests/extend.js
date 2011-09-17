@@ -19,8 +19,15 @@ assert.ok(NRTest.addMethod('description', '@@:', function (self, _cmd) {
 // Add an instance variable, an NSString* instance.
 assert.ok(NRTest.addIvar('name', '@'))
 
+// Test that the Class does not exist on $ before register() is called
+assert.ok(!$.NRTest)
+assert.notEqual(NRTest, $.NRTest)
+
 // Finalize the class so the we can make instances of it
 NRTest.register()
+
+// Test that the Class gets set onto $ after register() is called
+assert.strictEqual(NRTest, $.NRTest)
 
 // Create an instance
 var instance = NRTest('alloc')('init')
