@@ -1,9 +1,9 @@
-// Load the node-ffi extensions
-require('./ffi-extend')
-
 // The main exports is the casting function
 module.exports = $
 $._ = $ // legacy. TODO: remove by 0.1.0
+
+// Load the node-ffi extensions
+require('./ffi-extend')
 
 // export the exports from the 'import' module
 var Import = require('./import')
