@@ -5,6 +5,7 @@ var id = require('./id')
   , core = require('./core')
   , types = require('./types')
   , method = require('./method')
+  , _global = require('./index')
   , ivar = require('./ivar')
   , IMP = require('./imp')
   , SEL = require('./sel')
@@ -61,7 +62,7 @@ proto.extend = function extend (className, extraBytes) {
  */
 proto.register = function register () {
   core.objc_registerClassPair(this.pointer);
-  // TODO: Attach 'this' to the global exports, for access from there
+  _global[this.getName()] = this
   return this
 }
 
