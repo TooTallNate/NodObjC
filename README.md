@@ -23,6 +23,16 @@ for? Get to coding!
 primetime quite yet. Watch this project to follow the updates!
 
 
+Installation
+------------
+
+Install using `npm`, of course!
+
+``` shell
+$ npm install NodObjC
+```
+
+
 Hello World
 -----------
 
