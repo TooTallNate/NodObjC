@@ -26,7 +26,7 @@ var importCache = {};
 /**
  * Accepts a single framework name and imports it into the current node process
  */
-function importFramework (framework) {
+function importFramework (framework, skip) {
   framework = exports.resolve(framework);
 
   var shortName = basename(framework, SUFFIX)
@@ -50,19 +50,21 @@ function importFramework (framework) {
   // cache before loading bridgesupport files
   importCache[shortName] = fw;
 
-  // Iterate through the loaded classes list and define "setup getters" for them.
-  core.getClassList().forEach(function (c) {
-    if (!!_global[c]) return;
-    _global.__defineGetter__(c, function () {
-      var clazz = _class.getClass(c);
-      delete _global[c];
-      return _global[c] = clazz;
-    });
-  });
-
   // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
   // and other symbols not introspectable at runtime.
   bridgesupport(fw);
+
+  // Iterate through the loaded classes list and define "setup getters" for them.
+  if (!skip) {
+    core.getClassList().forEach(function (c) {
+      if (!!_global[c]) return;
+      _global.__defineGetter__(c, function () {
+        var clazz = _class.getClass(c);
+        delete _global[c];
+        return _global[c] = clazz;
+      });
+    });
+  }
 
   //console.error('Finished importing framework: %s', shortName);
 }
