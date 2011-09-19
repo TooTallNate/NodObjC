@@ -57,7 +57,7 @@ function importFramework (framework, skip) {
   // Iterate through the loaded classes list and define "setup getters" for them.
   if (!skip) {
     core.getClassList().forEach(function (c) {
-      if (!!_global[c]) return;
+      if (c in _global) return;
       _global.__defineGetter__(c, function () {
         var clazz = _class.getClass(c);
         delete _global[c];
