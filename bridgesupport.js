@@ -82,7 +82,7 @@ function bridgesupport (fw) {
   parser.onopentag = function (node) {
     switch (node.name) {
       case 'depends_on':
-        Import(node.attributes.path);
+        Import(node.attributes.path, true)
         break;
       case 'class':
         break;
