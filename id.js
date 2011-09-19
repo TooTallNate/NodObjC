@@ -10,12 +10,34 @@ var proto = exports.proto = Object.create(Function.prototype)
   , types = require('./types')
   , SEL   = require('./sel')
   , exception = require('./exception')
+  , KEY   = new core.Pointer(1)
+  , assert = require('assert')
 
 /**
  * Wraps up a pointer that is expected to be a compatible Objective-C
  * object that can recieve messages.
  */
 function wrap (pointer) {
+  //console.trace()
+  var rtn = null
+    , p = core.objc_getAssociatedObject(pointer, KEY)
+  console.error(p)
+  if (p.isNull()) {
+    rtn = _wrap(pointer)
+    // Store the wrapped instance internally
+    var ref = new core.Pointer(core.TYPE_SIZE_MAP.Object)
+    ref.putObject(rtn)
+    core.objc_setAssociatedObject(pointer, KEY, ref, 0)
+  } else {
+    rtn = p.getObject()
+    console.error('got cached wrapped object!!!')
+  }
+  //console.error(rtn.pointer)
+  //assert.equal(rtn.pointer.address, pointer.address)
+  return rtn
+}
+
+function _wrap (pointer) {
 
   // This 'id' function is syntax sugar around the msgSend function attached to
   // it. 'msgSend' is expecting the selector first, an Array of args second, so
