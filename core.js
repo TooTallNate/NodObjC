@@ -4,6 +4,8 @@
  */
 
 var ffi = require('node-ffi')
+  // 'uintptr_t' isn't natively supported by node-ffi
+  , uintptr_t = ffi.Bindings.POINTER_SIZE == 8 ? 'uint64' : 'uint32'
   // TODO: These static ffi bindings could be replaced with native bindings
   //       for a speed boost.
   , objc = new ffi.Library('libobjc', {
@@ -49,7 +51,7 @@ var ffi = require('node-ffi')
     , objc_getProtocol: [ 'pointer', [ 'string' ] ]
     , objc_registerClassPair: [ 'void', [ 'pointer' ] ]
     , objc_removeAssociatedObjects: [ 'void', [ 'pointer' ] ]
-    , objc_setAssociatedObject: [ 'void', [ 'pointer', 'pointer', 'pointer', 'pointer' ] ]
+    , objc_setAssociatedObject: [ 'void', [ 'pointer', 'pointer', 'pointer', uintptr_t ] ]
     , objc_setUncaughtExceptionHandler: [ 'pointer', [ 'pointer' ] ]
     , object_getClass: [ 'pointer', [ 'pointer' ] ]
     , object_getClassName: [ 'string', [ 'pointer' ] ]
