@@ -26,6 +26,9 @@ function wrap (pointer) {
     rtn = _wrap(pointer)
     // Store the wrapped instance internally
     var ref = new core.Pointer(core.TYPE_SIZE_MAP.Object)
+    // don't call free() automatically when ref gets GC'd
+    // TODO: we're gonna have to free this pointer someday!
+    ref.free = false
     ref.putObject(rtn)
     core.objc_setAssociatedObject(pointer, KEY, ref, 0)
   } else {
