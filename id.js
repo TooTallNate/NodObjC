@@ -18,10 +18,8 @@ var proto = exports.proto = Object.create(Function.prototype)
  * object that can recieve messages.
  */
 function wrap (pointer) {
-  //console.trace()
   var rtn = null
     , p = core.objc_getAssociatedObject(pointer, KEY)
-  console.error(p)
   if (p.isNull()) {
     rtn = _wrap(pointer)
     // Store the wrapped instance internally
@@ -33,9 +31,7 @@ function wrap (pointer) {
     core.objc_setAssociatedObject(pointer, KEY, ref, 0)
   } else {
     rtn = p.getObject()
-    console.error('got cached wrapped object!!!')
   }
-  //console.error(rtn.pointer)
   //assert.equal(rtn.pointer.address, pointer.address)
   return rtn
 }
