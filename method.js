@@ -20,8 +20,7 @@ function Method (pointer) {
 
 proto.getArgumentType = function getArgumentType (index) {
   var ptr = core.method_copyArgumentType(this.pointer, index)
-    , str = ptr.getCString()
-  core.free(ptr)
+    , str = core.getStringAndFree(ptr)
   return str
 }
 
@@ -31,15 +30,12 @@ proto.getArgumentTypes = function getArgumentTypes () {
   for (var i=0; i<len; i++) {
     rtn.push(this.getArgumentType(i))
   }
-  //console.error(rtn)
   return rtn
 }
 
 proto.getReturnType = function getReturnType () {
   var ptr = core.method_copyReturnType(this.pointer)
-    , str = ptr.getCString()
-  core.free(ptr)
-  //console.error(str)
+    , str = core.getStringAndFree(ptr)
   return str
 }
 

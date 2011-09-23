@@ -131,7 +131,7 @@ exports.copyProtocolList = function copyProtocolList () {
     rtn.push(name)
     p = p.seek(exports.TYPE_SIZE_MAP.pointer)
   }
-  exports.free(protos)
+  ffi.free(protos)
   return rtn
 }
 
@@ -151,7 +151,7 @@ exports.copyIvarList = function copyIvarList (classPtr) {
     rtn.push(name)
     p = p.seek(exports.TYPE_SIZE_MAP.pointer)
   }
-  exports.free(ivars)
+  ffi.free(ivars)
   return rtn
 }
 
@@ -171,7 +171,7 @@ exports.copyMethodList = function copyMethodList (classPtr) {
     rtn.push(name)
     p = p.seek(exports.TYPE_SIZE_MAP.pointer)
   }
-  exports.free(methods)
+  ffi.free(methods)
   return rtn
 }
 
@@ -192,9 +192,9 @@ exports.getMethodArgTypes = function getMethodArgTypes (method) {
   return rtn;
 }
 
-function getStringAndFree (ptr) {
+exports.getStringAndFree = function getStringAndFree (ptr) {
   var str = ptr.getCString()
-  exports.free(ptr);
+  ffi.free(ptr);
   return str;
 }
 
@@ -238,10 +238,6 @@ exports.Function = function buildFunction (name, rtnType, argTypes, async, lib) 
   func.pointer = symbol;
   return func;
 }
-
-// Wrap the global free() function. Some of the ObjC runtime objects need
-// explicit freeing.
-exports.free = exports.Function('free', 'void', [ 'pointer' ], false);
 
 
 /**
