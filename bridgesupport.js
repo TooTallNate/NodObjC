@@ -10,6 +10,7 @@ module.exports = bridgesupport;
 var fs = require('fs')
   , sax = require('sax')
   , path = require('path')
+  , IMP = require('./imp')
   , core = require('./core')
   , types = require('./types')
   , struct = require('./struct')
@@ -160,23 +161,12 @@ function bridgesupport (fw) {
             // TODO: Handle 'variadic' arg functions (NSLog), will require
             //       a "function generator" to get a Function from the passed
             //       in args (and guess at the types that were passed in...)
-            //console.error(curName, curRtnType, curArgTypes)
-            var f = core.Function(curName, types.map(curRtnType), curArgTypes.map(types.map), false, isInline ? fw.inline : fw.lib);
-            delete _global[curName];
-            // The unwrapper function unwraps passed in arguments,
-            // and wraps up the result if necessary.
-            function unwrapper () {
-              var args = core.unwrapValues(arguments, curArgTypes)
-                , rtn = f.apply(null, args)
-              return core.wrapValue(rtn, curRtnType)
-            }
-            // attach the rtn and arg types to the result Function, nice in the REPL
-            unwrapper.func = curName;
-            unwrapper.rtn = curRtnType;
-            unwrapper.args = curArgTypes;
-            unwrapper.inline = isInline;
-            unwrapper.pointer = f.pointer;
-            return _global[curName] = unwrapper;
+            var ptr = (isInline ? fw.inline : fw.lib).get(curName)
+              , unwrapper = IMP.createUnwrapperFunction(ptr, [ curRtnType, curArgTypes ])
+            unwrapper.func = curName
+            unwrapper.inline = isInline
+            delete _global[curName]
+            return _global[curName] = unwrapper
           });
         })(curName, curRtnType, curArgTypes, isInline);
         curName = null;
