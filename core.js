@@ -226,19 +226,6 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
   return msgSendCache[key] = lib.objc_msgSend;
 }
 
-/**
- * Accepts the name of an exported symbol, the ffi return type, an array of ffi
- * argument types, an Bool specifying if this is async of not, and finally the
- * library pointer to get the sybol from. Turns it into a JS function.
- */
-exports.Function = function buildFunction (name, rtnType, argTypes, async, lib) {
-  lib || (lib = exports.process);
-  var symbol = lib.get(name)
-    , func = ffi.ForeignFunction.build(symbol, rtnType, argTypes, async)
-  func.pointer = symbol;
-  return func;
-}
-
 
 /**
  * Wraps up a node-ffi pointer if needed (not needed for Numbers, etc.)
