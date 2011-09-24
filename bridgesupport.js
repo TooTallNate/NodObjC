@@ -30,21 +30,19 @@ var getType
   , getValue
 if (process.arch == 'x64') {
   // 64-bit specific functions
-  getType = function (node) {
-    var a = node.attributes
+  getType = function (a) {
     return a.type64 || a.type
   }
-  getValue = function (node) {
-    var a = node.attributes
+  getValue = function (a) {
     return a.value64 || a.value
   }
 } else {
   // 32-bit / ARM specific functions
-  getType = function (node) {
-    return node.attributes.type
+  getType = function (a) {
+    return a.type
   }
-  getValue = function (node) {
-    return node.attributes.value
+  getValue = function (a) {
+    return a.value
   }
 }
 
@@ -81,9 +79,10 @@ function bridgesupport (fw) {
 
   parser.onerror = function (e) { throw e; }
   parser.onopentag = function (node) {
+    var a = node.attributes
     switch (node.name) {
       case 'depends_on':
-        Import(node.attributes.path, true)
+        Import(a.path, true)
         break;
       case 'class':
         break;
@@ -92,28 +91,28 @@ function bridgesupport (fw) {
       case 'arg':
         if (curName) {
           // class methods also have args, we only want functions though
-          curArgTypes.push(getType(node));
+          curArgTypes.push(getType(a));
         }
         break;
       case 'retval':
         if (curName) {
           // class methods also have retvals, we only want functions though
-          curRtnType = getType(node);
+          curRtnType = getType(a);
         }
         break;
       case 'signatures':
         break;
       case 'string_constant':
-        _global[node.attributes.name] = getValue(node);
+        _global[a.name] = getValue(a);
         break;
       case 'enum':
-        _global[node.attributes.name] = Number(getValue(node));
+        _global[a.name] = Number(getValue(a));
         break;
       case 'struct':
         try {
-          _global[node.attributes.name] = struct.getStruct(getType(node));
+          _global[a.name] = struct.getStruct(getType(a));
         } catch (e) {
-          //console.error('FAILED:\n', node)
+          //console.error('FAILED:\n', a)
           //console.error(e.stack)
         }
         break;
@@ -129,13 +128,13 @@ function bridgesupport (fw) {
             var val = ptr.deref()
             return val
           });
-        })(node.attributes.name, getType(node));
+        })(a.name, getType(a));
         break;
       case 'function':
-        curName = node.attributes.name;
+        curName = a.name;
         curRtnType = 'v';
         curArgTypes = [];
-        isInline = node.attributes.inline == 'true';
+        isInline = a.inline == 'true';
         // TODO: is variadic? will require a 'function generator'
         break;
       case 'opaque':
