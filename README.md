@@ -128,7 +128,7 @@ Additional topics of discussion can be found on the [Wiki][] page.
 [NodeJS]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
 [PyObjC]: http://pyobjc.sourceforge.net
-[CocoaRuby]: http://en.wikipedia.org/wiki/RubyCocoa
+[RubyCocoa]: http://en.wikipedia.org/wiki/RubyCocoa
 [IRC]: http://webchat.freenode.net/?channels=nodobjc
 [Wiki]: https://github.com/TooTallNate/NodObjC/wiki
 [MacDev]: http://developer.apple.com/library/mac/navigation/
