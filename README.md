@@ -13,7 +13,7 @@ scripting bridges:
 
  * [JSCocoa][]
  * [PyObjC][]
- * [CocoaRuby][]
+ * [RubyCocoa][]
 
 So you can write Objective-C based applications entirely with Node and
 JavaScript! Eventually even iOS native apps as well! So what are you waiting
