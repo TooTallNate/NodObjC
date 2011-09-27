@@ -235,7 +235,11 @@ exports.wrapValue = function wrapValue (val, type) {
   if (val === null || (val.isNull && val.isNull())) return null;
   var rtn = val;
   if (type.function_pointer) {
-    return IMP.createUnwrapperFunction(val, type)
+    if (type.type == '@?') {
+      return block.createBlock(val, type)
+    } else {
+      return IMP.createUnwrapperFunction(val, type)
+    }
   }
   // get the raw type from Type objects
   if (type.type) type = type.type
@@ -271,7 +275,11 @@ exports.unwrapValue = function unwrapValue (val, type) {
   //console.error('unwrapValue(): %s, %j', val, type);
   var rtn = val;
   if (type.function_pointer) {
-    return IMP.createWrapperPointer(val, type)
+    if (type.type == '@?') {
+      return block.getPointer(val, type)
+    } else {
+      return IMP.createWrapperPointer(val, type)
+    }
   }
   // get the raw type from Type objects
   if (type.type) type = type.type
@@ -302,3 +310,4 @@ var types = require('./types')
   , id = require('./id')
   , Class = require('./class')
   , IMP = require('./imp')
+  , block = require('./block')
