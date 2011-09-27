@@ -17,7 +17,7 @@ var core = require('./core')
  */
 function createWrapperPointer (func, type) {
   if (func.pointer) {
-    // When an 'unwrapper' funtion is passed in, return the original pointer
+    // When an 'unwrapper' function is passed in, return the original pointer
     return func.pointer
   }
   var rtnType = type[0]
