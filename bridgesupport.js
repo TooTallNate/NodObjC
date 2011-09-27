@@ -208,7 +208,7 @@ function defineFunction (a, fw) {
     , isInline = a.inline == 'true'
   if (isInline && !fw.inline) throw new Error(name+', '+fw.name+': declared inline but could not find inline dylib!')
   _global.__defineGetter__(name, function () {
-    console.error(require('util').inspect(a, true, 10))
+    //console.error(require('util').inspect(a, true, 10))
     // TODO: Handle 'variadic' arg functions (NSLog), will require
     //       a "function generator" to get a Function from the passed
     //       in args (and guess at the types that were passed in...)
