@@ -79,7 +79,7 @@ function bridgesupport (fw) {
   parser.onerror = function (e) { throw e }
   parser.onopentag = function (node) {
     var a = node.attributes
-    a._name = node.name
+    //a._name = node.name
     switch (node.name) {
       case 'depends_on':
         Import(a.path, true)
