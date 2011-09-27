@@ -48,7 +48,7 @@ exports.map = function translate (type) {
  * parse() below), and returns a new Array with the values mapped to valid ffi
  * types.
  */
-exports.convert = function convert (types) {
+exports.mapArray = function mapArray (types) {
   return types.map(function (type) {
     return Array.isArray(type) ? exports.convert(type) : exports.map(type);
   });
