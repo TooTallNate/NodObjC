@@ -20,9 +20,9 @@ function createWrapperPointer (func, type) {
     // When an 'unwrapper' function is passed in, return the original pointer
     return func.pointer
   }
-  var rtnType = type[0]
-    , argTypes = type[1]
-    , ffiCb = new core.Callback(types.convert(type), wrapper)
+  var rtnType = type.retval || type[0]
+    , argTypes = type.args || type[1]
+    , ffiCb = new core.Callback([types.map(rtnType), types.mapArray(argTypes)], wrapper)
   function wrapper () {
     var args = core.wrapValues(arguments, argTypes)
       , rtn = func.apply(null, args)
@@ -38,11 +38,9 @@ function createWrapperPointer (func, type) {
  * being returned for real.
  */
 function createUnwrapperFunction (funcPtr, type) {
-  var rtnType = type[0]
-    , argTypes = type[1]
-    , converted = types.convert(type)
-    , func = core.ForeignFunction.build(funcPtr, converted[0], converted[1])
-  converted = null
+  var rtnType = type.retval || type[0]
+    , argTypes = type.args || type[1]
+    , func = core.ForeignFunction.build(funcPtr, types.map(rtnType), types.mapArray(argTypes))
   function unwrapper () {
     var args = core.unwrapValues(arguments, argTypes)
       , rtn = func.apply(null, args)
