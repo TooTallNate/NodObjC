@@ -34,6 +34,7 @@ var map = {
  */
 exports.map = function translate (type) {
   if (!type) throw new Error('got falsey "type" to map ('+type+'). this should NOT happen!');
+  if (type.type) type = type.type
   if (struct.isStruct(type)) return struct.getStruct(type);
   var rtn = map[type];
   if (rtn) return rtn;
