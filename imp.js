@@ -39,7 +39,7 @@ function createWrapperPointer (func, type) {
  */
 function createUnwrapperFunction (funcPtr, type) {
   var rtnType = type.retval || type[0]
-    , argTypes = type.args || type[1]
+    , argTypes = type.args || type[1] || []
     , func = core.ForeignFunction.build(funcPtr, types.map(rtnType), types.mapArray(argTypes))
   function unwrapper () {
     var args = core.unwrapValues(arguments, argTypes)
