@@ -46,7 +46,7 @@ function createUnwrapperFunction (funcPtr, type) {
       , rtn = func.apply(null, args)
     return core.wrapValue(rtn, rtnType)
   }
-  unwrapper.rtn = rtnType
+  unwrapper.retval = rtnType
   unwrapper.args = argTypes
   unwrapper.pointer = funcPtr
   return unwrapper
