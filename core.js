@@ -231,9 +231,14 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
  * Wraps up a node-ffi pointer if needed (not needed for Numbers, etc.)
  */
 exports.wrapValue = function wrapValue (val, type) {
-  //console.error('wrapValue(): %s, %s', val, type);
+  //console.error('wrapValue(): %s, %j', val, type);
   if (val === null || (val.isNull && val.isNull())) return null;
   var rtn = val;
+  if (type.function_pointer) {
+    return IMP.createUnwrapperFunction(val, type)
+  }
+  // get the raw type from Type objects
+  if (type.type) type = type.type
   if (type == '@') {
     rtn = id.wrap(val);
   } else if (type == '#') {
@@ -263,8 +268,13 @@ exports.wrapValues = function wrapValues (values, types) {
  * Unwraps a previously wrapped NodObjC object.
  */
 exports.unwrapValue = function unwrapValue (val, type) {
-  //console.error('unwrapValue(): %s, %s', val, type);
+  //console.error('unwrapValue(): %s, %j', val, type);
   var rtn = val;
+  if (type.function_pointer) {
+    return IMP.createWrapperPointer(val, type)
+  }
+  // get the raw type from Type objects
+  if (type.type) type = type.type
   if (type == '@' || type == '#') {
     if (!val) return null;
     rtn = val.pointer;
@@ -291,3 +301,4 @@ var types = require('./types')
   , SEL = require('./sel')
   , id = require('./id')
   , Class = require('./class')
+  , IMP = require('./imp')
