@@ -252,6 +252,8 @@ exports.wrapValue = function wrapValue (val, type) {
   } else if (type == 'B') {
     rtn = val ? true : false;
   }
+  if (rtn)
+    rtn._type = type
   return rtn;
 }
 
@@ -289,6 +291,8 @@ exports.unwrapValue = function unwrapValue (val, type) {
   } else if (type == ':') {
     rtn = SEL.toSEL(val);
   }
+  if (rtn)
+    rtn._type = type
   return rtn;
 }
 
