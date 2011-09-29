@@ -31,10 +31,10 @@ function importFramework (framework, skip) {
 
   var shortName = basename(framework, SUFFIX)
 
-  // Return from the framework cache if possible
+  // Check if the framework has already been loaded
   var fw = importCache[shortName];
   if (fw) {
-    return fw;
+    return;
   }
 
   // Load the main framework binary file
