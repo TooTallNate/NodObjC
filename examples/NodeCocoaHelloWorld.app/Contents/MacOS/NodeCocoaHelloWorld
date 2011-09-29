@@ -1,4 +1,6 @@
-#!/usr/bin/env node
+#!/bin/sh
+// 2>/dev/null; export PATH="$PATH:/usr/local/bin"
+// 2>/dev/null; exec node "$0"
 
 // This example adapted from Matt Gallagher's "Minimalist Cocoa Programming"
 // blog article:
