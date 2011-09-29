@@ -134,7 +134,7 @@ function bridgesupport (fw) {
       case 'cftype':
         break;
       case 'constant':
-        defineConstant(a)
+        defineConstant(a, fw)
         break;
       case 'function':
         curObj = a
