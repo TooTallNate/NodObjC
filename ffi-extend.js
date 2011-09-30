@@ -33,7 +33,13 @@ Pointer.prototype.deref = function deref () {
   // since we're dereferencing, remove the leading ^ char
   t = t.substring(1)
   var ffiType = types.map(t)
-    , val = this['get' + FUNC_MAP[ffiType] ]()
+    , val = null
+  if (!ffiType) throw new Error('cannot determine type: ' + t)
+  if (ffi.isStructType(ffiType)) {
+    val = new ffiType(this)
+  } else {
+    val = this['get' + FUNC_MAP[ffiType] ]()
+  }
   val._type = t
   return core.wrapValue(val, t)
 }
