@@ -4,6 +4,7 @@
 
 exports.toSEL = toSEL
 exports.toString = toString
+
 var core = require('./core')
   , cache = {}
 

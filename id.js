@@ -4,6 +4,7 @@
  */
 
 exports.wrap = wrap
+
 var proto = exports.proto = Object.create(Function.prototype)
   , core  = require('./core')
   , Class = require('./class')

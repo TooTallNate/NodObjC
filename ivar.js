@@ -4,6 +4,7 @@
 
 exports.wrap = wrap
 exports.Ivar = Ivar
+
 var core = require('./core')
   , proto = Ivar.prototype
 

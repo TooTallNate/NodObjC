@@ -7,6 +7,7 @@
 
 exports.createWrapperPointer = createWrapperPointer
 exports.createUnwrapperFunction = createUnwrapperFunction
+
 var core = require('./core')
   , types = require('./types')
 

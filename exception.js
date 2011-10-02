@@ -3,6 +3,7 @@
  */
 
 exports.wrap = wrap
+
 var Err = require('vm').runInNewContext('Error')
   , proto = exports.proto = Err.prototype
   , id = require('./id')

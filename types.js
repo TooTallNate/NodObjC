@@ -6,6 +6,12 @@
  * node-ffi Type List: https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list
  */
 
+exports.map = translate
+exports.mapArray = mapArray
+exports.parse = parse
+
+var struct = require('./struct')
+
 var map = {
     'c': 'char'
   , 'i': 'int32'
@@ -32,7 +38,7 @@ var map = {
  * Translates a single Obj-C 'type' into a valid node-ffi type.
  * This mapping logic is kind of a mess...
  */
-exports.map = function translate (type) {
+function translate (type) {
   if (!type) throw new Error('got falsey "type" to map ('+type+'). this should NOT happen!');
   if (type.type) type = type.type
   if (struct.isStruct(type)) return struct.getStruct(type);
@@ -49,7 +55,7 @@ exports.map = function translate (type) {
  * parse() below), and returns a new Array with the values mapped to valid ffi
  * types.
  */
-exports.mapArray = function mapArray (types) {
+function mapArray (types) {
   return types.map(function (type) {
     return Array.isArray(type) ? exports.convert(type) : exports.map(type);
   });
@@ -60,10 +66,8 @@ exports.mapArray = function mapArray (types) {
  * return type is the first array value, and an Array of argument types is the
  * array second value.
  */
-exports.parse = function parse (types) {
+function parse (types) {
   if (types[1] !== '@' || types[2] !== ':')
     throw new Error('Invalid types string: '+types)
   return [ types[0], types.substring(1).split('') ]
 }
-
-var struct = require('./struct')

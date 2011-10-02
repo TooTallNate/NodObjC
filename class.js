@@ -1,5 +1,6 @@
 exports.getClass = getClass
 exports.wrap = wrap
+
 var id = require('./id')
   , proto = exports.proto = Object.create(id.proto)
   , core = require('./core')

@@ -2,6 +2,7 @@ exports.isStruct = isStruct
 exports.getStruct = getStruct
 exports.parseStructName = parseStructName
 exports.parseStruct = parseStruct
+
 var Struct = require('./core').Struct
   , types = require('./types')
   , test = /^\{.*?\}$/
