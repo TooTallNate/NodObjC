@@ -17,11 +17,11 @@ menuBar('addItem', appMenuItem)
 app('setMainMenu', menuBar)
 
 var appMenu = $.NSMenu('alloc')('init')('autorelease')
-  , appName = $._('Hello NodeJS!')
-  , quitTitle = $._('Quit ')('stringByAppendingString', appName)
+  , appName = $('Hello NodeJS!')
+  , quitTitle = $('Quit ')('stringByAppendingString', appName)
   , quitMenuItem = $.NSMenuItem('alloc')('initWithTitle', quitTitle
                                         ,'action', 'terminate:'
-                                        ,'keyEquivalent', $._('q'))('autorelease')
+                                        ,'keyEquivalent', $('q'))('autorelease')
 appMenu('addItem', quitMenuItem)
 appMenuItem('setSubmenu', appMenu)
 
