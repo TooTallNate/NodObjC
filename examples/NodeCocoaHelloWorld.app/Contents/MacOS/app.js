@@ -43,6 +43,10 @@ AppDelegate.addMethod('applicationDidFinishLaunching:', 'v@:@', function (self, 
   console.log('got applicationDidFinishLauching')
   console.log(notif)
 })
+AppDelegate.addMethod('applicationWillTerminate:', 'v@:@', function (self, _cmd, notif) {
+  console.log('got applicationWillTerminate')
+  console.log(notif)
+})
 AppDelegate.register()
 
 var delegate = AppDelegate('alloc')('init')
