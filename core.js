@@ -52,7 +52,6 @@ var ffi = require('node-ffi')
     , objc_registerClassPair: [ 'void', [ 'pointer' ] ]
     , objc_removeAssociatedObjects: [ 'void', [ 'pointer' ] ]
     , objc_setAssociatedObject: [ 'void', [ 'pointer', 'pointer', 'pointer', uintptr_t ] ]
-    , objc_setUncaughtExceptionHandler: [ 'pointer', [ 'pointer' ] ]
     , object_getClass: [ 'pointer', [ 'pointer' ] ]
     , object_getClassName: [ 'string', [ 'pointer' ] ]
     , object_getInstanceVariable: [ 'pointer', [ 'pointer', 'string', 'pointer' ] ]
