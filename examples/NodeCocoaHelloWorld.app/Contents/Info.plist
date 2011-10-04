@@ -7,7 +7,7 @@
   <key>CFBundleExecutable</key>
   <string>NodeCocoaHelloWorld</string>
   <key>CFBundleIdentifier</key>
-  <string>com.your-company-name.www</string>
+  <string>net.tootallnate.NodeCocoaHelloWorld</string>
   <key>CFBundleName</key>
   <string>NodeCocoaHelloWorld</string>
   <key>CFBundleIconFile</key>
