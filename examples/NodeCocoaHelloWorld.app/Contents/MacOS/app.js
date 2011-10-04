@@ -10,18 +10,18 @@ var pool = $.NSAutoreleasePool('alloc')('init')
 
 app('setActivationPolicy', $.NSApplicationActivationPolicyRegular)
 
-var menuBar = $.NSMenu('alloc')('init')('autorelease')
-  , appMenuItem = $.NSMenuItem('alloc')('init')('autorelease')
+var menuBar = $.NSMenu('alloc')('init')
+  , appMenuItem = $.NSMenuItem('alloc')('init')
 
 menuBar('addItem', appMenuItem)
 app('setMainMenu', menuBar)
 
-var appMenu = $.NSMenu('alloc')('init')('autorelease')
+var appMenu = $.NSMenu('alloc')('init')
   , appName = $('Hello NodeJS!')
-  , quitTitle = $('Quit ')('stringByAppendingString', appName)
+  , quitTitle = $('Quit "' + appName + '"')
   , quitMenuItem = $.NSMenuItem('alloc')('initWithTitle', quitTitle
                                         ,'action', 'terminate:'
-                                        ,'keyEquivalent', $('q'))('autorelease')
+                                        ,'keyEquivalent', $('q'))
 appMenu('addItem', quitMenuItem)
 appMenuItem('setSubmenu', appMenu)
 
@@ -31,7 +31,7 @@ var styleMask = $.NSTitledWindowMask
 var window = $.NSWindow('alloc')('initWithContentRect', $.NSMakeRect(0,0,200,200)
                                 ,'styleMask', styleMask
                                 ,'backing', $.NSBackingStoreBuffered
-                                ,'defer', false)('autorelease')
+                                ,'defer', false)
 window('cascadeTopLeftFromPoint', $.NSMakePoint(20,20))
 window('setTitle', appName)
 window('makeKeyAndOrderFront', window)
