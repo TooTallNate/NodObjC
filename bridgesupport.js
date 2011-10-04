@@ -13,6 +13,7 @@ exports.informal_protocols = {}
 var fs = require('fs')
   , sax = require('sax')
   , path = require('path')
+  , assert = require('assert')
   , IMP = require('./imp')
   , core = require('./core')
   , types = require('./types')
@@ -179,7 +180,7 @@ function bridgesupport (fw) {
   // Parse the contents of the file. This should happen synchronously.
   parser.write(contents).close()
 
-  if (!gotEnd) throw new Error('could not parse BridgeSupport files synchronously')
+  assert.ok(gotEnd, 'could not parse BridgeSupport files synchronously')
 }
 
 
@@ -208,7 +209,9 @@ function defineConstant (a, fw) {
 function defineFunction (a, fw) {
   var name = a.name
     , isInline = a.inline == 'true'
-  if (isInline && !fw.inline) throw new Error(name+', '+fw.name+': declared inline but could not find inline dylib!')
+  if (isInline) {
+    assert.ok(fw.inline, name+', '+fw.name+': declared inline but could not find inline dylib!')
+  }
   _global.__defineGetter__(name, function () {
     //console.error(require('util').inspect(a, true, 10))
     // TODO: Handle 'variadic' arg functions (NSLog), will require
