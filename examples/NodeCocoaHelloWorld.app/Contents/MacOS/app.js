@@ -35,6 +35,7 @@ var window = $.NSWindow('alloc')('initWithContentRect', $.NSMakeRect(0,0,200,200
 window('cascadeTopLeftFromPoint', $.NSMakePoint(20,20))
 window('setTitle', appName)
 window('makeKeyAndOrderFront', window)
+window('center')
 
 // set up the app delegate
 var AppDelegate = $.NSObject.extend('AppDelegate')
