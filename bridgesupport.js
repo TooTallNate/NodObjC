@@ -89,6 +89,8 @@ function bridgesupport (fw) {
         exports.classes[curObj.name] = curObj
         break;
       case 'method':
+        // Normalize the 'type' for the platform
+        a.type = getType(a)
         a._parent = curObj
         if (!curObj.methods)
           curObj.methods = []
