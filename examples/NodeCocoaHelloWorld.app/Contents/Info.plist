@@ -11,7 +11,7 @@
   <key>CFBundleName</key>
   <string>NodeCocoaHelloWorld</string>
   <key>CFBundleIconFile</key>
-  <string>helloworld.icns</string>
+  <string>NodeCocoaHelloWorld.icns</string>
   <key>CFBundleShortVersionString</key>
   <string>0.01</string>
   <key>CFBundleInfoDictionaryVersion</key>
