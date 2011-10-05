@@ -57,7 +57,7 @@ function translate (type) {
  */
 function mapArray (types) {
   return types.map(function (type) {
-    return Array.isArray(type) ? exports.convert(type) : exports.map(type);
+    return Array.isArray(type) ? exports.mapArray(type) : exports.map(type);
   });
 }
 
