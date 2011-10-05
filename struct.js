@@ -75,10 +75,14 @@ function parseStruct (struct) {
           addProp()
         break;
       case '{':
+      case '[':
+      case '(':
         numBrackets++
         curProp.push(cur)
         break;
       case '}':
+      case ']':
+      case ')':
         numBrackets--
         curProp.push(cur)
         break;
