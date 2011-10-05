@@ -92,8 +92,7 @@ function parseStruct (struct) {
   }
   addProp()
   function addProp () {
-    if (curProp)
-      entries.push(curProp.join(''))
+    entries.push(curProp.join(''))
     curProp = []
     numBrackets = 0
   }
