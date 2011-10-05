@@ -85,18 +85,20 @@ function mapArray (types) {
  */
 var DELIMS = Object.keys(typeEncodings)
 function parse (types) {
-  console.error('INPUT: %s', types)
   var rtn = []
     , cur = []
     , len = types.length
     , depth = 0
   for (var i=0; i<len; i++) {
     var c = types[i]
-    if (!/(\d)/.test(c) && !depth)
+
+    if (depth || !/(\d)/.test(c)) {
       cur.push(c)
-    if (cur == '{' || cur == '[' || cur == '(')
-      depth++
-    else if (cur == '}' || cur == ']' || cur == ')') {
+    }
+
+    if (c == '{' || c == '[' || c == '(') {
+      depth++;
+    } else if (c == '}' || c == ']' || c == ')') {
       depth--;
       if (!depth)
         add();
@@ -109,7 +111,6 @@ function parse (types) {
     cur = []
     depth = 0
   }
-  console.error('OUTPUT:', rtn)
   assert.equal(rtn[1], '@', '_self argument expected as first arg: ' + types)
   assert.equal(rtn[2], ':', 'SEL argument expected as second arg: ' + types)
   return [ rtn[0], rtn.slice(1) ]
