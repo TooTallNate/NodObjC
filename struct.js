@@ -61,10 +61,9 @@ function parseStruct (struct) {
       , props: []
     }
   s = s.substring(equalIndex+1)
-  var curProp = null
+  var curProp = []
     , numBrackets = 0
     , entries = []
-  addProp()
   for (var i=0; i < s.length; i++) {
     var cur = s[i]
     switch (cur) {
