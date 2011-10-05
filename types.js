@@ -11,6 +11,7 @@ exports.mapArray = mapArray
 exports.parse = parse
 
 var struct = require('./struct')
+  , assert = require('assert')
 
 var typeEncodings = {
     'c': 'char'
@@ -82,8 +83,34 @@ function mapArray (types) {
  * return type is the first array value, and an Array of argument types is the
  * array second value.
  */
+var DELIMS = Object.keys(typeEncodings)
 function parse (types) {
-  if (types[1] !== '@' || types[2] !== ':')
-    throw new Error('Invalid types string: '+types)
-  return [ types[0], types.substring(1).split('') ]
+  console.error('INPUT: %s', types)
+  var rtn = []
+    , cur = []
+    , len = types.length
+    , depth = 0
+  for (var i=0; i<len; i++) {
+    var c = types[i]
+    if (!/(\d)/.test(c) && !depth)
+      cur.push(c)
+    if (cur == '{' || cur == '[' || cur == '(')
+      depth++
+    else if (cur == '}' || cur == ']' || cur == ')') {
+      depth--;
+      if (!depth)
+        add();
+    } else if (~DELIMS.indexOf(c) && !depth) {
+      add()
+    }
+  }
+  function add () {
+    rtn.push(cur.join(''))
+    cur = []
+    depth = 0
+  }
+  console.error('OUTPUT:', rtn)
+  assert.equal(rtn[1], '@', '_self argument expected as first arg: ' + types)
+  assert.equal(rtn[2], ':', 'SEL argument expected as second arg: ' + types)
+  return [ rtn[0], rtn.slice(1) ]
 }
