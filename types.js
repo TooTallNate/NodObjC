@@ -6,13 +6,13 @@
  * node-ffi Type List: https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list
  */
 
-exports.map = translate
+exports.map = map
 exports.mapArray = mapArray
 exports.parse = parse
 
 var struct = require('./struct')
 
-var map = {
+var typeEncodings = {
     'c': 'char'
   , 'i': 'int32'
   , 's': 'short'
@@ -32,20 +32,30 @@ var map = {
   , '#': 'pointer'  // Class
   , ':': 'pointer'  // SEL
   , '?': 'pointer'  // Unknown, used for function pointers
-};
+}
+
+var methodEncodings = {
+    'r': 'const'
+  , 'n': 'in'
+  , 'N': 'inout'
+  , 'o': 'out'
+  , 'O': 'bycopy'
+  , 'R': 'byref'
+  , 'V': 'oneway'
+}
 
 /**
- * Translates a single Obj-C 'type' into a valid node-ffi type.
+ * Maps a single Obj-C 'type' into a valid node-ffi type.
  * This mapping logic is kind of a mess...
  */
-function translate (type) {
+function map (type) {
   if (!type) throw new Error('got falsey "type" to map ('+type+'). this should NOT happen!');
   if (type.type) type = type.type
   if (struct.isStruct(type)) return struct.getStruct(type);
-  var rtn = map[type];
+  var rtn = typeEncodings[type];
   if (rtn) return rtn;
   if (type[0] === '^') return 'pointer';
-  rtn = map[type[type.length-1]];
+  rtn = typeEncodings[type[type.length-1]];
   if (rtn) return rtn;
   throw new Error('Could not convert type: ' + type);
 }
