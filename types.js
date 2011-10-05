@@ -57,6 +57,12 @@ function map (type) {
   if (type[0] === '^') return 'pointer';
   rtn = typeEncodings[type[type.length-1]];
   if (rtn) return rtn;
+  if (type[0] == '[')
+    throw new Error('Array types not yet supported: ' + type);
+  if (type[0] == '(')
+    throw new Error('Union types not yet supported: ' + type);
+  if (type[0] == 'b')
+    throw new Error('Bit field types not yet supported: ' + type);
   throw new Error('Could not convert type: ' + type);
 }
 
