@@ -67,6 +67,11 @@ proto.register = function register () {
   return this
 }
 
+/**
+ * Adds a new Method to the Class. Instances of the class (even already existing
+ * ones) will have the ability to invoke the method. This may be called at any
+ * time on any class.
+ */
 proto.addMethod = function addMethod (selector, type, func) {
   var parsed = types.parse(type)
     , selRef = SEL.toSEL(selector)
