@@ -28,7 +28,7 @@ Installation
 
 Install using `npm`, of course!
 
-``` shell
+``` bash
 $ npm install NodObjC
 ```
 
