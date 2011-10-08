@@ -175,6 +175,24 @@ exports.copyMethodList = function copyMethodList (classPtr) {
 }
 
 /**
+ * Iterates over the Methods defined by a Protocol.
+ */
+exports.copyMethodDescriptionList = function copyMethodDescriptionList (protocolPtr, required, instance) {
+  var numMethods = new ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
+    , methods = exports.protocol_copyMethodDescriptionList(protocolPtr, required, instance, numMethods)
+    , rtn = []
+    , p = methods
+    , count = numMethods.getUInt32()
+  for (var i=0; i<count; i++) {
+    var cur = new exports.objc_method_description(p)
+    rtn.push(SEL.toString(cur.name))
+    p = p.seek(ffi.sizeOf(exports.objc_method_description))
+  }
+  ffi.free(methods)
+  return rtn
+}
+
+/**
  * Convienience function to get the String return type of a Method pointer.
  * Takes care of free()ing the returned pointer, as is required.
  */
