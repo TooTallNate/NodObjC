@@ -226,6 +226,13 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
 }
 
 
+// Struct type returned by `protocol_getMethodDescription`.
+exports.objc_method_description = ffi.Struct([
+    ['pointer', 'name']
+  , ['string', 'types']
+]);
+
+
 /**
  * Wraps up a node-ffi pointer if needed (not needed for Numbers, etc.)
  */
