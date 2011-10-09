@@ -14,6 +14,7 @@ scripting bridges:
  * [JSCocoa][]
  * [PyObjC][]
  * [RubyCocoa][]
+ * [And the others...][others]
 
 So you can write Objective-C based applications entirely with Node and
 JavaScript! Eventually even iOS native apps as well! So what are you waiting
@@ -134,3 +135,4 @@ Additional topics of discussion can be found on the [Wiki][] page.
 [MacDev]: http://developer.apple.com/library/mac/navigation/
 [iOSDev]: http://developer.apple.com/library/ios/navigation/
 [ObjCWikipedia]: http://en.wikipedia.org/wiki/Objective-C
+[others]: http://www.cocoadev.com/index.pl?CocoaBridges
