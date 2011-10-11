@@ -16,12 +16,12 @@ scripting bridges:
  * [RubyCocoa][]
  * [And the others...][others]
 
-So you can write Objective-C based applications entirely with Node and
-JavaScript! Eventually even iOS native apps as well! So what are you waiting
-for? Get to coding!
-
-**Note:** This lib is still very much under development. It is not ready for
-primetime quite yet. Watch this project to follow the updates!
+So you can write entire Cocoa or iOS GUI applications entirely in NodeJS
+JavaScript! Applications are interpreted at runtime through the V8 engine,
+rather than compiled to a machine exectuable. This has the advantage of being
+able to tweak code without having to recompile; excellent for rapid prototyping
+and development, or for those GUI applications where absolute speed is not a
+requirement (i.e. _most_). So what are you waiting for? Get to coding!
 
 
 Installation
