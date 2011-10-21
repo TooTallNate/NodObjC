@@ -23,20 +23,20 @@ for (var i=0; i<numMethods; i++) {
     , numArgs = b.method_getNumberOfArguments(cur)-2
     , r = b.method_copyReturnType(cur)
     , rtn = r.getCString()
-  b.free(r);
+  ffi.free(r);
   console.error('  '+name);
   console.error('    Returns: %s', rtn)
   for (var j=2; j<numArgs+2; j++) {
     var a = b.method_copyArgumentType(cur, j)
       , s = a.getCString();
-    b.free(a);
+    ffi.free(a);
     console.error('      Arg %d: %s', j-2, s);
   }
 
   // advance the cursor
   p = p.seek(ffi.Bindings.TYPE_SIZE_MAP.pointer);
 }
-b.free(methods);
+ffi.free(methods);
 
 
 // Walk the inheritance chain
