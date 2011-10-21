@@ -3,4 +3,4 @@ var $ = require('../')
 
 $.import('Foundation');
 
-assert.ok($.NSObject.listMethods().length > 0);
+assert.ok($.NSObject.methods().length > 0);
