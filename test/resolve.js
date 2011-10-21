@@ -12,6 +12,5 @@ assert.throws(function() {
 
 // Just check that an absolute path is returned
 function check (path) {
-  console.error(path);
-  assert.ok(~path.indexOf('/'));
+  assert.ok(path[0] === '/');
 }
