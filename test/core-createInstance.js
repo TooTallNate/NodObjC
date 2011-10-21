@@ -1,4 +1,5 @@
-var b = require('../core')
+var ffi = require('node-ffi')
+  , b = require('../core')
 
 var NSMutableArray = b.objc_getClass('NSMutableArray')
   , NSString = b.objc_getClass('NSString')
@@ -53,13 +54,13 @@ function getTypes (method) {
     , numArgs = b.method_getNumberOfArguments(method)
     , rtnTypePtr = b.method_copyReturnType(method)
     , rtnType = rtnTypePtr.getCString()
-  b.free(rtnTypePtr);
+  ffi.free(rtnTypePtr);
   types.push(rtnType);
   types.push(args);
   for (var i=0; i<numArgs; i++) {
     var argPtr = b.method_copyArgumentType(method, i)
     args.push(argPtr.getCString());
-    b.free(argPtr);
+    ffi.free(argPtr);
   }
   return types;
 }
