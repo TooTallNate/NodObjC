@@ -11,9 +11,8 @@ var NRTest = $.NSObject.extend('NRTest')
 // Add a new method to the NRTest class responding to the "description" selector
 assert.ok(NRTest.addMethod('description', '@@:', function (self, _cmd) {
   counter++
-  console.log(_cmd)
-  console.log(self.ivar('name'))
-  return $.NSString('stringWithUTF8String', 'test')
+  assert.equal(_cmd, 'description')
+  return $('test')
 }))
 
 // Add an instance variable, an NSString* instance.
@@ -33,12 +32,10 @@ assert.strictEqual(NRTest, $.NRTest)
 var instance = NRTest('alloc')('init')
 
 // call [instance description] in a variety of ways (via toString())
-console.log(instance('description')+'')
-console.log(instance.toString())
-instance.ivar('name', $._('NodObjC Rules!'))
-console.log(String(instance))
-console.log(''+instance)
-console.log(instance+'')
-console.log(instance)
+var str = 'test'
+assert.equal(str, instance('description')+'')
+assert.equal(str, instance.toString())
+assert.equal(str, ''+instance)
+assert.equal(str, instance+'')
 
-assert.equal(counter, 6)
+assert.equal(counter, 4)
