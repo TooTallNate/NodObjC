@@ -1,8 +1,7 @@
-var b = require('../core')
+var b = require('../../core')
 
 
 b.dlopen("/System/Library/Frameworks/Foundation.framework/Foundation");
-//b.dlopen("/System/Library/Frameworks/AppKit.framework/AppKit", RTLD_LAZY);
 
 // First get the number of classes
 var numClasses = b.objc_getClassList(null, 0);

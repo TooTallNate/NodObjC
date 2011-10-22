@@ -1,5 +1,5 @@
 var ffi = require('node-ffi')
-  , b = require('../core')
+  , b = require('../../core')
 
 var NSMutableArray = b.objc_getClass('NSMutableArray')
   , NSString = b.objc_getClass('NSString')
