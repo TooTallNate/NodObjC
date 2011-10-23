@@ -8,7 +8,6 @@ $.NSAutoreleasePool('alloc')('init')
 var dealloc = $.NSObject.getInstanceMethod('dealloc')
   , deallocCalled = false
   , origDealloc = dealloc.setImplementation(function (self, _cmd) {
-      console.error('Custom "dealloc" method being called!');
       origDealloc(self, _cmd);
       deallocCalled = true
   })
