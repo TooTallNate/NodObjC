@@ -6,4 +6,5 @@ $.import('Foundation')
 var pool = $.NSAutoreleasePool('alloc')('init')
   , array = $.NSMutableArray('arrayWithCapacity', 10)
 
-console.log(array)
+assert.equal(array('count'), 0)
+assert.equal(array.toString(), '(\n)')
