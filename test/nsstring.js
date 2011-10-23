@@ -1,11 +1,13 @@
 var $ = require('../')
+  , assert = require('assert')
+  , str = 'Hello Objective-C!'
+
 $.import('Foundation')
 
-// Create an NSAutoreleasePool
 var pool = $.NSAutoreleasePool('alloc')('init')
+  , nsstr = $.NSString('stringWithUTF8String', 'Hello Objective-C!')
 
-var nsstr = $.NSString({ 'stringWithUTF8String': 'Hello Objective-C!' })
-console.log(nsstr('UTF8String'));
+assert.equal(str, nsstr.toString())
 
-nsstr = nsstr({ 'stringByAppendingString': nsstr });
-console.log(nsstr('UTF8String'));
+nsstr = nsstr('stringByAppendingString', nsstr)
+assert.equal(str+str, nsstr.toString())
