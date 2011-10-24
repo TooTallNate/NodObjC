@@ -7,7 +7,7 @@ var $ = require('../')
 $.import('Foundation')
 $.NSAutoreleasePool('alloc')('init')
 
-fs.closeSync(process.stderr.fd)
+fs.closeSync(2)
 var fd = fs.openSync(logfile, 'w')
 
 // The result of NSLog() will be written to `logfile`
