@@ -6,7 +6,7 @@ var pool = $.NSAutoreleasePool('alloc')('init')
 
 var errRef = $.NSError.createPointer().ref()
   , str = $.NSString(
-            'stringWithContentsOfFile', $._('DOES_NOT_EXIST'),
+            'stringWithContentsOfFile', $('DOES_NOT_EXIST'),
             'encoding', $.NSUTF8StringEncoding,
             'error', errRef
           )

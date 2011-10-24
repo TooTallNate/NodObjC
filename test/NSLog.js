@@ -20,5 +20,5 @@ fs.unlinkSync(logfile)
 assert.equal(test + '\n', log.substring(log.length - test.length - 1))
 
 
-// $.NSLog($._("An object: %@"), $.NSArray('alloc')('init'))
+// $.NSLog($("An object: %@"), $.NSArray('alloc')('init'))
 // Need a "function generator" to variadic functions before this will work.
