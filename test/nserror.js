@@ -11,11 +11,12 @@ var errRef = $.NSError.createPointer().ref()
             'error', errRef
           )
 
+// Result of NSString method call should be `nil`
 assert.ok(str === null)
 
 var err = errRef.deref()
   , domain = err('domain')
   , userInfo = err('userInfo')
-console.error(err)
-console.error(domain)
-console.error(userInfo)
+assert.equal('NSCocoaErrorDomain', domain)
+assert.ok(userInfo('isKindOfClass', $.NSDictionary))
+assert.equal(userInfo('objectForKey', $('NSFilePath')), 'DOES_NOT_EXIST')
