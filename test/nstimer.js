@@ -5,17 +5,24 @@ $.import('Foundation')
 var pool = $.NSAutoreleasePool('alloc')('init')
 
 var Obj = $.NSObject.extend('Obj')
+  , invokeCount = 0
+
 Obj.addMethod('sel:', 'v@:@', function (self, _cmd, timer) {
-  console.log('self:\t%s', self)
-  console.log('timer:\t%s', timer)
-  console.log('info:\t%s', timer('userInfo'))
-  console.log()
+  assert.equal('Info', timer('userInfo').toString())
+  if (++invokeCount == 5) {
+    timer('invalidate')
+    process.exit(0)
+  }
 }).register()
 
-var timer = $.NSTimer('scheduledTimerWithTimeInterval', 2.0
+var timer = $.NSTimer('scheduledTimerWithTimeInterval', 0.5
                      ,'target', Obj('alloc')('init')
                      ,'selector', 'sel:'
-                     ,'userInfo', $._('Info')
+                     ,'userInfo', $('Info')
                      ,'repeats', 1)
+
+process.on('exit', function () {
+  assert.equal(invokeCount, 5)
+})
 
 $.NSRunLoop('mainRunLoop')('run')
