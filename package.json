@@ -11,6 +11,6 @@
   }
 , "dependencies": {
     "node-ffi": "~0.4.1"
-  , "sax": "0.2.x"
+  , "sax": "0.3.x"
   }
 }
