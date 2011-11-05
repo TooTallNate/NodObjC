@@ -101,8 +101,14 @@ proto.addIvar = function addIvar (name, type, size, alignment) {
   return this
 }
 
-proto.addProtocol = function addProtocol (protocol) {
-  throw new Error('TODO')
+proto.addProtocol = function addProtocol (protocolName, impl) {
+  var informal = require('./bridgesupport').informal_protocols[protocolName]
+    , formal = core.objc_getProtocol(protocolName)
+
+  console.error(core.copyMethodDescriptionList(formal, 1, 1))
+  console.error(core.copyMethodDescriptionList(formal, 0, 0))
+  console.error(core.copyMethodDescriptionList(formal, 1, 0))
+  console.error(core.copyMethodDescriptionList(formal, 0, 1))
 }
 
 proto._getSuperclassPointer = function getSuperclassPointer () {
