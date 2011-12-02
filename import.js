@@ -28,6 +28,7 @@ var importCache = {}
  * Accepts a single framework name and imports it into the current node process
  */
 function importFramework (framework, skip) {
+  debug('importing framework:', framework, skip)
   framework = exports.resolve(framework)
 
   var shortName = basename(framework, SUFFIX)
@@ -59,7 +60,7 @@ function importFramework (framework, skip) {
   // Iterate through the loaded classes list and define "setup getters" for them.
   if (!skip) {
     var classes = core.getClassList()
-    debug('Loading ObjC Classes:', classes.length)
+    debug('loading ObjC Classes:', classes.length)
     classes.forEach(function (c) {
       if (c in _global) return
       _global.__defineGetter__(c, function () {
@@ -70,7 +71,7 @@ function importFramework (framework, skip) {
     })
   }
 
-  debug('Finished importing framework:', shortName)
+  debug('finished importing framework:', shortName)
 }
 
 

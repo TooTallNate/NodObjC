@@ -124,7 +124,7 @@ proto._getTypes = function getTypes (sel, args) {
   if (!t) {
     // Unknown selector being send to object. This *may* still be valid, we
     // assume all args are type 'id' and return is 'id'.
-    //console.error('unknown selector being sent: %s', sel)
+    debug('unknown selector being sent:', sel)
     t = [ '@', [ '@', ':', ].concat(args.map(function () { return '@' })) ]
   }
   return t
@@ -224,7 +224,7 @@ proto.methods = function methods (maxDepth, sort) {
     var ms = c.getInstanceMethods()
       , i = ms.length
     while (i--) {
-      if (!~rtn.indexOf(ms[i])) rtn.push(ms[i]);
+      if (!~rtn.indexOf(ms[i])) rtn.push(ms[i])
     }
     c = c.getSuperclass()
   }
