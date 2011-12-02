@@ -13,6 +13,7 @@ var proto = exports.proto = Object.create(Function.prototype)
   , exception = require('./exception')
   , KEY   = new core.Pointer(1)
   , assert = require('assert')
+  , debug = require('debug')('NodObjC')
 
 /**
  * Wraps up a pointer that is expected to be a compatible Objective-C

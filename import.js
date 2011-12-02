@@ -14,27 +14,29 @@ var fs = require('fs')
   , _class = require('./class')
   , _global = require('./index')
   , bridgesupport = require('./bridgesupport').bridgesupport
+  , debug = require('debug')('NodObjC')
   , join = path.join
   , basename = path.basename
   , exists = path.existsSync
   , SUFFIX = '.framework'
 
 // A cache for the frameworks that have already been imported.
-var importCache = {};
+var importCache = {}
 
 
 /**
  * Accepts a single framework name and imports it into the current node process
  */
 function importFramework (framework, skip) {
-  framework = exports.resolve(framework);
+  framework = exports.resolve(framework)
 
   var shortName = basename(framework, SUFFIX)
 
   // Check if the framework has already been loaded
-  var fw = importCache[shortName];
+  var fw = importCache[shortName]
   if (fw) {
-    return;
+    debug('skipping framework because already loaded:', framework)
+    return
   }
 
   // Load the main framework binary file
@@ -45,28 +47,30 @@ function importFramework (framework, skip) {
     , name: shortName
     , basePath: framework
     , binaryPath: frameworkPath
-  };
+  }
 
   // cache before loading bridgesupport files
-  importCache[shortName] = fw;
+  importCache[shortName] = fw
 
   // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
   // and other symbols not introspectable at runtime.
-  bridgesupport(fw);
+  bridgesupport(fw)
 
   // Iterate through the loaded classes list and define "setup getters" for them.
   if (!skip) {
-    core.getClassList().forEach(function (c) {
-      if (c in _global) return;
+    var classes = core.getClassList()
+    debug('Loading ObjC Classes:', classes.length)
+    classes.forEach(function (c) {
+      if (c in _global) return
       _global.__defineGetter__(c, function () {
-        var clazz = _class.getClass(c);
-        delete _global[c];
-        return _global[c] = clazz;
-      });
-    });
+        var clazz = _class.getClass(c)
+        delete _global[c]
+        return _global[c] = clazz
+      })
+    })
   }
 
-  //console.error('Finished importing framework: %s', shortName);
+  debug('Finished importing framework:', shortName)
 }
 
 
