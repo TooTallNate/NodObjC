@@ -1,14 +1,22 @@
+
 /**
  * This module takes care of loading the BridgeSupport XML files for a given
  * framework, and parsing the data into the given framework object.
  *
  * Reference:
  *   http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html
+ *
+ *
+ * Module exports.
  */
 
 exports.bridgesupport = bridgesupport
 exports.classes = {}
 exports.informal_protocols = {}
+
+/**
+ * Module dependencies.
+ */
 
 var fs = require('fs')
   , sax = require('sax')
@@ -30,6 +38,7 @@ var fs = require('fs')
  * Architecture-specific functions that return the Obj-C type or value from one
  * of these BridgeSupport XML nodes.
  */
+
 var getType
   , getValue
 if (process.arch == 'x64') {
@@ -56,6 +65,7 @@ if (process.arch == 'x64') {
  * them in order to add the symbols that the Obj-C runtime functions cannot
  * determine.
  */
+
 function bridgesupport (fw) {
 
   var bridgeSupportDir = join(fw.basePath, 'Resources', 'BridgeSupport')
@@ -151,7 +161,7 @@ function bridgesupport (fw) {
       case 'function_alias':
         break;
       default:
-        throw new Error('unkown tag: '+ node.name);
+        throw new Error('unkown tag: '+ node.name)
         break;
     }
   }
@@ -189,6 +199,7 @@ function bridgesupport (fw) {
  * These start out as simple JS getters, so that the underlying
  * symbol pointer can be lazy-loaded on-demand.
  */
+
 function defineConstant (a, fw) {
   var name = a.name
     , type = getType(a)
@@ -197,7 +208,7 @@ function defineConstant (a, fw) {
     ptr._type = '^' + type
     var val = ptr.deref()
     return val
-  });
+  })
 }
 
 
@@ -206,6 +217,7 @@ function defineConstant (a, fw) {
  * These start out as simple JS getters, so that the underlying
  * function pointer can be lazy-loaded on-demand.
  */
+
 function defineFunction (a, fw) {
   var name = a.name
     , isInline = a.inline == 'true'
