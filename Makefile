@@ -6,6 +6,6 @@ test:
 doc-%: %.js
 	./node_modules/.bin/dox --debug < "$<"
 
-docs: doc-index
+docs: doc-index doc-import doc-id doc-class
 
 .PHONY: test
