@@ -36,9 +36,15 @@ $.resolve = Import.resolve
  * This function accepts native JS types (String, Number, Date) and converts them
  * to the proper Objective-C type (NSString, NSNumber, NSDate).
  *
+ * Often times, you will use this function to cast a JS String into an NSString
+ * for methods that accept NSStrings (since NodObjC doesn't automatically cast to
+ * NSStrings in those instances).
+ *
  * ```
  * var jsString = 'a javascript String'
  * var nsString = $(jsString)
+ *
+ * $.NSLog(nsString)
  * ```
  */
 
