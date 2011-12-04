@@ -6,6 +6,7 @@
 var fs = require('fs')
   , basename = require('path').basename
   , jade = require('jade')
+  , package = JSON.parse(fs.readFileSync(__dirname + '/../package.json'))
 
 /**
  * The output filename.
@@ -27,7 +28,11 @@ process.stdin.resume()
 
 function render () {
   var title = basename(filename, '.js')
-    , opts = { title: title[0].toUpperCase() + title.substring(1), input: input }
+    , opts = {
+        title: title[0].toUpperCase() + title.substring(1)
+      , input: input
+      , package: package
+    }
     , buf = fs.readFileSync(template)
     , fn = jade.compile(buf, opts)
     , html = fn(opts)
