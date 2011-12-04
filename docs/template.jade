@@ -1,6 +1,12 @@
-each part in input
-  if (!part.ignore)
-    .desc!= part.description.full
-    if (part.code)
-      pre
-        code= part.code
+!!!
+html
+  head
+    link(href='assets/main.css', rel='stylesheet')
+    script(src='assets/jquery.js', type='text/javascript')
+  body
+    each part in input
+      if (!part.ignore)
+        .desc!= part.description.full
+        if (part.code)
+          pre
+            code= part.code
