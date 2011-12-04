@@ -7,11 +7,14 @@
 , "main": "./index.js"
 , "engines": { "node": ">= 0.4.0 && < 0.7.0" }
 , "scripts": {
-    "test": "./test/run.sh test/*.js"
+    "test": "make test"
   }
 , "dependencies": {
     "debug": "*"
   , "node-ffi": "~0.4.1"
   , "sax": "0.3.x"
+  }
+, "devDependencies": {
+    "dox": "0.1.x"
   }
 }
