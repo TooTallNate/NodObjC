@@ -1,7 +1,24 @@
+
+/**
+ * Internal module that parses *struct type encodings* and turns them into
+ * proper node-ffi `Struct` instances.
+ *
+ * NodObjC uses these functions internally and you **do not** have to use the
+ * functions from this module in your code.
+ */
+
+/**
+ * Module exports.
+ */
+
 exports.isStruct = isStruct
 exports.getStruct = getStruct
 exports.parseStructName = parseStructName
 exports.parseStruct = parseStruct
+
+/**
+ * Module dependencies.
+ */
 
 var Struct = require('./core').Struct
   , types = require('./types')
@@ -9,16 +26,20 @@ var Struct = require('./core').Struct
   , structs = {}
 
 /**
- * Tests if the given arg is a Struct constructor or a string type describing
- * a struct (then true), otherwise false.
+ * Tests if the given arg is a `Struct` constructor or a string type encoding
+ * describing a struct (then true), otherwise false.
  */
+
 function isStruct (type) {
   return !!type.__isStructType__ || test.test(type)
 }
 
 /**
  * Returns the struct constructor function for the given struct name or type.
+ *
+ *     {CGPoint="x"d"y"d}
  */
+
 function getStruct (type) {
   // First check if a regular name was passed in
   var rtn = structs[type];
@@ -41,6 +62,10 @@ function getStruct (type) {
   return structs[parsed.name] = Struct(props)
 }
 
+/**
+ * Extracts only the name of the given struct type encoding string.
+ */
+
 function parseStructName (struct) {
   var s = struct.substring(1, struct.length-1)
     , equalIndex = s.indexOf('=')
@@ -53,6 +78,7 @@ function parseStructName (struct) {
  * Parses a struct type string into an Object with a `name` String and
  * a `props` Array (entries are a type string, or another parsed struct object)
  */
+
 function parseStruct (struct) {
   var s = struct.substring(1, struct.length-1)
     , equalIndex = s.indexOf('=')
@@ -101,18 +127,3 @@ function parseStruct (struct) {
   }
   return rtn
 }
-
-/* Here's an alternate 'parseStruct' thanks to @austinbv
-TODO: Benchmark this against the current version someday...
-
-x = '"origin"{CGPoint="x"d"y"d}"size"{CGSize="width"d"height"d}';
-var z = []
-y = x.split(/([{][^}]+}|")/ig)
-for(var i = 0; i < y.length; i++) {
-  if (y[i] != '"' && y[i] != '') {
-    z.push(y[i])
-  }
-}
-console.log(z)
-
-*/
