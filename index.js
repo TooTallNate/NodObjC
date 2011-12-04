@@ -1,17 +1,43 @@
-// The main exports is the casting function
+
+/**
+ * NodObjC is the bridge between NodeJS and the Objective-C runtime and
+ * frameworks. 
+ */
+
+/**
+ * The `$` function is the primary export of NodObjC. When a framework is
+ * imported, it's exported classes, functions, etc. get placed onto this as a sort
+ * of "global module exports".
+ */
+
 module.exports = $
 
-// Load the node-ffi extensions
+/**
+ * Load the node-ffi extensions.
+ */
+
 require('./ffi-extend')
 
-// export the exports from the 'import' module
+/**
+ * Module dependencies.
+ */
+
 var Import = require('./import')
+
+/**
+ * `import()` is usually the first function called after requiring the `NodObjC`
+ * module.
+ */
+
 $.import  = Import.import
 $.resolve = Import.resolve
 
-// This function accepts native JS types (String, Number, Date) and converts them
-// to the proper Objective-C type (NSString, NSNumber, NSDate).
-//   Syntax Sugar...
+/**
+ * This function accepts native JS types (String, Number, Date) and converts them
+ * to the proper Objective-C type (NSString, NSNumber, NSDate).
+ *   Syntax Sugar...
+ */
+
 function $ (o) {
   var t = typeof o
   if (t == 'string') {
