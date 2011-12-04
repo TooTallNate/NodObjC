@@ -16,7 +16,7 @@ html
       each part in input
         if (!part.ignore)
           .part
-            if (part.ctx && part.ctx.type == 'method')
+            if (part.ctx && /method|function/.test(part.ctx.type))
               h3= part.ctx.string
             .desc!= part.description.full
             if (part.code)
