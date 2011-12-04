@@ -2,3 +2,13 @@ html, body {
   padding: 0;
   margin: 0;
 }
+
+.code {
+  height: 0px;
+  overflow: hidden;
+  -webkit-transition: height 0.5s;
+}
+
+.code.shown {
+  height: auto;
+}
