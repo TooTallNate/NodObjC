@@ -22,6 +22,7 @@ var fs = require('fs')
   , sax = require('sax')
   , path = require('path')
   , assert = require('assert')
+  , debug = require('debug')('NodObjC')
   , IMP = require('./imp')
   , core = require('./core')
   , types = require('./types')
@@ -43,6 +44,7 @@ var getType
   , getValue
 if (process.arch == 'x64') {
   // 64-bit specific functions
+  debug('using 64-bit "type" and "value" attributes')
   getType = function (a) {
     return a.type64 || a.type
   }
@@ -51,6 +53,7 @@ if (process.arch == 'x64') {
   }
 } else {
   // 32-bit / ARM specific functions
+  debug('using regular "type" and "value" attributes')
   getType = function (a) {
     return a.type
   }
@@ -72,13 +75,15 @@ function bridgesupport (fw) {
     , bridgeSupportXML = join(bridgeSupportDir, fw.name + BS_SUFFIX)
     , bridgeSupportDylib = join(bridgeSupportDir, fw.name + DY_SUFFIX)
 
-  // If there's no BridgeSupport file, then just return...
+  // If there's no BridgeSupport file, then bail...
   if (!exists(bridgeSupportXML)) {
-    //console.warn('No BridgeSupport files found for framework "%s" at: %s', fw.name, bridgeSupportXML)
+    debug('no BridgeSupport files found for framework "%s" at:', fw.name, bridgeSupportXML)
     return
   }
 
+  // Load the "inline" dylib if it exists
   if (exists(bridgeSupportDylib)) {
+    debug('importing "inline" dylib for framework "%s" at:', fw.name, bridgeSupportDylib)
     fw.inline = core.dlopen(bridgeSupportDylib)
   }
 
@@ -229,6 +234,7 @@ function defineFunction (a, fw) {
     // TODO: Handle 'variadic' arg functions (NSLog), will require
     //       a "function generator" to get a Function from the passed
     //       in args (and guess at the types that were passed in...)
+    debug('loading function pointer for:', name)
     var ptr = (isInline ? fw.inline : fw.lib).get(name)
       , unwrapper = IMP.createUnwrapperFunction(ptr, a)
     unwrapper.info = a
