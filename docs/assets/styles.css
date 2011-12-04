@@ -5,7 +5,12 @@ html, body {
 
 body {
   background-image: url(bg.jpg);
-  color: #dfbd9c;
+  color: #ffc;
+  font: 13px "Lucida Grande", Verdana;
+}
+
+#content {
+  text-shadow: 0 1px 0 #000;
 }
 
 .code {

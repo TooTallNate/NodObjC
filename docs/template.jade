@@ -8,13 +8,14 @@ html
   body
     h1 NodObjC
     h2= title
-    each part in input
-      if (!part.ignore)
-        if (part.ctx && part.ctx.type == 'method')
-          h3= part.ctx.string
-        .part
-          .desc!= part.description.full
-          if (part.code)
-            button.show-code Show Code
-            pre.code
-              code= part.code
+    #content
+      each part in input
+        if (!part.ignore)
+          if (part.ctx && part.ctx.type == 'method')
+            h3= part.ctx.string
+            .part
+              .desc!= part.description.full
+              if (part.code)
+                button.show-code Show Code
+                pre.code
+                  code= part.code
