@@ -26,11 +26,12 @@ process.stdin.on('end', function () {
 process.stdin.resume()
 
 function render () {
-  var opts = { input: input }
+  var title = basename(filename, '.js')
+    , opts = { title: title[0].toUpperCase() + title.substring(1), input: input }
     , buf = fs.readFileSync(template)
     , fn = jade.compile(buf, opts)
     , html = fn(opts)
   // XXX: Output to stderr when I can figure out the Makefile syntax
   //process.stdout.write(html)
-  fs.writeFileSync(__dirname + '/' + basename(filename, '.js') + '.html', html)
+  fs.writeFileSync(__dirname + '/' + title + '.html', html)
 }
