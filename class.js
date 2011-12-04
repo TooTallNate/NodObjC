@@ -1,7 +1,22 @@
+
+/**
+ * The `Class` Object is a subclass of `id`. Instances of `Class` wrap an
+ * Objective C "Class" instance.
+ */
+
+/**
+ * Module exports.
+ */
+
 exports.getClass = getClass
 exports.wrap = wrap
 
-var id = require('./id')
+/**
+ * Module dependencies.
+ */
+
+var debug = require('debug')('NodObjC')
+  , id = require('./id')
   , proto = exports.proto = Object.create(id.proto)
   , core = require('./core')
   , types = require('./types')
@@ -12,33 +27,40 @@ var id = require('./id')
   , SEL = require('./sel')
   , classCache = {}
 
-
 /**
  * Gets a wrapped Class instance based off the given name.
  * Also takes care of returning a cached version when available.
+ *
+ * @param className String class name to load.
+ * @return a `Class` instance wrapping the desired Objective C "Class".
  */
-function getClass (c) {
-  var rtn = classCache[c];
-  if (!rtn) {
-    var pointer = core.objc_getClass(c);
-    rtn = exports.wrap(pointer, c);
-  }
-  return rtn;
-}
 
+function getClass (className) {
+  debug('getClass:', className)
+  var rtn = classCache[className]
+  if (rtn) {
+    debug('the classCache actually worked!!!!', className)
+  } else {
+    var pointer = core.objc_getClass(className)
+    rtn = exports.wrap(pointer, className)
+  }
+  return rtn
+}
 
 /**
  * Wraps a Class pointer.
  */
+
 function wrap (pointer, className) {
-  var w = id.wrap(pointer);
-  w.__proto__ = proto;
+  debug('Class#wrap(%d, %s)', pointer.address, className)
+  var w = id.wrap(pointer)
+  w.__proto__ = proto
   pointer._type = '#'
   // optionally cache when a class name is given
   if (className) {
-    classCache[className] = w;
+    classCache[className] = w
   }
-  return w;
+  return w
 }
 
 // Flag used by id#msgSend()
@@ -50,10 +72,13 @@ proto.isClass = true
  * The returned Class instance should have 'addMethod()' and 'addIvar()' called
  * on it as needed, and then 'register()' when you're ready to use it.
  */
+
 proto.extend = function extend (className, extraBytes) {
-  var c = core.objc_allocateClassPair(this.pointer, className, extraBytes || 0);
-  if (c.isNull()) throw new Error('New Class could not be allocated: ' + className);
-  return exports.wrap(c, className);
+  var c = core.objc_allocateClassPair(this.pointer, className, extraBytes || 0)
+  if (c.isNull()) {
+    throw new Error('New Class could not be allocated: ' + className)
+  }
+  return exports.wrap(c, className)
 }
 
 /**
@@ -61,8 +86,9 @@ proto.extend = function extend (className, extraBytes) {
  * This must be called on the class *after* all 'addMethod()' and 'addIvar()'
  * calls are made, and *before* the newly created class is used for real.
  */
+
 proto.register = function register () {
-  core.objc_registerClassPair(this.pointer);
+  core.objc_registerClassPair(this.pointer)
   _global[this.getName()] = this
   return this
 }
@@ -72,12 +98,14 @@ proto.register = function register () {
  * ones) will have the ability to invoke the method. This may be called at any
  * time on any class.
  */
+
 proto.addMethod = function addMethod (selector, type, func) {
   var parsed = types.parse(type)
     , selRef = SEL.toSEL(selector)
     , funcPtr = IMP.createWrapperPointer(func, parsed)
-  var good = core.class_addMethod(this.pointer, selRef, funcPtr, type)
-  if (!good) throw new Error('method "' + selector + '" was NOT sucessfully added to Class: ' + this.getName())
+  if (!core.class_addMethod(this.pointer, selRef, funcPtr, type)) {
+    throw new Error('method "' + selector + '" was NOT sucessfully added to Class: ' + this.getName())
+  }
   return this
 }
 
@@ -85,6 +113,7 @@ proto.addMethod = function addMethod (selector, type, func) {
  * Adds an Ivar to the Class. Instances of the class will contain the specified
  * instance variable. This MUST be called after .extend() but BEFORE .register()
  */
+
 proto.addIvar = function addIvar (name, type, size, alignment) {
   if (!size) {
     // Lookup the size of the type when needed
@@ -96,10 +125,17 @@ proto.addIvar = function addIvar (name, type, size, alignment) {
     //   For variables of any pointer type, pass log2(sizeof(pointer_type)).
     alignment = Math.log(size) / Math.log(2)
   }
-  var good = core.class_addIvar(this.pointer, name, size, alignment, type)
-  if (!good) throw new Error('ivar "' + name + '" was NOT sucessfully added to Class: ' + this.getName())
+  if (!core.class_addIvar(this.pointer, name, size, alignment, type)) {
+    throw new Error('ivar "' + name + '" was NOT sucessfully added to Class: ' + this.getName())
+  }
   return this
 }
+
+/**
+ * Adds a Protocol to the list of protocols that this class "conforms to", or
+ * "implements". Usually, an implementation object is passed in that defined the
+ * Protocol's defined methods onto the class conveniently.
+ */
 
 proto.addProtocol = function addProtocol (protocolName, impl) {
   var informal = require('./bridgesupport').informal_protocols[protocolName]
@@ -135,6 +171,7 @@ proto.getIvarLayout = function getIvarLayout () {
  * Get's a Class instance's superclass. If the current class is a base class,
  * then this will return null.
  */
+
 proto.getSuperclass = function getSuperclass () {
   var superclassPointer = this._getSuperclassPointer()
   if (superclassPointer.isNull()) return null;
@@ -184,8 +221,7 @@ proto._getClassMethod = function _getClassMethod (selPtr) {
 proto._getTypesClass = function getTypesClass (sel, isClass) {
   //console.error('_getTypesClass: %s, isClass: %d', sel, isClass);
   var method = this['get'+(isClass ? 'Class' : 'Instance')+'Method'](sel)
-  if (!method) return null;
-  return method.getTypes();
+  return method ? method.getTypes() : null
 }
 
 proto.getVersion = function getVersion () {
@@ -200,6 +236,7 @@ proto.setVersion = function setVersion (v) {
  * Returns an Array of the class variables this Class has. Superclass variables
  * are not included.
  */
+
 proto.getClassVariables = function getClassVariables () {
   return core.copyIvarList(this._getClassPointer())
 }
@@ -208,6 +245,7 @@ proto.getClassVariables = function getClassVariables () {
  * Returns an Array of the instance variables this Class has. Superclass
  * variables are not included.
  */
+
 proto.getInstanceVariables = function getInstanceVariables () {
   return core.copyIvarList(this.pointer)
 }
@@ -216,6 +254,7 @@ proto.getInstanceVariables = function getInstanceVariables () {
  * Returns an Array of all the class methods this Class responds to.
  * This function returns the raw, unsorted result of copyMethodList().
  */
+
 proto.getClassMethods = function getClassMethods () {
   // getClassPointer() on a Class actually gets a pointer to the metaclass
   return core.copyMethodList(this._getClassPointer())
@@ -226,6 +265,7 @@ proto.getClassMethods = function getClassMethods () {
  * respond to.
  * This function returns the raw, unsorted result of copyMethodList().
  */
+
 proto.getInstanceMethods = function getInstanceMethods () {
   return core.copyMethodList(this.pointer)
 }
@@ -234,7 +274,9 @@ proto.getInstanceMethods = function getInstanceMethods () {
  * Allocates a new pointer to this type. The pointer points to `nil` initially.
  * This is meant for creating a pointer to hold an NSError*, and pass a ref()
  * to it into a method that accepts an 'error' double pointer.
+ * XXX: Tentative API - name will probably change
  */
+
 proto.createPointer = function createPointer () {
   var ptr = new core.Pointer(core.TYPE_SIZE_MAP.pointer)
   ptr.putPointer(core.Pointer.NULL)

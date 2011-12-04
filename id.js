@@ -1,44 +1,73 @@
+
 /**
  * The 'id' function is essentially the "base class" for all Objective-C
  * objects that get passed around JS-land.
  */
 
+/**
+ * Module exports.
+ */
+
 exports.wrap = wrap
 
-var proto = exports.proto = Object.create(Function.prototype)
+/**
+ * Module dependencies.
+ */
+
+var debug = require('debug')('NodObjC')
+  , proto = exports.proto = Object.create(Function.prototype)
   , core  = require('./core')
   , Class = require('./class')
   , types = require('./types')
   , SEL   = require('./sel')
   , exception = require('./exception')
-  , KEY   = new core.Pointer(1)
   , assert = require('assert')
-  , debug = require('debug')('NodObjC')
+
+/**
+ * An arbitrary "key" pointer we use for storing the JS-wrap instance reference
+ * into the ObjC object's internal weak map via objc_getAssociatedObject().
+ */
+
+var KEY = new core.Pointer(1)
 
 /**
  * Wraps up a pointer that is expected to be a compatible Objective-C
- * object that can recieve messages.
+ * object that can recieve messages. This function returns a cached version of the
+ * wrapped function after the first time it is invoked on a given Pointer, using
+ * Objective-C's internal association map for objects.
  */
+
 function wrap (pointer) {
+  debug('id#wrap(%d)', pointer.address)
   var rtn = null
     , p = core.objc_getAssociatedObject(pointer, KEY)
   if (p.isNull()) {
-    rtn = _wrap(pointer)
+    rtn = createFunctionWrapper(pointer)
     // Store the wrapped instance internally
     var ref = new core.Pointer(core.TYPE_SIZE_MAP.Object)
     // don't call free() automatically when ref gets GC'd
     // TODO: we're gonna have to free this pointer someday!
+    // XXX: use node-weak to get a callback when the wrapper is GC'd
     ref.free = false
     ref.putObject(rtn)
     core.objc_setAssociatedObject(pointer, KEY, ref, 0)
   } else {
+    debug('returning cached associated instance')
     rtn = p.getObject()
   }
   //assert.equal(rtn.pointer.address, pointer.address)
   return rtn
 }
 
-function _wrap (pointer) {
+/**
+ * Internal function that essentially "creates" a new Function instance wrapping
+ * the given pointer. The function's implementation is the "id()" function below,
+ *
+ * XXX: Maybe use Function.create() from my `create` module here (benchmark)???
+ */
+
+function createFunctionWrapper (pointer) {
+  debug('createFunctionWrapper(%d)', pointer.address)
 
   // This 'id' function is syntax sugar around the msgSend function attached to
   // it. 'msgSend' is expecting the selector first, an Array of args second, so
@@ -78,7 +107,7 @@ function _wrap (pointer) {
   id.pointer = pointer
   // Morph into a MUTANT FUNCTION FREAK!!1!
   id.__proto__ = proto
-  return id;
+  return id
 }
 
 
@@ -95,7 +124,9 @@ function _wrap (pointer) {
  * If you wanted to monkey-patch *every* message that got sent out from an
  * object though NodObjC, this is the place to do it.
  */
+
 proto.msgSend = function msgSend (sel, args) {
+  debug('sending message:', sel, args)
   var types = this._getTypes(sel, args)
     , argTypes = types[1]
     , msgSendFunc = core.get_objc_msgSend(types)
@@ -118,6 +149,7 @@ proto.msgSend = function msgSend (sel, args) {
  * is found.
  * TODO: Just merge this logic with `msgSend()`? It's not used anywhere else
  */
+
 proto._getTypes = function getTypes (sel, args) {
   var c = this.getClass()
     , t = c._getTypesClass(sel, this.isClass)
@@ -133,13 +165,15 @@ proto._getTypes = function getTypes (sel, args) {
 /**
  * Retrieves the wrapped Class instance for this object.
  */
+
 proto.getClass = function getClass () {
-  return Class.wrap(this._getClassPointer());
+  return Class.wrap(this._getClassPointer())
 }
 
 /**
  * Returns the node-ffi pointer for the class of this object.
  */
+
 proto._getClassPointer = function getClassPointer () {
   return core.object_getClass(this.pointer)
 }
@@ -147,21 +181,24 @@ proto._getClassPointer = function getClassPointer () {
 /**
  * Calls 'object_getClassName()' on this object.
  */
+
 proto.getClassName = function getClassName () {
-  return core.object_getClassName(this.pointer);
+  return core.object_getClassName(this.pointer)
 }
 
 /**
  * Dynamically changes the object's Class.
  */
+
 proto.setClass = function setClass (newClass) {
-  return Class.wrap(core.object_setClass(this.pointer, newClass.pointer));
+  return Class.wrap(core.object_setClass(this.pointer, newClass.pointer))
 }
 
 /**
  * Walks up the inheritance chain and returns an Array of Strings of
  * superclasses.
  */
+
 proto.ancestors = function ancestors () {
   var rtn = []
     , c = this.getClass()
@@ -177,10 +214,12 @@ proto.ancestors = function ancestors () {
  * If just a name is passed in, then this function gets the ivar current value.
  * If a name and a new value are passed in, then this function sets the ivar.
  */
+
 proto.ivar = function ivar (name, value) {
   // TODO: Add support for passing in a wrapped Ivar instance as the `name`
   if (arguments.length > 1) {
     // setter
+    debug('setting ivar:', name, value)
     var ivar = this.isClass
              ? this.getClassVariable(name)
              : this.getClass().getInstanceVariable(name)
@@ -188,11 +227,18 @@ proto.ivar = function ivar (name, value) {
     return core.object_setIvar(this.pointer, ivar.pointer, unwrapped)
   } else {
     // getter
+    debug('getting ivar:', name)
     var ptr = new core.Pointer(core.TYPE_SIZE_MAP.pointer)
       , ivar = core.object_getInstanceVariable(this.pointer, name, ptr)
     return core.wrapValue(ptr.getPointer(), core.ivar_getTypeEncoding(ivar))
   }
 }
+
+/**
+ * Returns an Array of Strings of the names of the ivars that the current object
+ * contains. This function can iterate through the object's superclasses
+ * recursively, if you specify a 'maxDepth' argument.
+ */
 
 proto.ivars = function ivars (maxDepth, sort) {
   var rtn = []
@@ -215,6 +261,7 @@ proto.ivars = function ivars (maxDepth, sort) {
  * will respond to. This function can iterate through the object's superclasses
  * recursively, if you specify a 'maxDepth' number argument.
  */
+
 proto.methods = function methods (maxDepth, sort) {
   var rtn = []
     , c = this.getClass()
@@ -233,9 +280,11 @@ proto.methods = function methods (maxDepth, sort) {
 
 /**
  * Returns a node-ffi pointer pointing to this object. This is a convenience
- * function for methods that take pointers to pointers (i.e. NSError**).
+ * function for methods that take pointers to objects (i.e. NSError**).
  */
+
 proto.ref = function ref () {
+  debug('id#ref()')
   var ptr = this.pointer.ref()
   return ptr
 }
@@ -245,6 +294,7 @@ proto.ref = function ref () {
  * The id wrap's overidden toString() function proxies up to the id's
  * description method:  [[id description] UTF8String]
  */
+
 proto.toString = function toString () {
   return this('description')('UTF8String')
 }
