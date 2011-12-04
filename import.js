@@ -1,5 +1,10 @@
+
 /**
  * Logic for importing a Framework into the node process.
+ */
+
+/**
+ * Module exports.
  */
 
 exports.import = importFramework
@@ -8,25 +13,33 @@ exports.resolve = resolve
 // The Framework PATH. Equivalent to the -F switch with gcc.
 exports.PATH = ['/System/Library/Frameworks', '/System/Library/PrivateFrameworks']
 
+/**
+ * Module dependencies.
+ */
+
 var fs = require('fs')
   , path = require('path')
+  , debug = require('debug')('NodObjC')
   , core = require('./core')
   , _class = require('./class')
   , _global = require('./index')
   , bridgesupport = require('./bridgesupport').bridgesupport
-  , debug = require('debug')('NodObjC')
   , join = path.join
   , basename = path.basename
   , exists = path.existsSync
   , SUFFIX = '.framework'
 
-// A cache for the frameworks that have already been imported.
-var importCache = {}
+/**
+ * A cache for the frameworks that have already been imported.
+ */
+
+var cache = {}
 
 
 /**
  * Accepts a single framework name and imports it into the current node process
  */
+
 function importFramework (framework, skip) {
   debug('importing framework:', framework, skip)
   framework = exports.resolve(framework)
@@ -34,7 +47,7 @@ function importFramework (framework, skip) {
   var shortName = basename(framework, SUFFIX)
 
   // Check if the framework has already been loaded
-  var fw = importCache[shortName]
+  var fw = cache[shortName]
   if (fw) {
     debug('skipping framework because already loaded:', framework)
     return
@@ -43,6 +56,7 @@ function importFramework (framework, skip) {
   // Load the main framework binary file
   var frameworkPath = join(framework, shortName)
     , lib = core.dlopen(frameworkPath)
+
   fw = {
       lib: lib
     , name: shortName
@@ -51,7 +65,7 @@ function importFramework (framework, skip) {
   }
 
   // cache before loading bridgesupport files
-  importCache[shortName] = fw
+  cache[shortName] = fw
 
   // Parse the BridgeSupport file and inline dylib, for the C functions, enums,
   // and other symbols not introspectable at runtime.
@@ -79,6 +93,7 @@ function importFramework (framework, skip) {
  * Accepts a single framework name and resolves it into an absolute path
  * to the base directory of the framework.
  */
+
 function resolve (framework) {
   // already absolute, return as-is
   if (~framework.indexOf('/')) return framework;
