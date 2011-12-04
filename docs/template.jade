@@ -1,0 +1,6 @@
+each part in input
+  if (!part.ignore)
+    .desc!= part.description.full
+    if (part.code)
+      pre
+        code!= part.code
