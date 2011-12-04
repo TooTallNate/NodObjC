@@ -1,3 +1,4 @@
+
 /**
  * Transforms C Blocks into JS Functions and vice-versa.
  *
@@ -6,16 +7,28 @@
  *   http://en.wikipedia.org/wiki/Blocks_(C_language_extension)
  */
 
+/**
+ * Module exports.
+ */
+
 exports.createBlock = createBlock
 exports.getPointer = getPointer
+
+/**
+ * Module dependencies.
+ */
 
 var ffi = require('node-ffi')
   , core = require('./core')
   , imp = require('./imp')
   , id = require('./id')
 
-// We have to simulate what the llvm compiler does when it encounters a Block
-// literal expression:
+/**
+ * We have to simulate what the llvm compiler does when it encounters a Block
+ * literal expression (see Block-ABI-Apple.txt above).
+ * The "block literal" is the struct type for each Block instance.
+ */
+
 var __block_literal_1 = ffi.Struct([
     ['pointer', 'isa']
   , ['int32', 'flags']
@@ -23,17 +36,19 @@ var __block_literal_1 = ffi.Struct([
   , ['pointer', 'invoke']
   , ['pointer', 'descriptor']
 ])
-//console.log(__block_literal_1.__structInfo__)
-//console.log('sizeof __block_literal_1: %d', __block_literal_1.__structInfo__.size);
+
+/**
+ * The "block descriptor" is a static singleton struct. Probably used in more
+ * complex Block scenarios involving actual closure variables needing storage
+ * (in NodObjC, JavaScript closures are leveraged instead).
+ */
 
 var __block_descriptor_1 = ffi.Struct([
     ['ulonglong', 'reserved']
   , ['ulonglong', 'Block_size']
 ])
-//console.log('sizeof __block_descriptor_1: %d', __block_descriptor_1.__structInfo__.size);
 
-// These values never change so we get to reuse the same one for every block
-var BD = new __block_descriptor_1
+var BD = new __block_descriptor_1()
 BD.reserved = 0
 BD.Block_size = ffi.sizeOf(__block_literal_1)
 
@@ -44,6 +59,7 @@ var CGB
 /**
  * Creates a C block instance from a JS function and returns it's pointer
  */
+
 function createBlockPointer (func, type) {
   if (!func) return null
   var bl = new __block_literal_1
@@ -63,6 +79,7 @@ function createBlockPointer (func, type) {
  * Blocks are regular Objective-C objects in Obj-C, and can be sent messages;
  * thus Block instances need are creted using the id.wrap() function.
  */
+
 function createBlock (func, type) {
   return id.wrap(createBlockPointer(func, type))
 }
@@ -72,8 +89,9 @@ function createBlock (func, type) {
  * creates a new block with _createBlock(). The second case should be most common
  * since it will be rare to create your own Block intstances and pass them around.
  */
+
 function getPointer (blockOrFunc, type) {
-  if (blockOrFunc instanceof id.proto) {
+  if ('pointer' in blockOrFunc) {
     return blockOrFunc.pointer
   } else {
     return createBlockPointer(blockOrFunc, type)
