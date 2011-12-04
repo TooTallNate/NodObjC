@@ -1,9 +1,19 @@
+
 /**
  * Represents an Objective-C "Method" instance. These do not respond to regular
  * messages, so it does not inherit from idWrap
  */
+
+/**
+ * Module exports.
+ */
+
 exports.wrap = wrap
 exports.Method = Method
+
+/**
+ * Module dependencies.
+ */
 
 var core = require('./core')
   , IMP = require('./imp')
