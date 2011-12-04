@@ -5,7 +5,7 @@ DOC_DEPS = $(JS_FILES:.js=.doc)
 test:
 	@./test/run.sh $(TESTS)
 
-%.doc: lib/%.js
+lib/%.doc: lib/%.js
 	./node_modules/.bin/dox < "$<" | node docs/compile.js "$<"
 
 %.doc.debug: lib/%.js
