@@ -1,3 +1,4 @@
+
 /**
  * Logic for translating a given Objective-C "type" encoding into a node-ffi
  * type.
@@ -6,12 +7,24 @@
  * node-ffi Type List: https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list
  */
 
+/**
+ * Module exports.
+ */
+
 exports.map = map
 exports.mapArray = mapArray
 exports.parse = parse
 
+/**
+ * Module dependencies.
+ */
+
 var struct = require('./struct')
   , assert = require('assert')
+
+/**
+ * A map of Objective-C type encodings to node-ffi types.
+ */
 
 var typeEncodings = {
     'c': 'char'
@@ -35,6 +48,11 @@ var typeEncodings = {
   , '?': 'pointer'  // Unknown, used for function pointers
 }
 
+/**
+ * A map of the additional type info for some ObjC methods.
+ * XXX: Not used.
+ */
+
 var methodEncodings = {
     'r': 'const'
   , 'n': 'in'
@@ -49,22 +67,23 @@ var methodEncodings = {
  * Maps a single Obj-C 'type' into a valid node-ffi type.
  * This mapping logic is kind of a mess...
  */
+
 function map (type) {
-  if (!type) throw new Error('got falsey "type" to map ('+type+'). this should NOT happen!');
+  if (!type) throw new Error('got falsey "type" to map ('+type+'). this should NOT happen!')
   if (type.type) type = type.type
-  if (struct.isStruct(type)) return struct.getStruct(type);
-  var rtn = typeEncodings[type];
-  if (rtn) return rtn;
-  if (type[0] === '^') return 'pointer';
-  rtn = typeEncodings[type[type.length-1]];
-  if (rtn) return rtn;
+  if (struct.isStruct(type)) return struct.getStruct(type)
+  var rtn = typeEncodings[type]
+  if (rtn) return rtn
+  if (type[0] === '^') return 'pointer'
+  rtn = typeEncodings[type[type.length-1]]
+  if (rtn) return rtn
   if (type[0] == '[')
-    throw new Error('Array types not yet supported: ' + type);
+    throw new Error('Array types not yet supported: ' + type)
   if (type[0] == '(')
-    throw new Error('Union types not yet supported: ' + type);
+    throw new Error('Union types not yet supported: ' + type)
   if (type[0] == 'b')
-    throw new Error('Bit field types not yet supported: ' + type);
-  throw new Error('Could not convert type: ' + type);
+    throw new Error('Bit field types not yet supported: ' + type)
+  throw new Error('Could not convert type: ' + type)
 }
 
 /**
@@ -72,10 +91,11 @@ function map (type) {
  * parse() below), and returns a new Array with the values mapped to valid ffi
  * types.
  */
+
 function mapArray (types) {
   return types.map(function (type) {
-    return Array.isArray(type) ? exports.mapArray(type) : exports.map(type);
-  });
+    return Array.isArray(type) ? exports.mapArray(type) : exports.map(type)
+  })
 }
 
 /**
@@ -83,6 +103,7 @@ function mapArray (types) {
  * return type is the first array value, and an Array of argument types is the
  * array second value.
  */
+
 var DELIMS = Object.keys(typeEncodings)
 function parse (types) {
   var rtn = []
@@ -97,11 +118,11 @@ function parse (types) {
     }
 
     if (c == '{' || c == '[' || c == '(') {
-      depth++;
+      depth++
     } else if (c == '}' || c == ']' || c == ')') {
-      depth--;
+      depth--
       if (!depth)
-        add();
+        add()
     } else if (~DELIMS.indexOf(c) && !depth) {
       add()
     }
