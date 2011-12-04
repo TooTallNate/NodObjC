@@ -10,10 +10,8 @@
     "test": "./test/run.sh test/*.js"
   }
 , "dependencies": {
-    "node-ffi": "~0.4.1"
-  , "sax": "0.3.x"
-  }
-, "devDependencies": {
     "debug": "*"
+  , "node-ffi": "~0.4.1"
+  , "sax": "0.3.x"
   }
 }
