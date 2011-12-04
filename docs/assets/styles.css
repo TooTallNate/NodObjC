@@ -3,6 +3,11 @@ html, body {
   margin: 0;
 }
 
+body {
+  background-image: url(bg.jpg);
+  color: #dfbd9c;
+}
+
 .code {
   height: 0px;
   overflow: hidden;
