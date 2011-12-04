@@ -4,7 +4,7 @@
 , "version": "0.0.8"
 , "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"
 , "repository": { "type": "git", "url": "git://github.com/TooTallNate/NodObjC.git" }
-, "main": "./index.js"
+, "main": "./lib/index.js"
 , "engines": { "node": ">= 0.4.0 && < 0.7.0" }
 , "scripts": {
     "test": "make test"
