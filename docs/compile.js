@@ -30,6 +30,7 @@ function render () {
     , buf = fs.readFileSync(template)
     , fn = jade.compile(buf, opts)
     , html = fn(opts)
+  // XXX: Output to stderr when I can figure out the Makefile syntax
   //process.stdout.write(html)
   fs.writeFileSync(__dirname + '/' + basename(filename, '.js') + '.html', html)
 }
