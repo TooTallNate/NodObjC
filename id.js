@@ -25,7 +25,7 @@ var debug = require('debug')('NodObjC')
 
 /**
  * An arbitrary "key" pointer we use for storing the JS-wrap instance reference
- * into the ObjC object's internal weak map via objc_getAssociatedObject().
+ * into the ObjC object's internal weak map via `objc_getAssociatedObject()`.
  */
 
 var KEY = new core.Pointer(1)
