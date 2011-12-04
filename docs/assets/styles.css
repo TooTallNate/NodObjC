@@ -39,6 +39,12 @@ pre code {
   padding: 20px;
 }
 
+#footer {
+  border-top: Solid 1px #01001a;
+  text-align: right;
+  padding: 5px;
+}
+
 #ribbon {
   position: absolute;
   top: 0px;
