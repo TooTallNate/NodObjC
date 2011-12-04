@@ -1,6 +1,11 @@
+
 /**
  * This 'core' module is the `libffi` wrapper. All required native
- * functionality is instaniated and then exported in this module.
+ * functionality is instantiated and then exported in this module.
+ */
+
+/**
+ * Module dependencies.
  */
 
 var ffi = require('node-ffi')
@@ -73,20 +78,20 @@ var ffi = require('node-ffi')
   })
   , msgSendCache = {}
 
-exports.__proto__ = objc;
+exports.__proto__ = objc
 
 // Expose `node-ffi` stuff so we don't have to require node-ffi elsewhere
-exports.Struct = ffi.Struct;
-exports.Pointer = ffi.Pointer;
-exports.Callback = ffi.Callback;
-exports.ForeignFunction = ffi.ForeignFunction;
-exports.TYPE_SIZE_MAP = ffi.Bindings.TYPE_SIZE_MAP;
+exports.Struct = ffi.Struct
+exports.Pointer = ffi.Pointer
+exports.Callback = ffi.Callback
+exports.ForeignFunction = ffi.ForeignFunction
+exports.TYPE_SIZE_MAP = ffi.Bindings.TYPE_SIZE_MAP
 
 exports.dlopen = function dlopen (path) {
-  return new ffi.DynamicLibrary(path);
+  return new ffi.DynamicLibrary(path)
 }
 
-exports.process = exports.dlopen();
+exports.process = exports.dlopen()
 
 /**
  * Convienience function to return an Array of Strings of the names of every
@@ -104,15 +109,15 @@ exports.getClassList = function getClassList () {
       , c = null
       , classes = new ffi.Pointer(s * num)
       , cursor = classes
-    objc.objc_getClassList(classes, num);
+    objc.objc_getClassList(classes, num)
     for (var i=0; i<num; i++) {
       c = cursor.getPointer()
-      rtn.push(objc.class_getName(c));
-      cursor = cursor.seek(s);
+      rtn.push(objc.class_getName(c))
+      cursor = cursor.seek(s)
     }
     // free() not needed since ffi allocated the buffer, and will free() with V8's GC
   }
-  return rtn;
+  return rtn
 }
 
 /**
@@ -197,22 +202,22 @@ exports.copyMethodDescriptionList = function copyMethodDescriptionList (protocol
  * Takes care of free()ing the returned pointer, as is required.
  */
 exports.getMethodReturnType = function getMethodReturnType (method) {
-  return getStringAndFree(objc.method_copyReturnType(method));
+  return getStringAndFree(objc.method_copyReturnType(method))
 }
 
 exports.getMethodArgTypes = function getMethodArgTypes (method) {
   var num = objc.method_getNumberOfArguments(method)
     , rtn = []
   for (var i=2; i<num; i++) {
-    rtn.push(getStringAndFree(objc.method_copyArgumentType(method, i)));
+    rtn.push(getStringAndFree(objc.method_copyArgumentType(method, i)))
   }
-  return rtn;
+  return rtn
 }
 
 exports.getStringAndFree = function getStringAndFree (ptr) {
   var str = ptr.getCString()
-  ffi.free(ptr);
-  return str;
+  ffi.free(ptr)
+  return str
 }
 
 // Creates and/or returns an appropriately wrapped up 'objc_msgSend' function
@@ -224,15 +229,15 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
     , i = 0
     , l = args.length
   for (; i<l; i++) {
-    type.push(types.map(args[i]));
+    type.push(types.map(args[i]))
   }
   // Stringify the types
-  var key = rtn.toString();
-  //console.warn('INFO: types key: %s', key);
+  var key = rtn.toString()
+  //console.warn('INFO: types key: %s', key)
 
   // first check the cache
-  if (msgSendCache[key]) return msgSendCache[key];
-  //console.warn('WARN: key not found in cache, generating new copy: %s', key);
+  if (msgSendCache[key]) return msgSendCache[key]
+  //console.warn('WARN: key not found in cache, generating new copy: %s', key)
 
   // If we got here, then create a new objc_msgSend ffi wrapper
   // TODO: Don't use the Library helper, use ffi low-level API
@@ -240,7 +245,7 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
     objc_msgSend: rtn
   })
   // return and cache at the same time
-  return msgSendCache[key] = lib.objc_msgSend;
+  return msgSendCache[key] = lib.objc_msgSend
 }
 
 
@@ -248,16 +253,16 @@ exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
 exports.objc_method_description = ffi.Struct([
     ['pointer', 'name']
   , ['string', 'types']
-]);
+])
 
 
 /**
  * Wraps up a node-ffi pointer if needed (not needed for Numbers, etc.)
  */
 exports.wrapValue = function wrapValue (val, type) {
-  //console.error('wrapValue(): %s, %j', val, type);
-  if (val === null || (val.isNull && val.isNull())) return null;
-  var rtn = val;
+  //console.error('wrapValue(): %s, %j', val, type)
+  if (val === null || (val.isNull && val.isNull())) return null
+  var rtn = val
   if (type.function_pointer) {
     if (type.type == '@?') {
       return block.createBlock(val, type)
@@ -268,17 +273,17 @@ exports.wrapValue = function wrapValue (val, type) {
   // get the raw type from Type objects
   if (type.type) type = type.type
   if (type == '@') {
-    rtn = id.wrap(val);
+    rtn = id.wrap(val)
   } else if (type == '#') {
-    rtn = Class.wrap(val);
+    rtn = Class.wrap(val)
   } else if (type == ':') {
-    rtn = SEL.toString(val);
+    rtn = SEL.toString(val)
   } else if (type == 'B') {
-    rtn = val ? true : false;
+    rtn = val ? true : false
   }
   if (rtn)
     rtn._type = type
-  return rtn;
+  return rtn
 }
 
 /**
@@ -298,8 +303,8 @@ exports.wrapValues = function wrapValues (values, types) {
  * Unwraps a previously wrapped NodObjC object.
  */
 exports.unwrapValue = function unwrapValue (val, type) {
-  //console.error('unwrapValue(): %s, %j', val, type);
-  var rtn = val;
+  //console.error('unwrapValue(): %s, %j', val, type)
+  var rtn = val
   if (type.function_pointer) {
     if (type.type == '@?') {
       return block.getPointer(val, type)
@@ -310,14 +315,14 @@ exports.unwrapValue = function unwrapValue (val, type) {
   // get the raw type from Type objects
   if (type.type) type = type.type
   if (type == '@' || type == '#') {
-    if (!val) return null;
-    rtn = val.pointer;
+    if (!val) return null
+    rtn = val.pointer
   } else if (type == ':') {
-    rtn = SEL.toSEL(val);
+    rtn = SEL.toSEL(val)
   }
   if (rtn)
     rtn._type = type
-  return rtn;
+  return rtn
 }
 
 /**
