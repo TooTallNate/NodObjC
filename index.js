@@ -1,7 +1,7 @@
 
 /**
  * NodObjC is the bridge between NodeJS and the Objective-C runtime and
- * frameworks. 
+ * frameworks.
  */
 
 /**
@@ -35,7 +35,11 @@ $.resolve = Import.resolve
 /**
  * This function accepts native JS types (String, Number, Date) and converts them
  * to the proper Objective-C type (NSString, NSNumber, NSDate).
- *   Syntax Sugar...
+ *
+ * ```
+ * var jsString = 'a javascript String'
+ * var nsString = $(jsString)
+ * ```
  */
 
 function $ (o) {
@@ -50,6 +54,9 @@ function $ (o) {
   throw new Error('Unsupported object passed in to convert: ' + o)
 }
 
+/*!
+ * Returns true if `d` is a `Date` instance.
+ */
 
 function isDate (d) {
   return d instanceof Date
