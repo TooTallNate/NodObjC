@@ -63,7 +63,7 @@ function wrap (pointer) {
  * Internal function that essentially "creates" a new Function instance wrapping
  * the given pointer. The function's implementation is the "id()" function below,
  *
- * XXX: Maybe use Function.create() from my `create` module here (benchmark)???
+ * XXX: Maybe use `Function.create()` from my `create` module here (benchmark)???
  */
 
 function createFunctionWrapper (pointer) {
@@ -292,7 +292,7 @@ proto.ref = function ref () {
 
 /**
  * The id wrap's overidden toString() function proxies up to the id's
- * description method:  [[id description] UTF8String]
+ * description method: `[[id description] UTF8String]`
  */
 
 proto.toString = function toString () {
