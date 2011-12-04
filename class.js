@@ -31,8 +31,8 @@ var debug = require('debug')('NodObjC')
  * Gets a wrapped Class instance based off the given name.
  * Also takes care of returning a cached version when available.
  *
- * @param className String class name to load.
- * @return a `Class` instance wrapping the desired Objective C "Class".
+ * @param {String} className The class name to load.
+ * @return {Class} A `Class` instance wrapping the desired Objective C *"Class"*.
  */
 
 function getClass (className) {
