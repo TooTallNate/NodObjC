@@ -18,6 +18,10 @@ a:hover {
   color: #c66;
 }
 
+#title {
+  text-decoration: none;
+}
+
 pre, code {
   border: Solid 1px #000;
   background-color: rgba(0, 40, 80, 0.5);
