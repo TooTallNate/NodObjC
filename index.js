@@ -12,7 +12,7 @@
 
 module.exports = $
 
-/**
+/*!
  * Load the node-ffi extensions.
  */
 
