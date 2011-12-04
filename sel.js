@@ -14,7 +14,8 @@ exports.toString = toString
  * Module dependencies.
  */
 
-var core = require('./core')
+var debug = require('debug')('NodObjC')
+  , core = require('./core')
   , cache = {}
 
 /**
@@ -29,6 +30,7 @@ var core = require('./core')
 function toSEL (sel) {
   var rtn = cache[sel]
   if (rtn) return rtn
+  debug('sel_registerName():', sel)
   return cache[sel] = core.sel_registerName(sel)
 }
 
