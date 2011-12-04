@@ -40,12 +40,10 @@ $.resolve = Import.resolve
  * for methods that accept NSStrings (since NodObjC doesn't automatically cast to
  * NSStrings in those instances).
  *
- * ```
- * var jsString = 'a javascript String'
- * var nsString = $(jsString)
+ *     var jsString = 'a javascript String'
+ *     var nsString = $(jsString)
  *
- * $.NSLog(nsString)
- * ```
+ *     $.NSLog(nsString)
  */
 
 function $ (o) {
