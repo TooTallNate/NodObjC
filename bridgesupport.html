@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Bridgesupport | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Bridgesupport</h2><div class="part"><div class="desc"><p>This module takes care of loading the BridgeSupport XML files for a given<br />framework, and parsing the data into the given framework object.</p>
+
+<h2>Reference</h2>
+
+<p><a href='http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html'>http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html</a></p>
+
+<p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.bridgesupport = bridgesupport
+exports.classes = {}
+exports.informal_protocols = {}</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var fs = require('fs')
+  , sax = require('sax')
+  , path = require('path')
+  , assert = require('assert')
+  , debug = require('debug')('NodObjC')
+  , IMP = require('./imp')
+  , core = require('./core')
+  , types = require('./types')
+  , struct = require('./struct')
+  , _global = require('./index')
+  , Import = require('./import').import
+  , join = path.join
+  , exists = path.existsSync
+  , DY_SUFFIX = '.dylib'
+  , BS_SUFFIX = '.bridgesupport'</code></pre></div><div class="part"><div class="desc"><p>Architecture-specific functions that return the Obj-C type or value from one<br />of these BridgeSupport XML nodes.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var getType
+  , getValue
+if (process.arch == 'x64') {
+  // 64-bit specific functions
+  debug('using 64-bit &quot;type&quot; and &quot;value&quot; attributes')
+  getType = function (a) {
+    return a.type64 || a.type
+  }
+  getValue = function (a) {
+    return a.value64 || a.value
+  }
+} else {
+  // 32-bit / ARM specific functions
+  debug('using regular &quot;type&quot; and &quot;value&quot; attributes')
+  getType = function (a) {
+    return a.type
+  }
+  getValue = function (a) {
+    return a.value
+  }
+}</code></pre></div><div class="part"><h3>bridgesupport()</h3><div class="desc"><p>Attempts to retrieve the BridgeSupport files for the given framework.<br />It synchronously reads the contents of the bridgesupport files and parses<br />them in order to add the symbols that the Obj-C runtime functions cannot<br />determine.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function bridgesupport (fw) {
+
+  var bridgeSupportDir = join(fw.basePath, 'Resources', 'BridgeSupport')
+    , bridgeSupportXML = join(bridgeSupportDir, fw.name + BS_SUFFIX)
+    , bridgeSupportDylib = join(bridgeSupportDir, fw.name + DY_SUFFIX)
+
+  // If there's no BridgeSupport file, then bail...
+  if (!exists(bridgeSupportXML)) {
+    debug('no BridgeSupport files found for framework &quot;%s&quot; at:', fw.name, bridgeSupportXML)
+    return
+  }
+
+  // Load the &quot;inline&quot; dylib if it exists
+  if (exists(bridgeSupportDylib)) {
+    debug('importing &quot;inline&quot; dylib for framework &quot;%s&quot; at:', fw.name, bridgeSupportDylib)
+    fw.inline = core.dlopen(bridgeSupportDylib)
+  }
+
+  var contents = fs.readFileSync(bridgeSupportXML, 'utf8')
+    , parser = sax.parser(true)
+    , gotEnd = false
+    , curObj = null
+
+  parser.onerror = function (e) { throw e }
+  parser.onopentag = function (node) {
+    var a = node.attributes
+    //a._name = node.name
+    switch (node.name) {
+      case 'depends_on':
+        Import(a.path, true)
+        break;
+      case 'class':
+        curObj = exports.classes[a.name] || a
+        exports.classes[curObj.name] = curObj
+        break;
+      case 'method':
+        // Normalize the 'type' for the platform
+        a.type = getType(a)
+        a._parent = curObj
+        if (!curObj.methods)
+          curObj.methods = []
+        curObj.methods.push(a)
+        curObj = a
+        break;
+      case 'arg':
+        // Normalize the 'type' for the platform
+        a.type = getType(a)
+        a._parent = curObj
+        if (!curObj.args)
+          curObj.args = []
+        curObj.args.push(a)
+        curObj = a
+        break;
+      case 'retval':
+        // Normalize the 'type' for the platform
+        a.type = getType(a)
+        a._parent = curObj
+        curObj.retval = a
+        curObj = a
+        break;
+      case 'signatures':
+        break;
+      case 'string_constant':
+        _global[a.name] = getValue(a)
+        break;
+      case 'enum':
+        _global[a.name] = Number(getValue(a))
+        break;
+      case 'struct':
+        // TODO: Remove the try/catch when all the Struct formats are supported
+        //       Still need Array and Union support.
+        try {
+          _global[a.name] = struct.getStruct(getType(a))
+        } catch (e) {
+          //console.error('FAILED:\n', a)
+          //console.error(e.stack)
+        }
+        break;
+      case 'field':
+        break;
+      case 'cftype':
+        break;
+      case 'constant':
+        defineConstant(a, fw)
+        break;
+      case 'function':
+        curObj = a
+        break;
+      case 'opaque':
+        break;
+      case 'informal_protocol':
+        curObj = exports.informal_protocols[a.name] || a
+        exports.informal_protocols[curObj.name] = curObj
+        break;
+      case 'function_alias':
+        break;
+      default:
+        throw new Error('unkown tag: '+ node.name)
+        break;
+    }
+  }
+  parser.onclosetag = function (node) {
+    switch (node) {
+      case 'function':
+        // Binded functions will be lazy-loaded. We simply define a getter that
+        // does the creation magic the first time, and replaces the getter with
+        // the binded function
+        defineFunction(curObj, fw)
+        curObj = null
+        break;
+      case 'arg':
+      case 'method':
+      case 'retval':
+        var c = curObj._parent
+        curObj._parent = null
+        curObj = c
+        break;
+    }
+  }
+  parser.onend = function () {
+    gotEnd = true
+  }
+
+  // Parse the contents of the file. This should happen synchronously.
+  parser.write(contents).close()
+
+  assert.ok(gotEnd, 'could not parse BridgeSupport files synchronously')
+}</code></pre></div><div class="part"><h3>defineConstant()</h3><div class="desc"><p>Sets up a <constant> tag onto the global exports.<br />These start out as simple JS getters, so that the underlying<br />symbol pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function defineConstant (a, fw) {
+  var name = a.name
+    , type = getType(a)
+  _global.__defineGetter__(name, function () {
+    var ptr = fw.lib.get(name) // TODO: Cache the pointer after the 1st call
+    ptr._type = '^' + type
+    var val = ptr.deref()
+    return val
+  })
+}</code></pre></div><div class="part"><h3>defineFunction()</h3><div class="desc"><p>Sets up a <function> tag onto the global exports.<br />These start out as simple JS getters, so that the underlying<br />function pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function defineFunction (a, fw) {
+  var name = a.name
+    , isInline = a.inline == 'true'
+  if (isInline) {
+    assert.ok(fw.inline, name+', '+fw.name+': declared inline but could not find inline dylib!')
+  }
+  _global.__defineGetter__(name, function () {
+    //console.error(require('util').inspect(a, true, 10))
+    // TODO: Handle 'variadic' arg functions (NSLog), will require
+    //       a &quot;function generator&quot; to get a Function from the passed
+    //       in args (and guess at the types that were passed in...)
+    debug('loading function pointer for:', name)
+    var ptr = (isInline ? fw.inline : fw.lib).get(name)
+      , unwrapper = IMP.createUnwrapperFunction(ptr, a)
+    unwrapper.info = a
+    delete _global[name]
+    return _global[name] = unwrapper
+  })
+}</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
+<a href="https://github.com/visionmedia/dox">dox</a>.
+</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>
