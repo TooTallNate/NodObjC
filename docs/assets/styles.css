@@ -6,7 +6,8 @@ html, body {
 body {
   background-image: url(bg.jpg);
   color: #ffc;
-  font: 13px "Lucida Grande", Verdana;
+  font: 13.5px "Lucida Grande", Verdana;
+  line-height: 21px;
   text-shadow: 0 1px 0 #000;
 }
 
@@ -25,6 +26,11 @@ a:hover {
 pre, code {
   border: Solid 1px #000;
   background-color: rgba(0, 40, 80, 0.5);
+}
+
+pre {
+  margin: 10px;
+  padding: 10px;
 }
 
 pre code {
@@ -66,8 +72,6 @@ pre code {
 
 .code {
   display: none;
-  margin: 10px;
-  padding: 10px;
 }
 
 .code.shown {
