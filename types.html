@@ -1,87 +1,87 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Types | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Types</h2><div class="part"><div class="desc"><p>Logic for translating a given Objective-C "type" encoding into a node-ffi<br />type.</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Types | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Types</h2><div class="part"><div class="desc"><p>Logic for translating a given Objective-C "type" encoding into a node-ffi<br />type.</p>
 
-<p>Reference: <a href='http://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html'>http://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html</a><br />node-ffi Type List: <a href='https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list'>https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list</a></p></div></div><div class="part"><div class="desc"><p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.map = map
-exports.mapArray = mapArray
-exports.parse = parse</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var struct = require('./struct')
-  , assert = require('assert')</code></pre></div><div class="part"><div class="desc"><p>A map of Objective-C type encodings to node-ffi types.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var typeEncodings = {
+<p>Reference: <a href='http://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html'>http://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html</a><br />node-ffi Type List: <a href='https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list'>https://github.com/rbranson/node-ffi/wiki/Node-FFI-Tutorial#wiki-type-list</a></p></div></div><div class="part"><div class="desc"><p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports<span class="preprocessor">.map</span> = map
+exports<span class="preprocessor">.mapArray</span> = mapArray
+exports<span class="preprocessor">.parse</span> = parse</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> <span class="keyword">struct</span> = require(<span class="string">'./struct'</span>)
+  , assert = require(<span class="string">'assert'</span>)</code></pre></div><div class="part"><div class="desc"><p>A map of Objective-C type encodings to node-ffi types.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var typeEncodings = {
     'c': 'char'
   , 'i': 'int32'
   , 's': 'short'
-  , 'l': 'long'
-  , 'q': 'longlong'
-  , 'C': 'uchar'
-  , 'I': 'uint32'
-  , 'S': 'ushort'
-  , 'L': 'ulong'
-  , 'Q': 'ulonglong'
+  , <span class="literal">'l'</span>: <span class="literal">'long'</span>
+  , 'q': <span class="literal">'longlong'</span>
+  , 'C': <span class="literal">'uchar'</span>
+  , 'I': <span class="literal">'uint32'</span>
+  , 'S': <span class="literal">'ushort'</span>
+  , <span class="literal">'L'</span>: <span class="literal">'ulong'</span>
+  , 'Q': <span class="literal">'ulonglong'</span>
   , 'f': 'float'
   , 'd': 'double'
   , 'B': 'int8'
   , 'v': 'void'
-  , '*': 'string'   // String
+  , '*': '<span class="type">string</span>'   // <span class="type">String</span>
   , '@': 'pointer'  // id
   , '#': 'pointer'  // Class
   , ':': 'pointer'  // SEL
-  , '?': 'pointer'  // Unknown, used for function pointers
-}</code></pre></div><div class="part"><div class="desc"><p>A map of the additional type info for some ObjC methods.<br />XXX: Not used.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var methodEncodings = {
-    'r': 'const'
-  , 'n': 'in'
-  , 'N': 'inout'
-  , 'o': 'out'
-  , 'O': 'bycopy'
-  , 'R': 'byref'
-  , 'V': 'oneway'
-}</code></pre></div><div class="part"><h3>map()</h3><div class="desc"><p>Maps a single Obj-C 'type' into a valid node-ffi type.<br />This mapping logic is kind of a mess...</p></div><button class="show-code">Show Code</button><pre class="code"><code>function map (type) {
-  if (!type) throw new Error('got falsey &quot;type&quot; to map ('+type+'). this should NOT happen!')
-  if (type.type) type = type.type
-  if (struct.isStruct(type)) return struct.getStruct(type)
-  var rtn = typeEncodings[type]
-  if (rtn) return rtn
-  if (type[0] === '^') return 'pointer'
-  rtn = typeEncodings[type[type.length-1]]
-  if (rtn) return rtn
-  if (type[0] == '[')
-    throw new Error('Array types not yet supported: ' + type)
-  if (type[0] == '(')
-    throw new Error('Union types not yet supported: ' + type)
-  if (type[0] == 'b')
-    throw new Error('Bit field types not yet supported: ' + type)
-  throw new Error('Could not convert type: ' + type)
-}</code></pre></div><div class="part"><h3>mapArray()</h3><div class="desc"><p>Accepts an Array of ObjC return type and argument types (i.e. the result of<br />parse() below), and returns a new Array with the values mapped to valid ffi<br />types.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function mapArray (types) {
-  return types.map(function (type) {
-    return Array.isArray(type) ? exports.mapArray(type) : exports.map(type)
+  , '?': 'pointer'  // Unknown, used <span class="keyword">for</span> <span class="keyword">function</span> pointers
+}</code></pre></div><div class="part"><div class="desc"><p>A map of the additional type info for some ObjC methods.<br />XXX: Not used.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> methodEncodings = {
+    <span class="string">'r'</span>: <span class="string">'const'</span>
+  , <span class="string">'n'</span>: <span class="string">'in'</span>
+  , <span class="string">'N'</span>: <span class="string">'inout'</span>
+  , <span class="string">'o'</span>: <span class="string">'out'</span>
+  , <span class="string">'O'</span>: <span class="string">'bycopy'</span>
+  , <span class="string">'R'</span>: <span class="string">'byref'</span>
+  , <span class="string">'V'</span>: <span class="string">'oneway'</span>
+}</code></pre></div><div class="part"><div class="desc"><p>Maps a single Obj-C 'type' into a valid node-ffi type.<br />This mapping logic is kind of a mess...</p></div><button class="show-code">Show Code</button><pre class="code"><code>function <span class="keyword">map</span> (<span class="keyword">type</span>) {
+  <span class="keyword">if</span> (!<span class="keyword">type</span>) throw <span class="built_in">new</span> Error(<span class="string">'got falsey &quot;type&quot; to map ('</span>+<span class="keyword">type</span>+<span class="string">'). this should NOT happen!'</span>)
+  <span class="keyword">if</span> (<span class="keyword">type</span>.<span class="keyword">type</span>) <span class="keyword">type</span> = <span class="keyword">type</span>.<span class="keyword">type</span>
+  <span class="keyword">if</span> (<span class="keyword">struct</span>.isStruct(<span class="keyword">type</span>)) <span class="keyword">return</span> <span class="keyword">struct</span>.getStruct(<span class="keyword">type</span>)
+  <span class="keyword">var</span> rtn = typeEncodings[<span class="keyword">type</span>]
+  <span class="keyword">if</span> (rtn) <span class="keyword">return</span> rtn
+  <span class="keyword">if</span> (<span class="keyword">type</span><span class="number">[0</span>] === <span class="string">'^'</span>) <span class="keyword">return</span> <span class="string">'pointer'</span>
+  rtn = typeEncodings[<span class="keyword">type</span>[<span class="keyword">type</span>.length<span class="number">-1</span>]]
+  <span class="keyword">if</span> (rtn) <span class="keyword">return</span> rtn
+  <span class="keyword">if</span> (<span class="keyword">type</span><span class="number">[0</span>] == <span class="string">'['</span>)
+    throw <span class="built_in">new</span> Error(<span class="string">'Array types not yet supported: '</span> + <span class="keyword">type</span>)
+  <span class="keyword">if</span> (<span class="keyword">type</span><span class="number">[0</span>] == <span class="string">'('</span>)
+    throw <span class="built_in">new</span> Error(<span class="string">'Union types not yet supported: '</span> + <span class="keyword">type</span>)
+  <span class="keyword">if</span> (<span class="keyword">type</span><span class="number">[0</span>] == <span class="string">'b'</span>)
+    throw <span class="built_in">new</span> Error(<span class="string">'Bit field types not yet supported: '</span> + <span class="keyword">type</span>)
+  throw <span class="built_in">new</span> Error(<span class="string">'Could not convert type: '</span> + <span class="keyword">type</span>)
+}</code></pre></div><div class="part"><div class="desc"><p>Accepts an Array of ObjC return type and argument types (i.e. the result of<br />parse() below), and returns a new Array with the values mapped to valid ffi<br />types.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">mapArray</span> <span class="params">(types)</span></span> {
+  <span class="keyword">return</span> types.map(<span class="function"><span class="keyword">function</span> <span class="params">(type)</span></span> {
+    <span class="keyword">return</span> Array.isArray(<span class="built_in">type</span>) ? exports.mapArray(<span class="built_in">type</span>) : exports.map(<span class="built_in">type</span>)
   })
-}</code></pre></div><div class="part"><div class="desc"><p>Parses a "types string" (i.e. "v@:") and returns a "types Array", where the<br />return type is the first array value, and an Array of argument types is the<br />array second value.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var DELIMS = Object.keys(typeEncodings)
-function parse (types) {
-  var rtn = []
+}</code></pre></div><div class="part"><div class="desc"><p>Parses a "types string" (i.e. "v@:") and returns a "types Array", where the<br />return type is the first array value, and an Array of argument types is the<br />array second value.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> DELIMS = Object.keys(typeEncodings)
+<span class="function"><span class="keyword">function</span> <span class="title">parse</span> <span class="params">(types)</span> {</span>
+  <span class="keyword">var</span> rtn = []
     , cur = []
     , len = types.length
-    , depth = 0
-  for (var i=0; i&lt;len; i++) {
-    var c = types[i]
+    , depth = <span class="number">0</span>
+  <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;len; i++) {
+    <span class="keyword">var</span> c = types[i]
 
-    if (depth || !/(\d)/.test(c)) {
+    <span class="keyword">if</span> (depth || !<span class="regexp">/(\d)/</span>.test(c)) {
       cur.push(c)
     }
 
-    if (c == '{' || c == '[' || c == '(') {
+    <span class="keyword">if</span> (c == <span class="string">'{'</span> || c == <span class="string">'['</span> || c == <span class="string">'('</span>) {
       depth++
-    } else if (c == '}' || c == ']' || c == ')') {
+    } <span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">'}'</span> || c == <span class="string">']'</span> || c == <span class="string">')'</span>) {
       depth--
-      if (!depth)
+      <span class="keyword">if</span> (!depth)
         add()
-    } else if (~DELIMS.indexOf(c) &amp;&amp; !depth) {
+    } <span class="keyword">else</span> <span class="keyword">if</span> (~DELIMS.indexOf(c) &amp;&amp; !depth) {
       add()
     }
   }
-  function add () {
-    rtn.push(cur.join(''))
+  <span class="function"><span class="keyword">function</span> <span class="title">add</span> <span class="params">()</span> {</span>
+    rtn.push(cur.join(<span class="string">''</span>))
     cur = []
-    depth = 0
+    depth = <span class="number">0</span>
   }
-  assert.equal(rtn[1], '@', '_self argument expected as first arg: ' + types)
-  assert.equal(rtn[2], ':', 'SEL argument expected as second arg: ' + types)
-  return [ rtn[0], rtn.slice(1) ]
+  assert.equal(rtn[<span class="number">1</span>], <span class="string">'@'</span>, <span class="string">'_self argument expected as first arg: '</span> + types)
+  assert.equal(rtn[<span class="number">2</span>], <span class="string">':'</span>, <span class="string">'SEL argument expected as second arg: '</span> + types)
+  <span class="keyword">return</span> [ rtn[<span class="number">0</span>], rtn.slice(<span class="number">1</span>) ]
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
 </div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>

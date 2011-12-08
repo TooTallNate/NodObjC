@@ -1,179 +1,179 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Class | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Class</h2><div class="part"><div class="desc"><p>The <code>Class</code> Object is a subclass of <code>id</code>. Instances of <code>Class</code> wrap an<br />Objective C "Class" instance.</p></div></div><div class="part"><div class="desc"><p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.getClass = getClass
-exports.wrap = wrap</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var debug = require('debug')('NodObjC')
-  , id = require('./id')
-  , proto = exports.proto = Object.create(id.proto)
-  , core = require('./core')
-  , types = require('./types')
-  , method = require('./method')
-  , _global = require('./index')
-  , ivar = require('./ivar')
-  , IMP = require('./imp')
-  , SEL = require('./sel')
-  , classCache = {}</code></pre></div><div class="part"><h3>getClass()</h3><div class="desc"><p>Gets a wrapped Class instance based off the given name.<br />Also takes care of returning a cached version when available.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function getClass (className) {
-  debug('getClass:', className)
-  var rtn = classCache[className]
-  if (rtn) {
-    debug('the classCache actually worked!!!!', className)
-  } else {
-    var pointer = core.objc_getClass(className)
-    rtn = exports.wrap(pointer, className)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Class | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Class</h2><div class="part"><div class="desc"><p>The <code><span class="keyword">Class</span></code> Object is a subclass of <code><span class="title">id</span></code>. Instances of <code><span class="keyword">Class</span></code> wrap an<br />Objective C "Class" instance.</p></div></div><div class="part"><div class="desc"><p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports<span class="preprocessor">.getClass</span> = getClass
+exports<span class="preprocessor">.wrap</span> = wrap</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="identifier">var</span> <span class="identifier">debug</span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'debug'</span>)(<span class="string">'NodObjC'</span>)
+  , <span class="identifier"><span class="keymethods">id</span></span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'./id'</span>)
+  , <span class="identifier">proto</span> = <span class="identifier">exports</span>.<span class="identifier">proto</span> = <span class="constant">Object</span>.<span class="identifier">create</span>(<span class="identifier"><span class="keymethods">id</span></span>.<span class="identifier">proto</span>)
+  , <span class="identifier">core</span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'./core'</span>)
+  , <span class="identifier">types</span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'./types'</span>)
+  , <span class="identifier"><span class="keymethods">method</span></span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'./method'</span>)
+  , <span class="identifier">_global</span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'./index'</span>)
+  , <span class="identifier">ivar</span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'./ivar'</span>)
+  , <span class="constant">IMP</span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'./imp'</span>)
+  , <span class="constant">SEL</span> = <span class="identifier"><span class="keyword">require</span></span>(<span class="string">'./sel'</span>)
+  , <span class="constant">classCache</span> = {}</code></pre></div><div class="part"><div class="desc"><p>Gets a wrapped Class instance based off the given name.<br />Also takes care of returning a cached version when available.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="title">function</span> getClass (<span class="class">className) {</span>
+  debug(<span class="string">'getClass:'</span>, <span class="class">className)</span>
+  var rtn = <span class="class">classCache[className]</span>
+  <span class="keyword">if</span> (rtn) {
+    debug(<span class="string">'the classCache actually worked!!!!'</span>, <span class="class">className)</span>
+  } <span class="keyword">else</span> {
+    var pointer = core.objc_getClass(<span class="class">className)</span>
+    rtn = exports.wrap(pointer, <span class="class">className)</span>
   }
   return rtn
-}</code></pre></div><div class="part"><h3>wrap()</h3><div class="desc"><p>Wraps a Class pointer.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function wrap (pointer, className) {
-  debug('Class#wrap(%d, %s)', pointer.address, className)
+}</code></pre></div><div class="part"><div class="desc"><p>Wraps a Class pointer.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="title">function</span> wrap (pointer, <span class="class">className) {</span>
+  debug(<span class="string">'Class#wrap(%d, %s)'</span>, pointer.address, <span class="class">className)</span>
   var w = id.wrap(pointer)
   w.__proto__ = proto
-  pointer._type = '#'
-  // optionally cache when a class name is given
-  if (className) {
-    classCache[className] = w
+  pointer._<span class="keyword">type</span> = <span class="string">'#'</span>
+  // optionally cache when a <span class="class"><span class="keyword">class</span> name is given</span>
+  <span class="keyword">if</span> (<span class="class">className) {</span>
+    <span class="class">classCache[className] = w</span>
   }
   return w
 }
 
-// Flag used by id#msgSend()
-proto.isClass = true</code></pre></div><div class="part"><h3>proto.extend()</h3><div class="desc"><p>Creates a subclass of the current class with the given name and optionally<br />a number of extra bytes that need to be allocated with each instance.<br />The returned Class instance should have 'addMethod()' and 'addIvar()' called<br />on it as needed, and then 'register()' when you're ready to use it.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.extend = function extend (className, extraBytes) {
-  var c = core.objc_allocateClassPair(this.pointer, className, extraBytes || 0)
-  if (c.isNull()) {
-    throw new Error('New Class could not be allocated: ' + className)
+// <span class="label">Flag</span> used by id#msgSend()
+<span class="title">proto</span>.isClass = true</code></pre></div><div class="part"><h3>proto.extend()</h3><div class="desc"><p>Creates a subclass of the current class with the given name and optionally<br />a number of extra bytes that need to be allocated with each instance.<br />The returned Class instance should have 'addMethod()' and 'addIvar()' called<br />on it as needed, and then 'register()' when you're ready to use it.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.extend = <span class="function"><span class="keyword">function</span> <span class="title">extend</span> <span class="params">(className, extraBytes)</span> {</span>
+  <span class="keyword">var</span> c = core.objc_allocateClassPair(<span class="keyword">this</span>.pointer, className, extraBytes || <span class="number">0</span>)
+  <span class="keyword">if</span> (c.isNull()) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'New Class could not be allocated: '</span> + className)
   }
-  return exports.wrap(c, className)
-}</code></pre></div><div class="part"><h3>proto.register()</h3><div class="desc"><p>Calls objc_registerClassPair() on the class pointer.<br />This must be called on the class <em>after</em> all 'addMethod()' and 'addIvar()'<br />calls are made, and <em>before</em> the newly created class is used for real.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.register = function register () {
-  core.objc_registerClassPair(this.pointer)
-  _global[this.getName()] = this
-  return this
-}</code></pre></div><div class="part"><h3>proto.addMethod()</h3><div class="desc"><p>Adds a new Method to the Class. Instances of the class (even already existing<br />ones) will have the ability to invoke the method. This may be called at any<br />time on any class.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addMethod = function addMethod (selector, type, func) {
-  var parsed = types.parse(type)
+  <span class="keyword">return</span> exports.wrap(c, className)
+}</code></pre></div><div class="part"><h3>proto.register()</h3><div class="desc"><p>Calls objc_registerClassPair() on the class pointer.<br />This must be called on the class <em>after</em> all 'addMethod()' and 'addIvar()'<br />calls are made, and <em>before</em> the newly created class is used for real.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.register = <span class="function"><span class="keyword">function</span> <span class="title">register</span> <span class="params">()</span> {</span>
+  core.objc_registerClassPair(<span class="keyword">this</span>.pointer)
+  _global[<span class="keyword">this</span>.getName()] = <span class="keyword">this</span>
+  <span class="keyword">return</span> <span class="keyword">this</span>
+}</code></pre></div><div class="part"><h3>proto.addMethod()</h3><div class="desc"><p>Adds a new Method to the Class. Instances of the class (even already existing<br />ones) will have the ability to invoke the method. This may be called at any<br />time on any class.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addMethod = <span class="function"><span class="keyword">function</span> <span class="title">addMethod</span> <span class="params">(selector, type, func)</span> {</span>
+  <span class="keyword">var</span> parsed = types.parse(type)
     , selRef = SEL.toSEL(selector)
     , funcPtr = IMP.createWrapperPointer(func, parsed)
-  if (!core.class_addMethod(this.pointer, selRef, funcPtr, type)) {
-    throw new Error('method &quot;' + selector + '&quot; was NOT sucessfully added to Class: ' + this.getName())
+  <span class="keyword">if</span> (!core.class_addMethod(<span class="keyword">this</span>.pointer, selRef, funcPtr, type)) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'method &quot;'</span> + selector + <span class="string">'&quot; was NOT sucessfully added to Class: '</span> + <span class="keyword">this</span>.getName())
   }
-  return this
-}</code></pre></div><div class="part"><h3>proto.addIvar()</h3><div class="desc"><p>Adds an Ivar to the Class. Instances of the class will contain the specified<br />instance variable. This MUST be called after .extend() but BEFORE .register()</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addIvar = function addIvar (name, type, size, alignment) {
-  if (!size) {
-    // Lookup the size of the type when needed
-    var ffiType = types.map(type)
+  <span class="keyword">return</span> <span class="keyword">this</span>
+}</code></pre></div><div class="part"><h3>proto.addIvar()</h3><div class="desc"><p>Adds an Ivar to the Class. Instances of the class will contain the specified<br />instance variable. This MUST be called after .extend() but BEFORE .register()</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addIvar = <span class="keyword">function</span> addIvar (name, <span class="keyword">type</span>, size, alignment) {
+  <span class="keyword">if</span> (!size) {
+    // Lookup the size <span class="keyword">of</span> the <span class="keyword">type</span> <span class="keyword">when</span> needed
+    var ffiType = types.<span class="keyword">map</span>(<span class="keyword">type</span>)
     size = core.TYPE_SIZE_MAP[ffiType]
   }
-  if (!alignment) {
-    // Also set the alignment when needed. This formula is from Apple's docs:
-    //   For variables of any pointer type, pass log2(sizeof(pointer_type)).
-    alignment = Math.log(size) / Math.log(2)
+  <span class="keyword">if</span> (!alignment) {
+    // Also set the alignment <span class="keyword">when</span> needed. This formula <span class="keyword">is</span> from Apple's docs:
+    //   <span class="keyword">For</span> variables <span class="keyword">of</span> any pointer <span class="keyword">type</span>, pass log2(sizeof(pointer_type)).
+    alignment = Math.log(size) / Math.log(<span class="number">2</span>)
   }
-  if (!core.class_addIvar(this.pointer, name, size, alignment, type)) {
-    throw new Error('ivar &quot;' + name + '&quot; was NOT sucessfully added to Class: ' + this.getName())
+  <span class="keyword">if</span> (!core.class_addIvar(this.pointer, name, size, alignment, <span class="keyword">type</span>)) {
+    throw <span class="keyword">new</span> Error('ivar &quot;' + name + '&quot; was <span class="keyword">NOT</span> sucessfully added <span class="keyword">to</span> Class: ' + this.getName())
   }
-  return this
-}</code></pre></div><div class="part"><h3>proto.addProtocol()</h3><div class="desc"><p>Adds a Protocol to the list of protocols that this class "conforms to", or<br />"implements". Usually, an implementation object is passed in that defined the<br />Protocol's defined methods onto the class conveniently.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addProtocol = function addProtocol (protocolName, impl) {
-  var informal = require('./bridgesupport').informal_protocols[protocolName]
+  <span class="keyword">return</span> this
+}</code></pre></div><div class="part"><h3>proto.addProtocol()</h3><div class="desc"><p>Adds a Protocol to the list of protocols that this class "conforms to", or<br />"implements". Usually, an implementation object is passed in that defined the<br />Protocol's defined methods onto the class conveniently.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addProtocol = <span class="function"><span class="keyword">function</span> <span class="title">addProtocol</span> <span class="params">(protocolName, impl)</span> {</span>
+  <span class="keyword">var</span> informal = require(<span class="string">'./bridgesupport'</span>).informal_protocols[protocolName]
     , formal = core.objc_getProtocol(protocolName)
 
-  console.error(core.copyMethodDescriptionList(formal, 1, 1))
-  console.error(core.copyMethodDescriptionList(formal, 0, 0))
-  console.error(core.copyMethodDescriptionList(formal, 1, 0))
-  console.error(core.copyMethodDescriptionList(formal, 0, 1))
+  console.error(core.copyMethodDescriptionList(formal, <span class="number">1</span>, <span class="number">1</span>))
+  console.error(core.copyMethodDescriptionList(formal, <span class="number">0</span>, <span class="number">0</span>))
+  console.error(core.copyMethodDescriptionList(formal, <span class="number">1</span>, <span class="number">0</span>))
+  console.error(core.copyMethodDescriptionList(formal, <span class="number">0</span>, <span class="number">1</span>))
 }
 
-proto._getSuperclassPointer = function getSuperclassPointer () {
-  return core.class_getSuperclass(this.pointer);
+proto._getSuperclassPointer = <span class="function"><span class="keyword">function</span> <span class="title">getSuperclassPointer</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.class_getSuperclass(<span class="keyword">this</span>.pointer);
 }
 
-proto.getName = function getName () {
-  return core.class_getName(this.pointer);
+proto.getName = <span class="function"><span class="keyword">function</span> <span class="title">getName</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.class_getName(<span class="keyword">this</span>.pointer);
 }
 
-proto.isMetaClass = function isMetaClass () {
-  return !!core.class_isMetaClass(this.pointer);
+proto.isMetaClass = <span class="function"><span class="keyword">function</span> <span class="title">isMetaClass</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> !!core.class_isMetaClass(<span class="keyword">this</span>.pointer);
 }
 
-proto.getInstanceSize = function getInstanceSize () {
-  return core.class_getInstanceSize(this.pointer);
+proto.getInstanceSize = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceSize</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.class_getInstanceSize(<span class="keyword">this</span>.pointer);
 }
 
-proto.getIvarLayout = function getIvarLayout () {
-  return core.class_getIvarLayout(this.pointer)
-}</code></pre></div><div class="part"><h3>proto.getSuperclass()</h3><div class="desc"><p>Get's a Class instance's superclass. If the current class is a base class,<br />then this will return null.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getSuperclass = function getSuperclass () {
-  var superclassPointer = this._getSuperclassPointer()
-  if (superclassPointer.isNull()) return null;
-  return exports.wrap(superclassPointer);
+proto.getIvarLayout = <span class="function"><span class="keyword">function</span> <span class="title">getIvarLayout</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.class_getIvarLayout(<span class="keyword">this</span>.pointer)
+}</code></pre></div><div class="part"><h3>proto.getSuperclass()</h3><div class="desc"><p>Get's a Class instance's superclass. If the current class is a base class,<br />then this will return null.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getSuperclass = <span class="function"><span class="keyword">function</span> <span class="title">getSuperclass</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> superclassPointer = <span class="keyword">this</span>._getSuperclassPointer()
+  <span class="keyword">if</span> (superclassPointer.isNull()) <span class="keyword">return</span> <span class="literal">null</span>;
+  <span class="keyword">return</span> exports.wrap(superclassPointer);
 }
 
-proto.setSuperclass = function setSuperclass (superclass) {
-  return exports.wrap(this._setSuperclassPointer(superclass.pointer));
+proto.setSuperclass = <span class="function"><span class="keyword">function</span> <span class="title">setSuperclass</span> <span class="params">(superclass)</span> {</span>
+  <span class="keyword">return</span> exports.wrap(<span class="keyword">this</span>._setSuperclassPointer(superclass.pointer));
 }
 
-proto._setSuperclassPointer = function setSuperclassPointer (superclassPointer) {
-  return core.class_setSuperclass(this.pointer, superclassPointer);
+proto._setSuperclassPointer = <span class="function"><span class="keyword">function</span> <span class="title">setSuperclassPointer</span> <span class="params">(superclassPointer)</span> {</span>
+  <span class="keyword">return</span> core.class_setSuperclass(<span class="keyword">this</span>.pointer, superclassPointer);
 }
 
-proto.getInstanceVariable = function getInstanceVariable (name) {
-  return ivar.wrap(this._getInstanceVariable(name))
+proto.getInstanceVariable = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceVariable</span> <span class="params">(name)</span> {</span>
+  <span class="keyword">return</span> ivar.wrap(<span class="keyword">this</span>._getInstanceVariable(name))
 }
 
-proto._getInstanceVariable = function _getInstanceVariable (name) {
-  return core.class_getInstanceVariable(this.pointer, name)
+proto._getInstanceVariable = <span class="function"><span class="keyword">function</span> <span class="title">_getInstanceVariable</span> <span class="params">(name)</span> {</span>
+  <span class="keyword">return</span> core.class_getInstanceVariable(<span class="keyword">this</span>.pointer, name)
 }
 
-proto.getClassVariable = function getClassVariable (name) {
-  return ivar.wrap(this._getClassVariable(name))
+proto.getClassVariable = <span class="function"><span class="keyword">function</span> <span class="title">getClassVariable</span> <span class="params">(name)</span> {</span>
+  <span class="keyword">return</span> ivar.wrap(<span class="keyword">this</span>._getClassVariable(name))
 }
 
-proto._getClassVariable = function _getClassVariable (name) {
-  return core.class_getClassVariable(this.pointer, name)
+proto._getClassVariable = <span class="function"><span class="keyword">function</span> <span class="title">_getClassVariable</span> <span class="params">(name)</span> {</span>
+  <span class="keyword">return</span> core.class_getClassVariable(<span class="keyword">this</span>.pointer, name)
 }
 
-proto.getInstanceMethod = function getInstanceMethod (sel) {
-  return method.wrap(this._getInstanceMethod(SEL.toSEL(sel)))
+proto.getInstanceMethod = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceMethod</span> <span class="params">(sel)</span> {</span>
+  <span class="keyword">return</span> method.wrap(<span class="keyword">this</span>._getInstanceMethod(SEL.toSEL(sel)))
 }
 
-proto._getInstanceMethod = function _getInstanceMethod (selPtr) {
-  return core.class_getInstanceMethod(this.pointer, selPtr)
+proto._getInstanceMethod = <span class="function"><span class="keyword">function</span> <span class="title">_getInstanceMethod</span> <span class="params">(selPtr)</span> {</span>
+  <span class="keyword">return</span> core.class_getInstanceMethod(<span class="keyword">this</span>.pointer, selPtr)
 }
 
-proto.getClassMethod = function getClassMethod (sel) {
-  return method.wrap(this._getClassMethod(SEL.toSEL(sel)))
+proto.getClassMethod = <span class="function"><span class="keyword">function</span> <span class="title">getClassMethod</span> <span class="params">(sel)</span> {</span>
+  <span class="keyword">return</span> method.wrap(<span class="keyword">this</span>._getClassMethod(SEL.toSEL(sel)))
 }
 
-proto._getClassMethod = function _getClassMethod (selPtr) {
-  return core.class_getClassMethod(this.pointer, selPtr)
+proto._getClassMethod = <span class="function"><span class="keyword">function</span> <span class="title">_getClassMethod</span> <span class="params">(selPtr)</span> {</span>
+  <span class="keyword">return</span> core.class_getClassMethod(<span class="keyword">this</span>.pointer, selPtr)
 }
 
-proto._getTypesClass = function getTypesClass (sel, isClass) {
-  //console.error('_getTypesClass: %s, isClass: %d', sel, isClass);
-  var method = this['get'+(isClass ? 'Class' : 'Instance')+'Method'](sel)
-  return method ? method.getTypes() : null
+proto._getTypesClass = <span class="function"><span class="keyword">function</span> <span class="title">getTypesClass</span> <span class="params">(sel, isClass)</span> {</span>
+  <span class="comment">//console.error('_getTypesClass: %s, isClass: %d', sel, isClass);</span>
+  <span class="keyword">var</span> method = <span class="keyword">this</span>[<span class="string">'get'</span>+(isClass ? <span class="string">'Class'</span> : <span class="string">'Instance'</span>)+<span class="string">'Method'</span>](sel)
+  <span class="keyword">return</span> method ? method.getTypes() : <span class="literal">null</span>
 }
 
-proto.getVersion = function getVersion () {
-  return core.class_getVersion(this.pointer);
+proto.getVersion = <span class="function"><span class="keyword">function</span> <span class="title">getVersion</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.class_getVersion(<span class="keyword">this</span>.pointer);
 }
 
-proto.setVersion = function setVersion (v) {
-  return core.class_setVersion(this.pointer, v);
-}</code></pre></div><div class="part"><h3>proto.getClassVariables()</h3><div class="desc"><p>Returns an Array of the class variables this Class has. Superclass variables<br />are not included.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClassVariables = function getClassVariables () {
-  return core.copyIvarList(this._getClassPointer())
-}</code></pre></div><div class="part"><h3>proto.getInstanceVariables()</h3><div class="desc"><p>Returns an Array of the instance variables this Class has. Superclass<br />variables are not included.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getInstanceVariables = function getInstanceVariables () {
-  return core.copyIvarList(this.pointer)
-}</code></pre></div><div class="part"><h3>proto.getClassMethods()</h3><div class="desc"><p>Returns an Array of all the class methods this Class responds to.<br />This function returns the raw, unsorted result of copyMethodList().</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClassMethods = function getClassMethods () {
-  // getClassPointer() on a Class actually gets a pointer to the metaclass
-  return core.copyMethodList(this._getClassPointer())
-}</code></pre></div><div class="part"><h3>proto.getInstanceMethods()</h3><div class="desc"><p>Returns an Array of all the instance methods an instance of this Class will<br />respond to.<br />This function returns the raw, unsorted result of copyMethodList().</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getInstanceMethods = function getInstanceMethods () {
-  return core.copyMethodList(this.pointer)
-}</code></pre></div><div class="part"><h3>proto.createPointer()</h3><div class="desc"><p>Allocates a new pointer to this type. The pointer points to <code>nil</code> initially.<br />This is meant for creating a pointer to hold an NSError*, and pass a ref()<br />to it into a method that accepts an 'error' double pointer.<br />XXX: Tentative API - name will probably change</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.createPointer = function createPointer () {
-  var ptr = new core.Pointer(core.TYPE_SIZE_MAP.pointer)
+proto.setVersion = <span class="function"><span class="keyword">function</span> <span class="title">setVersion</span> <span class="params">(v)</span> {</span>
+  <span class="keyword">return</span> core.class_setVersion(<span class="keyword">this</span>.pointer, v);
+}</code></pre></div><div class="part"><h3>proto.getClassVariables()</h3><div class="desc"><p>Returns an Array of the class variables this Class has. Superclass variables<br />are not included.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClassVariables = <span class="function"><span class="keyword">function</span> <span class="title">getClassVariables</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.copyIvarList(<span class="keyword">this</span>._getClassPointer())
+}</code></pre></div><div class="part"><h3>proto.getInstanceVariables()</h3><div class="desc"><p>Returns an Array of the instance variables this Class has. Superclass<br />variables are not included.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getInstanceVariables = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceVariables</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.copyIvarList(<span class="keyword">this</span>.pointer)
+}</code></pre></div><div class="part"><h3>proto.getClassMethods()</h3><div class="desc"><p>Returns an Array of all the class methods this Class responds to.<br />This function returns the raw, unsorted result of copyMethodList().</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClassMethods = <span class="function"><span class="keyword">function</span> <span class="title">getClassMethods</span> <span class="params">()</span> {</span>
+  <span class="comment">// getClassPointer() on a Class actually gets a pointer to the metaclass</span>
+  <span class="keyword">return</span> core.copyMethodList(<span class="keyword">this</span>._getClassPointer())
+}</code></pre></div><div class="part"><h3>proto.getInstanceMethods()</h3><div class="desc"><p>Returns an Array of all the instance methods an instance of this Class will<br />respond to.<br />This function returns the raw, unsorted result of copyMethodList().</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getInstanceMethods = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceMethods</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.copyMethodList(<span class="keyword">this</span>.pointer)
+}</code></pre></div><div class="part"><h3>proto.createPointer()</h3><div class="desc"><p>Allocates a new pointer to this type. The pointer points to <code><span class="keyword">nil</span></code> initially.<br />This is meant for creating a pointer to hold an NSError*, and pass a ref()<br />to it into a method that accepts an 'error' double pointer.<br />XXX: Tentative API - name will probably change</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.createPointer = <span class="function"><span class="keyword">function</span> <span class="title">createPointer</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> ptr = <span class="keyword">new</span> core.Pointer(core.TYPE_SIZE_MAP.pointer)
   ptr.putPointer(core.Pointer.NULL)
-  ptr._type = '@'
-  return ptr
+  ptr._type = <span class="string">'@'</span>
+  <span class="keyword">return</span> ptr
 }
 
-proto.toString = function toString () {
-  return '[Class: ' + this.getName() + ']'
+proto.toString = <span class="function"><span class="keyword">function</span> <span class="title">toString</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> <span class="string">'[Class: '</span> + <span class="keyword">this</span>.getName() + <span class="string">']'</span>
 }
 
-proto.inspect = function inspect () {
-  // yellow
-  return '\033[33m' + this.toString() + '\033[39m'
+proto.inspect = <span class="function"><span class="keyword">function</span> <span class="title">inspect</span> <span class="params">()</span> {</span>
+  <span class="comment">// yellow</span>
+  <span class="keyword">return</span> <span class="string">'\033[33m'</span> + <span class="keyword">this</span>.toString() + <span class="string">'\033[39m'</span>
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
 </div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>

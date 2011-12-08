@@ -1,198 +1,198 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Bridgesupport | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Bridgesupport</h2><div class="part"><div class="desc"><p>This module takes care of loading the BridgeSupport XML files for a given<br />framework, and parsing the data into the given framework object.</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Bridgesupport | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Bridgesupport</h2><div class="part"><div class="desc"><p>This module takes care of loading the BridgeSupport XML files for a given<br />framework, and parsing the data into the given framework object.</p>
 
 <h2>Reference</h2>
 
 <p><a href='http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html'>http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html</a></p>
 
 <p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.bridgesupport = bridgesupport
-exports.classes = {}
-exports.informal_protocols = {}</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var fs = require('fs')
-  , sax = require('sax')
-  , path = require('path')
-  , assert = require('assert')
-  , debug = require('debug')('NodObjC')
-  , IMP = require('./imp')
-  , core = require('./core')
-  , types = require('./types')
-  , struct = require('./struct')
-  , _global = require('./index')
-  , Import = require('./import').import
+exports.<span class="class"><span class="keyword">class</span><span class="id">es</span> = {</span>}
+exports.informal_<span class="class"><span class="keyword">protocol</span><span class="id">s</span> = {</span>}</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> fs = require(<span class="string">'fs'</span>)
+  , sax = require(<span class="string">'sax'</span>)
+  , path = require(<span class="string">'path'</span>)
+  , assert = require(<span class="string">'assert'</span>)
+  , debug = require(<span class="string">'debug'</span>)(<span class="string">'NodObjC'</span>)
+  , IMP = require(<span class="string">'./imp'</span>)
+  , core = require(<span class="string">'./core'</span>)
+  , types = require(<span class="string">'./types'</span>)
+  , <span class="keyword">struct</span> = require(<span class="string">'./struct'</span>)
+  , _global = require(<span class="string">'./index'</span>)
+  , Import = require(<span class="string">'./import'</span>).<span class="keyword">import</span>
   , join = path.join
   , exists = path.existsSync
-  , DY_SUFFIX = '.dylib'
-  , BS_SUFFIX = '.bridgesupport'</code></pre></div><div class="part"><div class="desc"><p>Architecture-specific functions that return the Obj-C type or value from one<br />of these BridgeSupport XML nodes.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var getType
+  , DY_SUFFIX = <span class="string">'.dylib'</span>
+  , BS_SUFFIX = <span class="string">'.bridgesupport'</span></code></pre></div><div class="part"><div class="desc"><p>Architecture-specific functions that return the Obj-C type or value from one<br />of these BridgeSupport XML nodes.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var getType
   , getValue
-if (process.arch == 'x64') {
-  // 64-bit specific functions
-  debug('using 64-bit &quot;type&quot; and &quot;value&quot; attributes')
-  getType = function (a) {
-    return a.type64 || a.type
+<span class="keyword">if</span> (<span class="keyword">process</span>.arch == <span class="literal">'x64'</span>) {
+  // <span class="number">64</span>-<span class="type">bit</span> specific functions
+  debug(<span class="literal">'using 64-bit &quot;type&quot; and &quot;value&quot; attributes'</span>)
+  getType = <span class="keyword">function</span> (a) {
+    <span class="keyword">return</span> a.type64 || a.<span class="keyword">type</span>
   }
-  getValue = function (a) {
-    return a.value64 || a.value
+  getValue = <span class="keyword">function</span> (a) {
+    <span class="keyword">return</span> a.value64 || a.value
   }
-} else {
-  // 32-bit / ARM specific functions
-  debug('using regular &quot;type&quot; and &quot;value&quot; attributes')
-  getType = function (a) {
-    return a.type
+} <span class="keyword">else</span> {
+  // <span class="number">32</span>-<span class="type">bit</span> / ARM specific functions
+  debug(<span class="literal">'using regular &quot;type&quot; and &quot;value&quot; attributes'</span>)
+  getType = <span class="keyword">function</span> (a) {
+    <span class="keyword">return</span> a.<span class="keyword">type</span>
   }
-  getValue = function (a) {
-    return a.value
+  getValue = <span class="keyword">function</span> (a) {
+    <span class="keyword">return</span> a.value
   }
-}</code></pre></div><div class="part"><h3>bridgesupport()</h3><div class="desc"><p>Attempts to retrieve the BridgeSupport files for the given framework.<br />It synchronously reads the contents of the bridgesupport files and parses<br />them in order to add the symbols that the Obj-C runtime functions cannot<br />determine.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function bridgesupport (fw) {
+}</code></pre></div><div class="part"><div class="desc"><p>Attempts to retrieve the BridgeSupport files for the given framework.<br />It synchronously reads the contents of the bridgesupport files and parses<br />them in order to add the symbols that the Obj-C runtime functions cannot<br />determine.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function bridgesupport (fw) {
 
-  var bridgeSupportDir = join(fw.basePath, 'Resources', 'BridgeSupport')
+  <span class="keyword">var</span> bridgeSupportDir = join(fw.basePath, <span class="string">'Resources'</span>, <span class="string">'BridgeSupport'</span>)
     , bridgeSupportXML = join(bridgeSupportDir, fw.name + BS_SUFFIX)
     , bridgeSupportDylib = join(bridgeSupportDir, fw.name + DY_SUFFIX)
 
-  // If there's no BridgeSupport file, then bail...
-  if (!exists(bridgeSupportXML)) {
-    debug('no BridgeSupport files found for framework &quot;%s&quot; at:', fw.name, bridgeSupportXML)
-    return
+  <span class="comment">// If there's no BridgeSupport file, then bail...</span>
+  <span class="keyword">if</span> (!exists(bridgeSupportXML)) {
+    debug(<span class="string">'no BridgeSupport files found for framework &quot;%s&quot; at:'</span>, fw.name, bridgeSupportXML)
+    <span class="keyword">return</span>
   }
 
-  // Load the &quot;inline&quot; dylib if it exists
-  if (exists(bridgeSupportDylib)) {
-    debug('importing &quot;inline&quot; dylib for framework &quot;%s&quot; at:', fw.name, bridgeSupportDylib)
+  <span class="comment">// Load the &quot;inline&quot; dylib if it exists</span>
+  <span class="keyword">if</span> (exists(bridgeSupportDylib)) {
+    debug(<span class="string">'importing &quot;inline&quot; dylib for framework &quot;%s&quot; at:'</span>, fw.name, bridgeSupportDylib)
     fw.inline = core.dlopen(bridgeSupportDylib)
   }
 
-  var contents = fs.readFileSync(bridgeSupportXML, 'utf8')
-    , parser = sax.parser(true)
-    , gotEnd = false
+  <span class="keyword">var</span> contents = fs.readFileSync(bridgeSupportXML, <span class="string">'utf8'</span>)
+    , parser = sax.parser(<span class="constant">true</span>)
+    , gotEnd = <span class="constant">false</span>
     , curObj = null
 
   parser.onerror = function (e) { throw e }
   parser.onopentag = function (node) {
-    var a = node.attributes
-    //a._name = node.name
-    switch (node.name) {
-      case 'depends_on':
-        Import(a.path, true)
-        break;
-      case 'class':
+    <span class="keyword">var</span> a = node.attributes
+    <span class="comment">//a._name = node.name</span>
+    <span class="keyword">switch</span> (node.name) {
+      <span class="keyword">case</span> <span class="string">'depends_on'</span>:
+        Import(a.path, <span class="constant">true</span>)
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'class'</span>:
         curObj = exports.classes[a.name] || a
         exports.classes[curObj.name] = curObj
-        break;
-      case 'method':
-        // Normalize the 'type' for the platform
-        a.type = getType(a)
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'method'</span>:
+        <span class="comment">// Normalize the 'type' for the platform</span>
+        a.<span class="keyword">type</span> = getType(a)
         a._parent = curObj
-        if (!curObj.methods)
+        <span class="keyword">if</span> (!curObj.methods)
           curObj.methods = []
         curObj.methods.push(a)
         curObj = a
-        break;
-      case 'arg':
-        // Normalize the 'type' for the platform
-        a.type = getType(a)
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'arg'</span>:
+        <span class="comment">// Normalize the 'type' for the platform</span>
+        a.<span class="keyword">type</span> = getType(a)
         a._parent = curObj
-        if (!curObj.args)
+        <span class="keyword">if</span> (!curObj.args)
           curObj.args = []
         curObj.args.push(a)
         curObj = a
-        break;
-      case 'retval':
-        // Normalize the 'type' for the platform
-        a.type = getType(a)
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'retval'</span>:
+        <span class="comment">// Normalize the 'type' for the platform</span>
+        a.<span class="keyword">type</span> = getType(a)
         a._parent = curObj
         curObj.retval = a
         curObj = a
-        break;
-      case 'signatures':
-        break;
-      case 'string_constant':
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'signatures'</span>:
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'string_constant'</span>:
         _global[a.name] = getValue(a)
-        break;
-      case 'enum':
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'enum'</span>:
         _global[a.name] = Number(getValue(a))
-        break;
-      case 'struct':
-        // TODO: Remove the try/catch when all the Struct formats are supported
-        //       Still need Array and Union support.
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'struct'</span>:
+        <span class="comment">// TODO: Remove the try/catch when all the Struct formats are supported</span>
+        <span class="comment">//       Still need Array and Union support.</span>
         try {
-          _global[a.name] = struct.getStruct(getType(a))
+          _global[a.name] = <span class="keyword">struct</span>.getStruct(getType(a))
         } catch (e) {
-          //console.error('FAILED:\n', a)
-          //console.error(e.stack)
+          <span class="comment">//console.error('FAILED:\n', a)</span>
+          <span class="comment">//console.error(e.stack)</span>
         }
-        break;
-      case 'field':
-        break;
-      case 'cftype':
-        break;
-      case 'constant':
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'field'</span>:
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'cftype'</span>:
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'constant'</span>:
         defineConstant(a, fw)
-        break;
-      case 'function':
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'function'</span>:
         curObj = a
-        break;
-      case 'opaque':
-        break;
-      case 'informal_protocol':
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'opaque'</span>:
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'informal_protocol'</span>:
         curObj = exports.informal_protocols[a.name] || a
         exports.informal_protocols[curObj.name] = curObj
-        break;
-      case 'function_alias':
-        break;
-      default:
-        throw new Error('unkown tag: '+ node.name)
-        break;
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'function_alias'</span>:
+        <span class="keyword">break</span>;
+      <span class="keyword">default</span>:
+        throw <span class="built_in">new</span> Error(<span class="string">'unkown tag: '</span>+ node.name)
+        <span class="keyword">break</span>;
     }
   }
   parser.onclosetag = function (node) {
-    switch (node) {
-      case 'function':
-        // Binded functions will be lazy-loaded. We simply define a getter that
-        // does the creation magic the first time, and replaces the getter with
-        // the binded function
+    <span class="keyword">switch</span> (node) {
+      <span class="keyword">case</span> <span class="string">'function'</span>:
+        <span class="comment">// Binded functions will be lazy-loaded. We simply define a getter that</span>
+        <span class="comment">// does the creation magic the first time, and replaces the getter with</span>
+        <span class="comment">// the binded function</span>
         defineFunction(curObj, fw)
         curObj = null
-        break;
-      case 'arg':
-      case 'method':
-      case 'retval':
-        var c = curObj._parent
+        <span class="keyword">break</span>;
+      <span class="keyword">case</span> <span class="string">'arg'</span>:
+      <span class="keyword">case</span> <span class="string">'method'</span>:
+      <span class="keyword">case</span> <span class="string">'retval'</span>:
+        <span class="keyword">var</span> c = curObj._parent
         curObj._parent = null
         curObj = c
-        break;
+        <span class="keyword">break</span>;
     }
   }
   parser.onend = function () {
-    gotEnd = true
+    gotEnd = <span class="constant">true</span>
   }
 
-  // Parse the contents of the file. This should happen synchronously.
-  parser.write(contents).close()
+  <span class="comment">// Parse the contents of the file. This should happen synchronously.</span>
+  parser.write(contents).<span class="built_in">close</span>()
 
-  assert.ok(gotEnd, 'could not parse BridgeSupport files synchronously')
-}</code></pre></div><div class="part"><h3>defineConstant()</h3><div class="desc"><p>Sets up a <constant> tag onto the global exports.<br />These start out as simple JS getters, so that the underlying<br />symbol pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function defineConstant (a, fw) {
-  var name = a.name
+  assert.ok(gotEnd, <span class="string">'could not parse BridgeSupport files synchronously'</span>)
+}</code></pre></div><div class="part"><div class="desc"><p>Sets up a <constant> tag onto the global exports.<br />These start out as simple JS getters, so that the underlying<br />symbol pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineConstant</span> <span class="params">(a, fw)</span> {</span>
+  <span class="keyword">var</span> name = a.name
     , type = getType(a)
-  _global.__defineGetter__(name, function () {
-    var ptr = fw.lib.get(name) // TODO: Cache the pointer after the 1st call
-    ptr._type = '^' + type
-    var val = ptr.deref()
-    return val
+  _global.__defineGetter__(name, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">var</span> ptr = fw.lib.get(name) <span class="comment">// TODO: Cache the pointer after the 1st call</span>
+    ptr._type = <span class="string">'^'</span> + type
+    <span class="keyword">var</span> val = ptr.deref()
+    <span class="keyword">return</span> val
   })
-}</code></pre></div><div class="part"><h3>defineFunction()</h3><div class="desc"><p>Sets up a <function> tag onto the global exports.<br />These start out as simple JS getters, so that the underlying<br />function pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function defineFunction (a, fw) {
+}</code></pre></div><div class="part"><div class="desc"><p>Sets up a <function> tag onto the global exports.<br />These start out as simple JS getters, so that the underlying<br />function pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineFunction</span> <span class="params">(a, fw)</span></span> {
   var name = a.name
-    , isInline = a.inline == 'true'
-  if (isInline) {
-    assert.ok(fw.inline, name+', '+fw.name+': declared inline but could not find inline dylib!')
+    , isInline = a.inline == <span class="string">'true'</span>
+  <span class="keyword">if</span> (isInline) {
+    <span class="built_in">assert</span>.ok(fw.inline, name+<span class="string">', '</span>+fw.name+<span class="string">': declared inline but could not find inline dylib!'</span>)
   }
-  _global.__defineGetter__(name, function () {
-    //console.error(require('util').inspect(a, true, 10))
-    // TODO: Handle 'variadic' arg functions (NSLog), will require
-    //       a &quot;function generator&quot; to get a Function from the passed
-    //       in args (and guess at the types that were passed in...)
-    debug('loading function pointer for:', name)
+  _global.__defineGetter__(name, <span class="function"><span class="keyword">function</span> <span class="params">()</span></span> {
+    //console.<span class="built_in">error</span>(<span class="built_in">require</span>(<span class="string">'util'</span>).inspect(a, <span class="keyword">true</span>, <span class="number">10</span>))
+    // TODO: Handle <span class="string">'variadic'</span> arg functions (NSLog), will <span class="built_in">require</span>
+    //       a &quot;<span class="function"><span class="keyword">function</span> <span class="title">generator</span>&amp;<span class="title">quot</span>; <span class="title">to</span> <span class="title">get</span> <span class="title">a</span> <span class="title">Function</span> <span class="title">from</span> <span class="title">the</span> <span class="title">passed</span>
+    //       <span class="title">in</span> <span class="title">args</span> <span class="params">(and guess at the types that were passed in...)</span></span>
+    <span class="built_in">debug</span>(<span class="string">'loading function pointer for:'</span>, name)
     var ptr = (isInline ? fw.inline : fw.lib).get(name)
       , unwrapper = IMP.createUnwrapperFunction(ptr, a)
     unwrapper.info = a
     delete _global[name]
-    return _global[name] = unwrapper
+    <span class="keyword">return</span> _global[name] = unwrapper
   })
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.

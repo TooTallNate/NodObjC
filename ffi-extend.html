@@ -1,36 +1,36 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Ffi-extend | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Ffi-extend</h2><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var ffi = require('node-ffi')
-  , core = require('./core')
-  , types = require('./types')
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Ffi-extend | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Ffi-extend</h2><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> ffi = require(<span class="string">'node-ffi'</span>)
+  , core = require(<span class="string">'./core'</span>)
+  , types = require(<span class="string">'./types'</span>)
   , Pointer = ffi.Pointer
   , SIZE_MAP = ffi.Bindings.TYPE_SIZE_MAP
-  , FUNC_MAP = ffi.TYPE_TO_POINTER_METHOD_MAP</code></pre></div><div class="part"><div class="desc"><p>We include a polyfil for <code>process.arch</code> on node 0.4.x.</p></div><button class="show-code">Show Code</button><pre class="code"><code>if (!('arch' in process)) {
-  process.arch = ffi.Bindings.POINTER_SIZE == 8 ? 'x64' : 'ia32'
+  , FUNC_MAP = ffi.TYPE_TO_POINTER_METHOD_MAP</code></pre></div><div class="part"><div class="desc"><p>We include a polyfil for <code>process<span class="preprocessor">.arch</span></code> on node 0.4.x.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">if</span> (!('arch' <span class="keyword">in</span> <span class="keyword">process</span>)) {
+  <span class="keyword">process</span>.arch = ffi.Bindings.POINTER_SIZE == <span class="number">8</span> ? <span class="literal">'x64'</span> : 'ia32'
 }</code></pre></div><div class="part"><h3>Pointer.prototype.ref()</h3><div class="desc"><p>Returns a new Pointer that points to this pointer.<br />Equivalent to the "address of" operator:</p>
 
-<pre><code>type* = &amp;ptr
-</code></pre></div><button class="show-code">Show Code</button><pre class="code"><code>Pointer.prototype.ref = function ref () {
-  var ptr = new Pointer(SIZE_MAP.pointer)
-  ptr.putPointer(this)
-  ptr._type = '^' + this._type
-  return ptr
+<pre><code><span class="class"><span class="keyword">type</span>* = &amp;ptr</span>
+</code></pre></div><button class="show-code">Show Code</button><pre class="code"><code>Pointer.prototype.ref = <span class="function"><span class="keyword">function</span> <span class="title">ref</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> ptr = <span class="keyword">new</span> Pointer(SIZE_MAP.pointer)
+  ptr.putPointer(<span class="keyword">this</span>)
+  ptr._type = <span class="string">'^'</span> + <span class="keyword">this</span>._type
+  <span class="keyword">return</span> ptr
 }</code></pre></div><div class="part"><h3>Pointer.prototype.deref()</h3><div class="desc"><p>Dereferences the pointer. Includes wrapping up id instances when necessary.<br />Equivalent to the "value at" operator:</p>
 
-<pre><code>type = *ptr
+<pre><code><span class="class"><span class="keyword">type</span> = *ptr</span>
 </code></pre></div><button class="show-code">Show Code</button><pre class="code"><code>Pointer.prototype.deref = function deref () {
-  var t = this._type
-  if (t[0] !== '^') throw new Error('cannot dereference non-pointer')
-  // since we're dereferencing, remove the leading ^ char
-  t = t.substring(1)
-  var ffiType = types.map(t)
-    , val = null
-  if (!ffiType) throw new Error('cannot determine type: ' + t)
-  if (ffi.isStructType(ffiType)) {
-    val = new ffiType(this)
-  } else {
-    val = this['get' + FUNC_MAP[ffiType] ]()
+  <span class="keyword">var</span> t = <span class="keyword">this</span>._<span class="keyword">type</span>
+  <span class="keyword">if</span> (t[<span class="number">0</span>] !== <span class="string">'^'</span>) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'cannot dereference non-pointer'</span>)
+  <span class="comment">// since we're dereferencing, remove the leading ^ char</span>
+  t = t.substring(<span class="number">1</span>)
+  <span class="keyword">var</span> ffiType = types.map(t)
+    , <span class="keyword">val</span> = <span class="keyword">null</span>
+  <span class="keyword">if</span> (!ffiType) <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'cannot determine type: '</span> + t)
+  <span class="keyword">if</span> (ffi.isStructType(ffiType)) {
+    <span class="keyword">val</span> = <span class="keyword">new</span> ffiType(<span class="keyword">this</span>)
+  } <span class="keyword">else</span> {
+    <span class="keyword">val</span> = <span class="keyword">this</span>[<span class="string">'get'</span> + FUNC_MAP[ffiType] ]()
   }
-  val._type = t
-  return core.wrapValue(val, t)
+  <span class="keyword">val</span>._<span class="keyword">type</span> = t
+  <span class="keyword">return</span> core.wrapValue(<span class="keyword">val</span>, t)
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
 </div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>

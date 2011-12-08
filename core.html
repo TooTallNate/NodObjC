@@ -1,76 +1,76 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Core | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Core</h2><div class="part"><div class="desc"><p>This 'core' module is the <code>libffi</code> wrapper. All required native<br />functionality is instantiated and then exported in this module.</p></div></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var ffi = require('node-ffi')
-  // 'uintptr_t' isn't natively supported by node-ffi
-  , uintptr_t = ffi.Bindings.POINTER_SIZE == 8 ? 'uint64' : 'uint32'
-  // TODO: These static ffi bindings could be replaced with native bindings
-  //       for a speed boost.
-  , objc = new ffi.Library('libobjc', {
-      class_addIvar: [ 'uint8', [ 'pointer', 'string', 'size_t', 'uint8', 'string' ] ]
-    , class_addMethod: [ 'uint8', [ 'pointer', 'pointer', 'pointer', 'string' ] ]
-    , class_addProtocol: [ 'uint8', [ 'pointer', 'pointer' ] ]
-    , class_copyIvarList: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , class_copyMethodList: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , class_copyPropertyList: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , class_copyProtocolList: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , class_getClassMethod: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , class_getClassVariable: [ 'pointer', [ 'pointer', 'string' ] ]
-    , class_getInstanceMethod: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , class_getInstanceSize: [ 'size_t', [ 'pointer' ] ]
-    , class_getInstanceVariable: [ 'pointer', [ 'pointer', 'string' ] ]
-    , class_getIvarLayout: [ 'string', [ 'pointer' ] ]
-    , class_getName: [ 'string', [ 'pointer' ] ]
-    , class_getProperty: [ 'pointer', [ 'pointer', 'string' ] ]
-    , class_getSuperclass: [ 'pointer', [ 'pointer' ] ]
-    , class_getVersion: [ 'int32', [ 'pointer' ] ]
-    , class_getWeakIvarLayout: [ 'string', [ 'pointer' ] ]
-    , class_isMetaClass: [ 'uint8', [ 'pointer' ] ]
-    , class_setIvarLayout: [ 'void', [ 'pointer', 'string' ] ]
-    , class_setSuperclass: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , class_setVersion: [ 'void', [ 'pointer', 'int32' ] ]
-    , class_setWeakIvarLayout: [ 'void', [ 'pointer', 'string' ] ]
-    , ivar_getName: [ 'string', [ 'pointer' ] ]
-    , ivar_getOffset: [ 'int32', [ 'pointer' ] ]
-    , ivar_getTypeEncoding: [ 'string', [ 'pointer' ] ]
-    , method_copyArgumentType: [ 'pointer', [ 'pointer', 'uint32' ] ]
-    , method_copyReturnType: [ 'pointer', [ 'pointer' ] ]
-    , method_exchangeImplementations: [ 'void', [ 'pointer', 'pointer' ] ]
-    , method_getImplementation: [ 'pointer', [ 'pointer' ] ]
-    , method_getName: [ 'pointer', [ 'pointer' ] ]
-    , method_getNumberOfArguments: [ 'uint32', [ 'pointer' ] ]
-    , method_getTypeEncoding: [ 'string', [ 'pointer' ] ]
-    , method_setImplementation: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , objc_allocateClassPair: [ 'pointer', [ 'pointer', 'string', 'size_t' ] ]
-    , objc_copyProtocolList: [ 'pointer', [ 'pointer' ] ]
-    , objc_getAssociatedObject: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , objc_getClass: [ 'pointer', [ 'string' ] ]
-    , objc_getClassList: [ 'int32', [ 'pointer', 'int32' ] ]
-    , objc_getProtocol: [ 'pointer', [ 'string' ] ]
-    , objc_registerClassPair: [ 'void', [ 'pointer' ] ]
-    , objc_removeAssociatedObjects: [ 'void', [ 'pointer' ] ]
-    , objc_setAssociatedObject: [ 'void', [ 'pointer', 'pointer', 'pointer', uintptr_t ] ]
-    , object_getClass: [ 'pointer', [ 'pointer' ] ]
-    , object_getClassName: [ 'string', [ 'pointer' ] ]
-    , object_getInstanceVariable: [ 'pointer', [ 'pointer', 'string', 'pointer' ] ]
-    , object_getIvar: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , object_setClass: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , object_setInstanceVariable: [ 'pointer', [ 'pointer', 'string', 'pointer' ] ]
-    , object_setIvar: [ 'void', [ 'pointer', 'pointer', 'pointer' ] ]
-    , property_getAttributes: [ 'string', [ 'pointer' ] ]
-    , property_getName: [ 'string', [ 'pointer' ] ]
-    , protocol_conformsToProtocol: [ 'uint8', [ 'pointer', 'pointer' ] ]
-    , protocol_copyMethodDescriptionList: [ 'pointer', [ 'pointer', 'uint8', 'uint8', 'pointer' ] ]
-    , protocol_copyPropertyList: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , protocol_copyProtocolList: [ 'pointer', [ 'pointer', 'pointer' ] ]
-    , protocol_getMethodDescription: [ 'pointer', [ 'pointer', 'pointer', 'uint8', 'uint8' ] ]
-    , protocol_getName: [ 'string', [ 'pointer' ] ]
-    , protocol_getProperty: [ 'pointer', [ 'pointer', 'string', 'uint8', 'uint8' ] ]
-    , sel_getName: [ 'string', [ 'pointer' ] ]
-    , sel_registerName: [ 'pointer', [ 'string' ] ]
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Core | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Core</h2><div class="part"><div class="desc"><p>This 'core' module is the <code><span class="title">libffi</span></code> wrapper. All required native<br />functionality is instantiated and then exported in this module.</p></div></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> ffi = require(<span class="string">'node-ffi'</span>)
+  <span class="comment">// 'uintptr_t' isn't natively supported by node-ffi</span>
+  , uintptr_t = ffi.Bindings.POINTER_SIZE ==<span class="number"> 8</span> ? <span class="string">'uint64'</span> : <span class="string">'uint32'</span>
+  <span class="comment">// TODO: These static ffi bindings could be replaced with native bindings</span>
+  <span class="comment">//       for a speed boost.</span>
+  , objc = <span class="built_in">new</span> ffi.Library(<span class="string">'libobjc'</span>, {
+      class_addIvar: [ <span class="string">'uint8'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span>, <span class="string">'size_t'</span>, <span class="string">'uint8'</span>, <span class="string">'string'</span> ] ]
+    , class_addMethod: [ <span class="string">'uint8'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span>, <span class="string">'pointer'</span>, <span class="string">'string'</span> ] ]
+    , class_addProtocol: [ <span class="string">'uint8'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , class_copyIvarList: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , class_copyMethodList: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , class_copyPropertyList: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , class_copyProtocolList: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , class_getClassMethod: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , class_getClassVariable: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span> ] ]
+    , class_getInstanceMethod: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , class_getInstanceSize: [ <span class="string">'size_t'</span>, [ <span class="string">'pointer'</span> ] ]
+    , class_getInstanceVariable: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span> ] ]
+    , class_getIvarLayout: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , class_getName: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , class_getProperty: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span> ] ]
+    , class_getSuperclass: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span> ] ]
+    , class_getVersion: [ <span class="string">'int32'</span>, [ <span class="string">'pointer'</span> ] ]
+    , class_getWeakIvarLayout: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , class_isMetaClass: [ <span class="string">'uint8'</span>, [ <span class="string">'pointer'</span> ] ]
+    , class_setIvarLayout: [ <span class="string">'void'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span> ] ]
+    , class_setSuperclass: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , class_setVersion: [ <span class="string">'void'</span>, [ <span class="string">'pointer'</span>, <span class="string">'int32'</span> ] ]
+    , class_setWeakIvarLayout: [ <span class="string">'void'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span> ] ]
+    , ivar_getName: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , ivar_getOffset: [ <span class="string">'int32'</span>, [ <span class="string">'pointer'</span> ] ]
+    , ivar_getTypeEncoding: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , method_copyArgumentType: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'uint32'</span> ] ]
+    , method_copyReturnType: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span> ] ]
+    , method_exchangeImplementations: [ <span class="string">'void'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , method_getImplementation: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span> ] ]
+    , method_getName: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span> ] ]
+    , method_getNumberOfArguments: [ <span class="string">'uint32'</span>, [ <span class="string">'pointer'</span> ] ]
+    , method_getTypeEncoding: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , method_setImplementation: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , objc_allocateClassPair: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span>, <span class="string">'size_t'</span> ] ]
+    , objc_copyProtocolList: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span> ] ]
+    , objc_getAssociatedObject: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , objc_getClass: [ <span class="string">'pointer'</span>, [ <span class="string">'string'</span> ] ]
+    , objc_getClassList: [ <span class="string">'int32'</span>, [ <span class="string">'pointer'</span>, <span class="string">'int32'</span> ] ]
+    , objc_getProtocol: [ <span class="string">'pointer'</span>, [ <span class="string">'string'</span> ] ]
+    , objc_registerClassPair: [ <span class="string">'void'</span>, [ <span class="string">'pointer'</span> ] ]
+    , objc_removeAssociatedObjects: [ <span class="string">'void'</span>, [ <span class="string">'pointer'</span> ] ]
+    , objc_setAssociatedObject: [ <span class="string">'void'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span>, <span class="string">'pointer'</span>, uintptr_t ] ]
+    , object_getClass: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span> ] ]
+    , object_getClassName: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , object_getInstanceVariable: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span>, <span class="string">'pointer'</span> ] ]
+    , object_getIvar: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , object_setClass: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , object_setInstanceVariable: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span>, <span class="string">'pointer'</span> ] ]
+    , object_setIvar: [ <span class="string">'void'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , property_getAttributes: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , property_getName: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , protocol_conformsToProtocol: [ <span class="string">'uint8'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , protocol_copyMethodDescriptionList: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'uint8'</span>, <span class="string">'uint8'</span>, <span class="string">'pointer'</span> ] ]
+    , protocol_copyPropertyList: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , protocol_copyProtocolList: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span> ] ]
+    , protocol_getMethodDescription: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'pointer'</span>, <span class="string">'uint8'</span>, <span class="string">'uint8'</span> ] ]
+    , protocol_getName: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , protocol_getProperty: [ <span class="string">'pointer'</span>, [ <span class="string">'pointer'</span>, <span class="string">'string'</span>, <span class="string">'uint8'</span>, <span class="string">'uint8'</span> ] ]
+    , sel_getName: [ <span class="string">'string'</span>, [ <span class="string">'pointer'</span> ] ]
+    , sel_registerName: [ <span class="string">'pointer'</span>, [ <span class="string">'string'</span> ] ]
   })
   , msgSendCache = {}
 
 exports.__proto__ = objc
 
-// Expose `node-ffi` stuff so we don't have to require node-ffi elsewhere
+<span class="comment">// Expose `node-ffi` stuff so we don't have to require node-ffi elsewhere</span>
 exports.Struct = ffi.Struct
 exports.Pointer = ffi.Pointer
 exports.Callback = ffi.Callback
@@ -78,201 +78,201 @@ exports.ForeignFunction = ffi.ForeignFunction
 exports.TYPE_SIZE_MAP = ffi.Bindings.TYPE_SIZE_MAP
 
 exports.dlopen = function dlopen (path) {
-  return new ffi.DynamicLibrary(path)
+  <span class="keyword">return</span> <span class="built_in">new</span> ffi.DynamicLibrary(path)
 }
 
 exports.process = exports.dlopen()</code></pre></div><div class="part"><h3>exports.getClassList()</h3><div class="desc"><p>Convienience function to return an Array of Strings of the names of every<br />class currently in the runtime. This gets used at the during the import<br />process get a name of the new classes that have been loaded.<br />TODO: Could be replaced with a native binding someday for speed. Not overly<br />      important as this function is only called during import()</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.getClassList = function getClassList () {
-  // First get just the count
-  var num = objc.objc_getClassList(null, 0)
+  <span class="comment">// First get just the count</span>
+  var num = objc.objc_getClassList(null, <span class="number">0</span>)
     , rtn = []
-  if (num &gt; 0) {
+  <span class="keyword">if</span> (num &gt; <span class="number">0</span>) {
     var s = ffi.Bindings.TYPE_SIZE_MAP.pointer
       , c = null
-      , classes = new ffi.Pointer(s * num)
-      , cursor = classes
-    objc.objc_getClassList(classes, num)
-    for (var i=0; i&lt;num; i++) {
+      , <span class="class"><span class="keyword">class</span><span class="id">es</span> = <span class="id">new</span> <span class="id">ffi</span>.<span class="id">Pointer</span>(<span class="id">s</span> * <span class="id">num</span>)</span>
+      , cursor = <span class="class"><span class="keyword">class</span><span class="id">es</span></span>
+    objc.objc_getClassList(<span class="class"><span class="keyword">class</span><span class="id">es</span>, <span class="id">num</span>)</span>
+    <span class="keyword">for</span> (var i=<span class="number">0</span>; i&lt;num; i++) {
       c = cursor.getPointer()
-      rtn.push(objc.class_getName(c))
+      rtn.push(objc.<span class="class"><span class="keyword">class</span><span class="id">_getName</span>(<span class="id">c</span>))</span>
       cursor = cursor.seek(s)
     }
-    // free() not needed since ffi allocated the buffer, and will free() with V8's GC
+    <span class="comment">// free() not needed since ffi allocated the buffer, and will free() with V8's GC</span>
   }
-  return rtn
-}</code></pre></div><div class="part"><h3>exports.copyProtocolList()</h3><div class="desc"><p>Gets a list of the currently loaded Protocols in the runtime.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.copyProtocolList = function copyProtocolList () {
-  var num = new ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
+  <span class="keyword">return</span> rtn
+}</code></pre></div><div class="part"><h3>exports.copyProtocolList()</h3><div class="desc"><p>Gets a list of the currently loaded Protocols in the runtime.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports<span class="preprocessor">.copyProtocolList</span> = function copyProtocolList () {
+  var num = new ffi<span class="preprocessor">.Pointer</span>(exports<span class="preprocessor">.TYPE</span>_SIZE_MAP<span class="preprocessor">.uint</span>32)
     , rtn = []
-    , protos = objc.objc_copyProtocolList(num)
+    , protos = objc<span class="preprocessor">.objc</span>_copyProtocolList(num)
     , p = protos
-    , count = num.getUInt32()
-  for (var i=0; i&lt;count; i++) {
-    var cur = p.getPointer()
-      , name = objc.protocol_getName(cur)
-    rtn.push(name)
-    p = p.seek(exports.TYPE_SIZE_MAP.pointer)
+    , count = num<span class="preprocessor">.getUInt</span>32()
+  for (var i=<span class="number">0</span><span class="comment">; i&lt;count; i++) {</span>
+    var cur = p<span class="preprocessor">.getPointer</span>()
+      , name = objc<span class="preprocessor">.protocol</span>_getName(cur)
+    rtn<span class="preprocessor">.push</span>(name)
+    p = p<span class="preprocessor">.seek</span>(exports<span class="preprocessor">.TYPE</span>_SIZE_MAP<span class="preprocessor">.pointer</span>)
   }
-  ffi.free(protos)
+  ffi<span class="preprocessor">.free</span>(protos)
   return rtn
-}</code></pre></div><div class="part"><h3>exports.copyIvarList()</h3><div class="desc"><p>Copies and returns an Array of the instance variables defined by a given<br />Class pointer. To get class variables, call this function on a metaclass.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.copyIvarList = function copyIvarList (classPtr) {
-  var numIvars = new ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
+}</code></pre></div><div class="part"><h3>exports.copyIvarList()</h3><div class="desc"><p>Copies and returns an Array of the instance variables defined by a given<br />Class pointer. To get class variables, call this function on a metaclass.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports<span class="preprocessor">.copyIvarList</span> = function copyIvarList (classPtr) {
+  var numIvars = new ffi<span class="preprocessor">.Pointer</span>(exports<span class="preprocessor">.TYPE</span>_SIZE_MAP<span class="preprocessor">.uint</span>32)
     , rtn = []
-    , ivars = exports.class_copyIvarList(classPtr, numIvars)
+    , ivars = exports<span class="preprocessor">.class</span>_copyIvarList(classPtr, numIvars)
     , p = ivars
-    , count = numIvars.getUInt32()
-  for (var i=0; i&lt;count; i++) {
-    var cur = p.getPointer()
-      , name = exports.ivar_getName(cur)
-    rtn.push(name)
-    p = p.seek(exports.TYPE_SIZE_MAP.pointer)
+    , count = numIvars<span class="preprocessor">.getUInt</span>32()
+  for (var i=<span class="number">0</span><span class="comment">; i&lt;count; i++) {</span>
+    var cur = p<span class="preprocessor">.getPointer</span>()
+      , name = exports<span class="preprocessor">.ivar</span>_getName(cur)
+    rtn<span class="preprocessor">.push</span>(name)
+    p = p<span class="preprocessor">.seek</span>(exports<span class="preprocessor">.TYPE</span>_SIZE_MAP<span class="preprocessor">.pointer</span>)
   }
-  ffi.free(ivars)
+  ffi<span class="preprocessor">.free</span>(ivars)
   return rtn
-}</code></pre></div><div class="part"><h3>exports.copyMethodList()</h3><div class="desc"><p>Copies and returns an Array of the instance methods the given Class pointer<br />implements. To get class methods, call this function with a metaclass.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.copyMethodList = function copyMethodList (classPtr) {
-  var numMethods = new ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
+}</code></pre></div><div class="part"><h3>exports.copyMethodList()</h3><div class="desc"><p>Copies and returns an Array of the instance methods the given Class pointer<br />implements. To get class methods, call this function with a metaclass.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports<span class="preprocessor">.copyMethodList</span> = function copyMethodList (classPtr) {
+  var numMethods = new ffi<span class="preprocessor">.Pointer</span>(exports<span class="preprocessor">.TYPE</span>_SIZE_MAP<span class="preprocessor">.uint</span>32)
     , rtn = []
-    , methods = exports.class_copyMethodList(classPtr, numMethods)
+    , methods = exports<span class="preprocessor">.class</span>_copyMethodList(classPtr, numMethods)
     , p = methods
-    , count = numMethods.getUInt32()
-  for (var i=0; i&lt;count; i++) {
-    var cur = p.getPointer()
-      , name = SEL.toString(exports.method_getName(cur))
-    rtn.push(name)
-    p = p.seek(exports.TYPE_SIZE_MAP.pointer)
+    , count = numMethods<span class="preprocessor">.getUInt</span>32()
+  for (var i=<span class="number">0</span><span class="comment">; i&lt;count; i++) {</span>
+    var cur = p<span class="preprocessor">.getPointer</span>()
+      , name = SEL<span class="preprocessor">.toString</span>(exports<span class="preprocessor">.method</span>_getName(cur))
+    rtn<span class="preprocessor">.push</span>(name)
+    p = p<span class="preprocessor">.seek</span>(exports<span class="preprocessor">.TYPE</span>_SIZE_MAP<span class="preprocessor">.pointer</span>)
   }
-  ffi.free(methods)
+  ffi<span class="preprocessor">.free</span>(methods)
   return rtn
-}</code></pre></div><div class="part"><h3>exports.copyMethodDescriptionList()</h3><div class="desc"><p>Iterates over the Methods defined by a Protocol.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.copyMethodDescriptionList = function copyMethodDescriptionList (protocolPtr, required, instance) {
-  var numMethods = new ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
-    , methods = exports.protocol_copyMethodDescriptionList(protocolPtr, required, instance, numMethods)
+}</code></pre></div><div class="part"><h3>exports.copyMethodDescriptionList()</h3><div class="desc"><p>Iterates over the Methods defined by a Protocol.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports<span class="preprocessor">.copyMethodDescriptionList</span> = function copyMethodDescriptionList (protocolPtr, required, instance) {
+  var numMethods = new ffi<span class="preprocessor">.Pointer</span>(exports<span class="preprocessor">.TYPE</span>_SIZE_MAP<span class="preprocessor">.uint</span>32)
+    , methods = exports<span class="preprocessor">.protocol</span>_copyMethodDescriptionList(protocolPtr, required, instance, numMethods)
     , rtn = []
     , p = methods
-    , count = numMethods.getUInt32()
-  for (var i=0; i&lt;count; i++) {
-    var cur = new exports.objc_method_description(p)
-    rtn.push(SEL.toString(cur.name))
-    p = p.seek(ffi.sizeOf(exports.objc_method_description))
+    , count = numMethods<span class="preprocessor">.getUInt</span>32()
+  for (var i=<span class="number">0</span><span class="comment">; i&lt;count; i++) {</span>
+    var cur = new exports<span class="preprocessor">.objc</span>_method_description(p)
+    rtn<span class="preprocessor">.push</span>(SEL<span class="preprocessor">.toString</span>(cur<span class="preprocessor">.name</span>))
+    p = p<span class="preprocessor">.seek</span>(ffi<span class="preprocessor">.sizeOf</span>(exports<span class="preprocessor">.objc</span>_method_description))
   }
-  ffi.free(methods)
+  ffi<span class="preprocessor">.free</span>(methods)
   return rtn
-}</code></pre></div><div class="part"><h3>exports.getMethodReturnType()</h3><div class="desc"><p>Convienience function to get the String return type of a Method pointer.<br />Takes care of free()ing the returned pointer, as is required.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.getMethodReturnType = function getMethodReturnType (method) {
-  return getStringAndFree(objc.method_copyReturnType(method))
+}</code></pre></div><div class="part"><h3>exports.getMethodReturnType()</h3><div class="desc"><p>Convienience function to get the String return type of a Method pointer.<br />Takes care of free()ing the returned pointer, as is required.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.getMethodReturnType = <span class="function"><span class="keyword">function</span> <span class="title">getMethodReturnType</span> <span class="params">(method)</span> {</span>
+  <span class="keyword">return</span> getStringAndFree(objc.method_copyReturnType(method))
 }
 
-exports.getMethodArgTypes = function getMethodArgTypes (method) {
-  var num = objc.method_getNumberOfArguments(method)
+exports.getMethodArgTypes = <span class="function"><span class="keyword">function</span> <span class="title">getMethodArgTypes</span> <span class="params">(method)</span> {</span>
+  <span class="keyword">var</span> num = objc.method_getNumberOfArguments(method)
     , rtn = []
-  for (var i=2; i&lt;num; i++) {
+  <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">2</span>; i&lt;num; i++) {
     rtn.push(getStringAndFree(objc.method_copyArgumentType(method, i)))
   }
-  return rtn
+  <span class="keyword">return</span> rtn
 }
 
-exports.getStringAndFree = function getStringAndFree (ptr) {
-  var str = ptr.getCString()
+exports.getStringAndFree = <span class="function"><span class="keyword">function</span> <span class="title">getStringAndFree</span> <span class="params">(ptr)</span> {</span>
+  <span class="keyword">var</span> str = ptr.getCString()
   ffi.free(ptr)
-  return str
+  <span class="keyword">return</span> str
 }
 
-// Creates and/or returns an appropriately wrapped up 'objc_msgSend' function
-// based on the given Method description info.
-exports.get_objc_msgSend = function get_objc_msgSend (objcTypes) {
-  var type = []
-    , rtn = [ types.map(objcTypes[0]), type ]
-    , args = objcTypes[1]
-    , i = 0
+<span class="comment">// Creates and/or returns an appropriately wrapped up 'objc_msgSend' function</span>
+<span class="comment">// based on the given Method description info.</span>
+exports.get_objc_msgSend = <span class="function"><span class="keyword">function</span> <span class="title">get_objc_msgSend</span> <span class="params">(objcTypes)</span> {</span>
+  <span class="keyword">var</span> type = []
+    , rtn = [ types.map(objcTypes[<span class="number">0</span>]), type ]
+    , args = objcTypes[<span class="number">1</span>]
+    , i = <span class="number">0</span>
     , l = args.length
-  for (; i&lt;l; i++) {
+  <span class="keyword">for</span> (; i&lt;l; i++) {
     type.push(types.map(args[i]))
   }
-  // Stringify the types
-  var key = rtn.toString()
-  //console.warn('INFO: types key: %s', key)
+  <span class="comment">// Stringify the types</span>
+  <span class="keyword">var</span> key = rtn.toString()
+  <span class="comment">//console.warn('INFO: types key: %s', key)</span>
 
-  // first check the cache
-  if (msgSendCache[key]) return msgSendCache[key]
-  //console.warn('WARN: key not found in cache, generating new copy: %s', key)
+  <span class="comment">// first check the cache</span>
+  <span class="keyword">if</span> (msgSendCache[key]) <span class="keyword">return</span> msgSendCache[key]
+  <span class="comment">//console.warn('WARN: key not found in cache, generating new copy: %s', key)</span>
 
-  // If we got here, then create a new objc_msgSend ffi wrapper
-  // TODO: Don't use the Library helper, use ffi low-level API
-  var lib = new ffi.Library(null, {
+  <span class="comment">// If we got here, then create a new objc_msgSend ffi wrapper</span>
+  <span class="comment">// TODO: Don't use the Library helper, use ffi low-level API</span>
+  <span class="keyword">var</span> lib = <span class="keyword">new</span> ffi.Library(<span class="literal">null</span>, {
     objc_msgSend: rtn
   })
-  // return and cache at the same time
-  return msgSendCache[key] = lib.objc_msgSend
+  <span class="comment">// return and cache at the same time</span>
+  <span class="keyword">return</span> msgSendCache[key] = lib.objc_msgSend
 }
 
 
-// Struct type returned by `protocol_getMethodDescription`.
+<span class="comment">// Struct type returned by `protocol_getMethodDescription`.</span>
 exports.objc_method_description = ffi.Struct([
-    ['pointer', 'name']
-  , ['string', 'types']
-])</code></pre></div><div class="part"><h3>exports.wrapValue()</h3><div class="desc"><p>Wraps up a node-ffi pointer if needed (not needed for Numbers, etc.)</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.wrapValue = function wrapValue (val, type) {
-  //console.error('wrapValue(): %s, %j', val, type)
-  if (val === null || (val.isNull &amp;&amp; val.isNull())) return null
-  var rtn = val
-  if (type.function_pointer) {
-    if (type.type == '@?') {
-      return block.createBlock(val, type)
-    } else {
-      return IMP.createUnwrapperFunction(val, type)
+    [<span class="string">'pointer'</span>, <span class="string">'name'</span>]
+  , [<span class="string">'string'</span>, <span class="string">'types'</span>]
+])</code></pre></div><div class="part"><h3>exports.wrapValue()</h3><div class="desc"><p>Wraps up a node-ffi pointer if needed (not needed for Numbers, etc.)</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.wrapValue = function wrapValue (<span class="keyword">val</span>, <span class="keyword">type</span>) {
+  <span class="comment">//console.error('wrapValue(): %s, %j', val, type)</span>
+  <span class="keyword">if</span> (<span class="keyword">val</span> === <span class="keyword">null</span> || (<span class="keyword">val</span>.isNull &amp;&amp; <span class="keyword">val</span>.isNull())) <span class="keyword">return</span> <span class="keyword">null</span>
+  <span class="keyword">var</span> rtn = <span class="keyword">val</span>
+  <span class="keyword">if</span> (<span class="keyword">type</span>.function_pointer) {
+    <span class="keyword">if</span> (<span class="keyword">type</span>.<span class="keyword">type</span> == <span class="string">'@?'</span>) {
+      <span class="keyword">return</span> block.createBlock(<span class="keyword">val</span>, <span class="keyword">type</span>)
+    } <span class="keyword">else</span> {
+      <span class="keyword">return</span> IMP.createUnwrapperFunction(<span class="keyword">val</span>, <span class="keyword">type</span>)
     }
   }
-  // get the raw type from Type objects
-  if (type.type) type = type.type
-  if (type == '@') {
-    rtn = id.wrap(val)
-  } else if (type == '#') {
-    rtn = Class.wrap(val)
-  } else if (type == ':') {
-    rtn = SEL.toString(val)
-  } else if (type == 'B') {
-    rtn = val ? true : false
+  <span class="comment">// get the raw type from Type objects</span>
+  <span class="keyword">if</span> (<span class="keyword">type</span>.<span class="keyword">type</span>) <span class="keyword">type</span> = <span class="keyword">type</span>.<span class="keyword">type</span>
+  <span class="keyword">if</span> (<span class="keyword">type</span> == <span class="string">'@'</span>) {
+    rtn = id.wrap(<span class="keyword">val</span>)
+  } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">type</span> == <span class="string">'#'</span>) {
+    rtn = Class.wrap(<span class="keyword">val</span>)
+  } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">type</span> == <span class="string">':'</span>) {
+    rtn = SEL.toString(<span class="keyword">val</span>)
+  } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">type</span> == <span class="string">'B'</span>) {
+    rtn = <span class="keyword">val</span> ? <span class="keyword">true</span> : <span class="keyword">false</span>
   }
-  if (rtn)
-    rtn._type = type
-  return rtn
-}</code></pre></div><div class="part"><h3>exports.wrapValues()</h3><div class="desc"><p>Accepts an Array of raw objc pointers and other values, and an array of ObjC<br />types, and returns an array of wrapped values where appropriate.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.wrapValues = function wrapValues (values, types) {
-  var len = values.length
+  <span class="keyword">if</span> (rtn)
+    rtn._<span class="keyword">type</span> = <span class="keyword">type</span>
+  <span class="keyword">return</span> rtn
+}</code></pre></div><div class="part"><h3>exports.wrapValues()</h3><div class="desc"><p>Accepts an Array of raw objc pointers and other values, and an array of ObjC<br />types, and returns an array of wrapped values where appropriate.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.wrapValues = <span class="function"><span class="keyword">function</span> <span class="title">wrapValues</span> <span class="params">(values, types)</span> {</span>
+  <span class="keyword">var</span> len = values.length
     , rtn = []
-  for (var i=0; i&lt;len; i++) {
+  <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;len; i++) {
     rtn.push(exports.wrapValue(values[i], types[i]))
   }
-  return rtn
-}</code></pre></div><div class="part"><h3>exports.unwrapValue()</h3><div class="desc"><p>Unwraps a previously wrapped NodObjC object.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.unwrapValue = function unwrapValue (val, type) {
-  //console.error('unwrapValue(): %s, %j', val, type)
+  <span class="keyword">return</span> rtn
+}</code></pre></div><div class="part"><h3>exports.unwrapValue()</h3><div class="desc"><p>Unwraps a previously wrapped NodObjC object.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="title">exports</span>.unwrapValue = function unwrapValue (val, <span class="class"><span class="keyword">type</span>) {</span>
+  //console.error(<span class="string">'unwrapValue(): %s, %j'</span>, val, <span class="class"><span class="keyword">type</span>)</span>
   var rtn = val
-  if (type.function_pointer) {
-    if (type.type == '@?') {
-      return block.getPointer(val, type)
-    } else {
-      return IMP.createWrapperPointer(val, type)
+  <span class="keyword">if</span> (<span class="class"><span class="keyword">type</span>.function_pointer) {</span>
+    <span class="keyword">if</span> (<span class="class"><span class="keyword">type</span>.<span class="keyword">type</span> == '@?') {</span>
+      return block.getPointer(val, <span class="class"><span class="keyword">type</span>)</span>
+    } <span class="keyword">else</span> {
+      return <span class="label">IMP</span>.createWrapperPointer(val, <span class="class"><span class="keyword">type</span>)</span>
     }
   }
-  // get the raw type from Type objects
-  if (type.type) type = type.type
-  if (type == '@' || type == '#') {
-    if (!val) return null
+  // get the raw <span class="class"><span class="keyword">type</span> from <span class="label">Type</span> objects</span>
+  <span class="keyword">if</span> (<span class="class"><span class="keyword">type</span>.<span class="keyword">type</span>) <span class="keyword">type</span> = <span class="keyword">type</span>.<span class="keyword">type</span></span>
+  <span class="keyword">if</span> (<span class="class"><span class="keyword">type</span> == '@' || <span class="keyword">type</span> == '#') {</span>
+    <span class="keyword">if</span> (!val) return <span class="keyword">null</span>
     rtn = val.pointer
-  } else if (type == ':') {
-    rtn = SEL.toSEL(val)
+  } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="class"><span class="keyword">type</span> == ':') {</span>
+    rtn = <span class="label">SEL</span>.toSEL(val)
   }
-  if (rtn)
-    rtn._type = type
+  <span class="keyword">if</span> (rtn)
+    rtn._<span class="keyword">type</span> = <span class="class"><span class="keyword">type</span></span>
   return rtn
 }</code></pre></div><div class="part"><h3>exports.unwrapValues()</h3><div class="desc"><p>Accepts an Array of wrapped NodObjC objects and other values, and an array<br />of their cooresponding ObjC types, and returns an array of unwrapped values.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.unwrapValues = function unwrapValues (values, types) {
-  var len = values.length
+  <span class="keyword">var</span> <span class="built_in">len</span> = values.length
     , rtn = []
-  for (var i=0; i&lt;len; i++) {
+  <span class="keyword">for</span> (<span class="keyword">var</span> i<span class="number">=0</span>; i&lt;<span class="built_in">len</span>; i++) {
     rtn.push(exports.unwrapValue(values[i], types[i]))
   }
-  return rtn
+  <span class="keyword">return</span> rtn
 }
 
-var types = require('./types')
-  , SEL = require('./sel')
-  , id = require('./id')
-  , Class = require('./class')
-  , IMP = require('./imp')
-  , block = require('./block')</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
+<span class="keyword">var</span> types = require(<span class="string">'./types'</span>)
+  , SEL = require(<span class="string">'./sel'</span>)
+  , id = require(<span class="string">'./id'</span>)
+  , Class = require(<span class="string">'./class'</span>)
+  , IMP = require(<span class="string">'./imp'</span>)
+  , block = require(<span class="string">'./block'</span>)</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
 </div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>

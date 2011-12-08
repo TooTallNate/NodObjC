@@ -1,81 +1,81 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Method | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Method</h2><div class="part"><div class="desc"><p>Represents an Objective-C "Method" instance. These do not respond to regular<br />messages, so it does not inherit from idWrap</p></div></div><div class="part"><div class="desc"><p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.wrap = wrap
-exports.Method = Method</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code>var core = require('./core')
-  , IMP = require('./imp')
-  , SEL = require('./sel')
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Method | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Method</h2><div class="part"><div class="desc"><p>Represents an Objective-C "Method" instance. These do not respond to regular<br />messages, so it does not inherit from idWrap</p></div></div><div class="part"><div class="desc"><p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports<span class="preprocessor">.wrap</span> = wrap
+exports<span class="preprocessor">.Method</span> = Method</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> core = require(<span class="string">'./core'</span>)
+  , IMP = require(<span class="string">'./imp'</span>)
+  , SEL = require(<span class="string">'./sel'</span>)
   , proto = Method.prototype
 
-function wrap (pointer) {
-  if (pointer.isNull()) return null
-  return new Method(pointer)
+<span class="function"><span class="keyword">function</span> <span class="title">wrap</span> <span class="params">(pointer)</span> {</span>
+  <span class="keyword">if</span> (pointer.isNull()) <span class="keyword">return</span> <span class="literal">null</span>
+  <span class="keyword">return</span> <span class="keyword">new</span> Method(pointer)
 }
 
-function Method (pointer) {
-  this.pointer = pointer
+<span class="function"><span class="keyword">function</span> <span class="title">Method</span> <span class="params">(pointer)</span> {</span>
+  <span class="keyword">this</span>.pointer = pointer
 }
 
-proto.getArgumentType = function getArgumentType (index) {
-  var ptr = core.method_copyArgumentType(this.pointer, index)
+proto.getArgumentType = <span class="function"><span class="keyword">function</span> <span class="title">getArgumentType</span> <span class="params">(index)</span> {</span>
+  <span class="keyword">var</span> ptr = core.method_copyArgumentType(<span class="keyword">this</span>.pointer, index)
     , str = core.getStringAndFree(ptr)
-  return str
+  <span class="keyword">return</span> str
 }
 
-proto.getArgumentTypes = function getArgumentTypes () {
-  var rtn = []
-    , len = this.getNumberOfArguments()
-  for (var i=0; i&lt;len; i++) {
-    rtn.push(this.getArgumentType(i))
+proto.getArgumentTypes = <span class="function"><span class="keyword">function</span> <span class="title">getArgumentTypes</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> rtn = []
+    , len = <span class="keyword">this</span>.getNumberOfArguments()
+  <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;len; i++) {
+    rtn.push(<span class="keyword">this</span>.getArgumentType(i))
   }
-  return rtn
+  <span class="keyword">return</span> rtn
 }
 
-proto.getReturnType = function getReturnType () {
-  var ptr = core.method_copyReturnType(this.pointer)
+proto.getReturnType = <span class="function"><span class="keyword">function</span> <span class="title">getReturnType</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> ptr = core.method_copyReturnType(<span class="keyword">this</span>.pointer)
     , str = core.getStringAndFree(ptr)
-  return str
+  <span class="keyword">return</span> str
 }
 
-proto.getTypes = function getTypes () {
-  return [ this.getReturnType(), this.getArgumentTypes() ]
+proto.getTypes = <span class="function"><span class="keyword">function</span> <span class="title">getTypes</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> [ <span class="keyword">this</span>.getReturnType(), <span class="keyword">this</span>.getArgumentTypes() ]
 }
 
-proto.exchangeImplementations = function exchangeImplementations (other) {
-  return this._exchangeImplementations(other.pointer)
+proto.exchangeImplementations = <span class="function"><span class="keyword">function</span> <span class="title">exchangeImplementations</span> <span class="params">(other)</span> {</span>
+  <span class="keyword">return</span> <span class="keyword">this</span>._exchangeImplementations(other.pointer)
 }
 
-proto._exchangeImplementations = function exchangeImplementations (otherPointer) {
-  return core.method_exchangeImplementations(this.pointer, otherPointer)
+proto._exchangeImplementations = <span class="function"><span class="keyword">function</span> <span class="title">exchangeImplementations</span> <span class="params">(otherPointer)</span> {</span>
+  <span class="keyword">return</span> core.method_exchangeImplementations(<span class="keyword">this</span>.pointer, otherPointer)
 }
 
-proto.getImplementation = function getImplementation () {
-  return IMP.createUnwrapperFunction(core.method_getImplementation(this.pointer), this.getTypes())
+proto.getImplementation = <span class="function"><span class="keyword">function</span> <span class="title">getImplementation</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> IMP.createUnwrapperFunction(core.method_getImplementation(<span class="keyword">this</span>.pointer), <span class="keyword">this</span>.getTypes())
 }
 
-proto.getName = function getName () {
-  return SEL.toString(core.method_getName(this.pointer))
+proto.getName = <span class="function"><span class="keyword">function</span> <span class="title">getName</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> SEL.toString(core.method_getName(<span class="keyword">this</span>.pointer))
 }
 
-proto.getNumberOfArguments = function getNumberOfArguments () {
-  return core.method_getNumberOfArguments(this.pointer)
+proto.getNumberOfArguments = <span class="function"><span class="keyword">function</span> <span class="title">getNumberOfArguments</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.method_getNumberOfArguments(<span class="keyword">this</span>.pointer)
 }
 
-proto.getTypeEncoding = function getTypeEncoding () {
-  return core.method_getTypeEncoding(this.pointer)
+proto.getTypeEncoding = <span class="function"><span class="keyword">function</span> <span class="title">getTypeEncoding</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> core.method_getTypeEncoding(<span class="keyword">this</span>.pointer)
 }
 
-proto.setImplementation = function setImplementation (func) {
-  var types = this.getTypes()
+proto.setImplementation = <span class="function"><span class="keyword">function</span> <span class="title">setImplementation</span> <span class="params">(func)</span> {</span>
+  <span class="keyword">var</span> types = <span class="keyword">this</span>.getTypes()
     , wrapperPtr = IMP.createWrapperPointer(func, types)
-    , oldFuncPointer = core.method_setImplementation(this.pointer, wrapperPtr)
-  return IMP.createUnwrapperFunction(oldFuncPointer, types)
+    , oldFuncPointer = core.method_setImplementation(<span class="keyword">this</span>.pointer, wrapperPtr)
+  <span class="keyword">return</span> IMP.createUnwrapperFunction(oldFuncPointer, types)
 }
 
-proto.toString = function toString () {
-  return '[Method: '+this.getName()+' '+this.getReturnType()+'('+this.getArgumentTypes()+') ]'
+proto.toString = <span class="function"><span class="keyword">function</span> <span class="title">toString</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> <span class="string">'[Method: '</span>+<span class="keyword">this</span>.getName()+<span class="string">' '</span>+<span class="keyword">this</span>.getReturnType()+<span class="string">'('</span>+<span class="keyword">this</span>.getArgumentTypes()+<span class="string">') ]'</span>
 }
 
-proto.inspect = function inspect () {
-  // magenta
-  return '\033[35m' + this.toString() + '\033[39m'
+proto.inspect = <span class="function"><span class="keyword">function</span> <span class="title">inspect</span> <span class="params">()</span> {</span>
+  <span class="comment">// magenta</span>
+  <span class="keyword">return</span> <span class="string">'\033[35m'</span> + <span class="keyword">this</span>.toString() + <span class="string">'\033[39m'</span>
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
 </div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>
