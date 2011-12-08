@@ -17,5 +17,6 @@
 , "devDependencies": {
     "dox": "0.1.x"
   , "jade": "0.19.x"
+  , "highlight": "0.2.x"
   }
 }

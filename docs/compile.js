@@ -6,6 +6,7 @@
 var fs = require('fs')
   , basename = require('path').basename
   , jade = require('jade')
+  , highlight = require('highlight').Highlight
   , package = JSON.parse(fs.readFileSync(__dirname + '/../package.json'))
 
 /**
@@ -36,7 +37,11 @@ function render () {
     , buf = fs.readFileSync(template)
     , fn = jade.compile(buf, opts)
     , html = fn(opts)
-  // XXX: Output to stderr when I can figure out the Makefile syntax
+
+  // Syntax highlighting
+  html = highlight(html, false, true)
+
+  // XXX: Output to stdout when I can figure out the Makefile syntax
   //process.stdout.write(html)
   fs.writeFileSync(__dirname + '/' + title + '.html', html)
 }
