@@ -9,7 +9,7 @@ html
 
   body
     #content
-      a(href='http://github.com/TooTallNate/NodObjC', id='title')
+      a(href='index.html', id='title')
         h1= package.name
         h3 The NodeJS &#8646; Objective-C Bridge
       h2= title
@@ -18,7 +18,10 @@ html
         if (!part.ignore)
           .part
             if (part.ctx && /method|function/.test(part.ctx.type))
-              h3= part.ctx.string
+              if (part.ctx.receiver == 'proto')
+                h3 #{title}##{part.ctx.name}()
+              else
+                h3 #{part.ctx.string}
             .desc!= part.description.full
             if (part.code)
               button.show-code Show Code
