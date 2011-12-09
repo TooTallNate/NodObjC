@@ -13,35 +13,35 @@
   , [<span class="string">'int32'</span>, <span class="string">'reserved'</span>]
   , [<span class="string">'pointer'</span>, <span class="string">'invoke'</span>]
   , [<span class="string">'pointer'</span>, <span class="string">'descriptor'</span>]
-])</code></pre></div><div class="part"><div class="desc"><p>The "block descriptor" is a static singleton struct. Probably used in more<br />complex Block scenarios involving actual closure variables needing storage<br />(in NodObjC, JavaScript closures are leveraged instead).</p></div><button class="show-code">Show Code</button><pre class="code"><code>var __block_descriptor_1 = ffi.Struct([
-    [<span class="literal">'ulonglong'</span>, 'reserved']
-  , [<span class="literal">'ulonglong'</span>, 'Block_size']
+])</code></pre></div><div class="part"><div class="desc"><p>The "block descriptor" is a static singleton struct. Probably used in more<br />complex Block scenarios involving actual closure variables needing storage<br />(in NodObjC, JavaScript closures are leveraged instead).</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> __block_descriptor_1 = ffi.Struct([
+    [<span class="string">'ulonglong'</span>, <span class="string">'reserved'</span>]
+  , [<span class="string">'ulonglong'</span>, <span class="string">'Block_size'</span>]
 ])
 
-var BD = <span class="keyword">new</span> __block_descriptor_1()
+<span class="keyword">var</span> BD = <span class="keyword">new</span> __block_descriptor_1()
 BD.reserved = <span class="number">0</span>
 BD.Block_size = ffi.sizeOf(__block_literal_1)
 
 
-// The class <span class="keyword">of</span> the <span class="keyword">block</span> instances; lazy-loaded
-var CGB</code></pre></div><div class="part"><div class="desc"><p>Creates a C block instance from a JS function and returns it's pointer</p></div><button class="show-code">Show Code</button><pre class="code"><code>function createBlockPointer (<span class="keyword">func</span>, <span class="keyword">type</span>) {
-  <span class="keyword">if</span> (!<span class="keyword">func</span>) <span class="keyword">return</span> null
-  <span class="keyword">var</span> bl = <span class="built_in">new</span> __block_literal_1
+<span class="comment">// The class of the block instances; lazy-loaded</span>
+<span class="keyword">var</span> CGB</code></pre></div><div class="part"><div class="desc"><p>Creates a C block instance from a JS function and returns it's pointer</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createBlockPointer</span> <span class="params">(func, type)</span> {</span>
+  <span class="keyword">if</span> (!func) <span class="keyword">return</span> <span class="literal">null</span>
+  <span class="keyword">var</span> bl = <span class="keyword">new</span> __block_literal_1
   <span class="comment">// Set the class of the instance</span>
   bl.isa = CGB || (CGB = core.dlopen().get(<span class="string">'_NSConcreteGlobalBlock'</span>))
   <span class="comment">// Global flags</span>
-  bl.flags =<span class="number"> 1</span> &lt;&lt;<span class="number"> 29</span>
-  bl.reserved =<span class="number"> 0</span>
-  bl.invoke = imp.createWrapperPointer(<span class="keyword">func</span>, <span class="keyword">type</span>)
+  bl.flags = <span class="number">1</span> &lt;&lt; <span class="number">29</span>
+  bl.reserved = <span class="number">0</span>
+  bl.invoke = imp.createWrapperPointer(func, type)
   bl.descriptor = BD.ref()
   <span class="keyword">return</span> bl.ref()
-}</code></pre></div><div class="part"><div class="desc"><p>Creates a C block instance from a JS Function.<br />Blocks are regular Objective-C objects in Obj-C, and can be sent messages;<br />thus Block instances need are creted using the id.wrap() function.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createBlock</span> <span class="params">(func, type)</span></span> {
-  <span class="keyword">return</span> id.wrap(createBlockPointer(func, <span class="built_in">type</span>))
-}</code></pre></div><div class="part"><div class="desc"><p>Gets an ffi pointer to a C block from an existing wrapped Block instance, or<br />creates a new block with _createBlock(). The second case should be most common<br />since it will be rare to create your own Block intstances and pass them around.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">getPointer</span> <span class="params">(blockOrFunc, type)</span></span> {
+}</code></pre></div><div class="part"><div class="desc"><p>Creates a C block instance from a JS Function.<br />Blocks are regular Objective-C objects in Obj-C, and can be sent messages;<br />thus Block instances need are creted using the id.wrap() function.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createBlock</span> <span class="params">(func, type)</span> {</span>
+  <span class="keyword">return</span> id.wrap(createBlockPointer(func, type))
+}</code></pre></div><div class="part"><div class="desc"><p>Gets an ffi pointer to a C block from an existing wrapped Block instance, or<br />creates a new block with _createBlock(). The second case should be most common<br />since it will be rare to create your own Block intstances and pass them around.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">getPointer</span> <span class="params">(blockOrFunc, type)</span> {</span>
   <span class="keyword">if</span> (<span class="string">'pointer'</span> <span class="keyword">in</span> blockOrFunc) {
     <span class="keyword">return</span> blockOrFunc.pointer
   } <span class="keyword">else</span> {
-    <span class="keyword">return</span> createBlockPointer(blockOrFunc, <span class="built_in">type</span>)
+    <span class="keyword">return</span> createBlockPointer(blockOrFunc, type)
   }
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.

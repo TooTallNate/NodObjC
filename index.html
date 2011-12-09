@@ -7,19 +7,19 @@
 <pre><code><span class="keyword">var</span> $ = require(<span class="string">'NodObjC'</span>)
 </code></pre>
 
-<p>The next step is to <a href="import.html"><code><span class="import"><span class="keyword">import</span><span class="container">()</span></span></code></a> a desired "Framework" that is<br />installed on the system. These frameworks are the APIs provided to Objective-C,<br />which could be the default frameworks (provided by Apple) or 3rd party<br />frameworks written by others (or you). The "Foundation" framework is the...<br />well.. foundation of these APIs, providing the most basic and important<br />classes like <code><span class="built_in">NSString</span></code> and <code>NSArray</code>.</p>
+<p>The next step is to <a href="import.html"><code>import()</code></a> a desired "Framework" that is<br />installed on the system. These frameworks are the APIs provided to Objective-C,<br />which could be the default frameworks (provided by Apple) or 3rd party<br />frameworks written by others (or you). The "Foundation" framework is the...<br />well.. foundation of these APIs, providing the most basic and important<br />classes like <code>NSString</code> and <code>NSArray</code>.</p>
 
-<pre><code>$.<span class="keyword">import</span>(<span class="string">'Foundation'</span>)
+<pre><code>$.import('Foundation')
 </code></pre>
 
-<p><a href="import.html"><code><span class="import"><span class="keyword">import</span><span class="container">()</span></span></code></a> doesn't return anything, however it will throw an<br />Error if anything goes wrong. What happens after the import call is that the<br /><code>$</code> variable now has a whole bunch of new properties attached to it, the<br />exports from the imported framework. At this point, you can fully interact<br />with these Objective-C classes, creating instances, subclassing, swizzling,<br />etc.</p>
+<p><a href="import.html"><code>import()</code></a> doesn't return anything, however it will throw an<br />Error if anything goes wrong. What happens after the import call is that the<br /><code>$</code> variable now has a whole bunch of new properties attached to it, the<br />exports from the imported framework. At this point, you can fully interact<br />with these Objective-C classes, creating instances, subclassing, swizzling,<br />etc.</p>
 
-<p>A lot of core classes expect an <code><span class="built_in">NSAutoreleasePool</span></code> instance on the stack, so<br />the first Objective-C object instance you create is usually one of those.</p>
+<p>A lot of core classes expect an <code>NSAutoreleasePool</code> instance on the stack, so<br />the first Objective-C object instance you create is usually one of those.</p>
 
 <pre><code><span class="keyword">var</span> pool = $.NSAutoreleasePool(<span class="string">'alloc'</span>)(<span class="string">'init'</span>)
 </code></pre>
 
-<p>Pretty simple! You don't need to worry about the autorelease pool after this.<br />Now, for an example, try creating an <code>NSArray</code> instance, well, an<br /><code><span class="built_in">NSMutableArray</span></code> technically, so we can also add an <code><span class="built_in">NSString</span></code> to it.</p>
+<p>Pretty simple! You don't need to worry about the autorelease pool after this.<br />Now, for an example, try creating an <code>NSArray</code> instance, well, an<br /><code>NSMutableArray</code> technically, so we can also add an <code>NSString</code> to it.</p>
 
 <pre><code><span class="keyword">var</span> array = $.NSMutableArray(<span class="string">'alloc'</span>)(<span class="string">'init'</span>)
 
@@ -31,33 +31,33 @@ console.log(array)
 <span class="comment">// )</span>
 </code></pre>
 
-<p>So there's an <code>NSArray</code> instance with a <code><span class="keyword">count</span></code> (Objective-C's version of<br /><code><span class="keyword">Array</span><span class="comment">#length</span></code>) of <code><span class="number">1</span></code>, containing an <code><span class="built_in">NSString</span></code> with the text "Hello World!".<br />From here on out, you will need to refer to your Cocoa documentation for the<br />rest of the available methods <code>NSArray</code> offers.</p>
+<p>So there's an <code>NSArray</code> instance with a <code>count</code> (Objective-C's version of<br /><code>Array#length</code>) of <code>1</code>, containing an <code>NSString</code> with the text "Hello World!".<br />From here on out, you will need to refer to your Cocoa documentation for the<br />rest of the available methods <code>NSArray</code> offers.</p>
 
 <h2>Message Sending Syntax</h2>
 
 <p>To send an Objective-C message to an Objective-C object using <strong>NodObjC</strong>, you<br />have to <strong>invoke the object as a function</strong>, where the <strong>even number arguments<br />make up the message name</strong> and the <strong>odd numbered arguments are the arguments</strong><br />to send to the <a href="id.html">object</a>.</p>
 
-<pre><code>object(<span class="string">'messageNameWithArg'</span>, someArg, <span class="string">'andArg'</span>, anotherArg)
+<pre><code>object('messageNameWithArg', someArg, 'andArg', anotherArg)
 </code></pre>
 
 <p>This sounds and probably looks strange at first, but this is the cleanest<br />syntax while still being valid JS. It also maintains the "readabililty" of<br />typical Objective-C method names.</p>
 
 <h2>Dynamic Object Introspection</h2>
 
-<p>Since <strong>NodObjC</strong> runs in an interpreted environment, it is actually <em>very<br />easy</em> to dynamically inspect the defined methods, instance variables (ivars),<br />implemented protocols, and more of any given Objective-C object (a.k.a.<br /><a href="id.html"><code><span class="title">id</span></code></a> instances).</p>
+<p>Since <strong>NodObjC</strong> runs in an interpreted environment, it is actually <em>very<br />easy</em> to dynamically inspect the defined methods, instance variables (ivars),<br />implemented protocols, and more of any given Objective-C object (a.k.a.<br /><a href="id.html"><code>id</code></a> instances).</p>
 
-<p>Using the same <code><span class="built_in">array</span></code> instance as before, you can retreive a list of the<br />type of class, and it's subclasses, by calling the <code><span class="preprocessor">.ancestors</span>()</code> function.</p>
+<p>Using the same <code>array</code> instance as before, you can retreive a list of the<br />type of class, and it's subclasses, by calling the <code>.ancestors()</code> function.</p>
 
-<pre><code><span class="built_in">array</span>.ancestors()
+<pre><code>array.ancestors()
 <span class="comment">// [ '__NSArrayM',</span>
 <span class="comment">//   'NSMutableArray',</span>
 <span class="comment">//   'NSArray',</span>
 <span class="comment">//   'NSObject' ]</span>
 </code></pre>
 
-<p>Also commonly of interest are the given methods an object responds to. Use the<br /><code><span class="preprocessor">.methods</span>()</code> function for that.</p>
+<p>Also commonly of interest are the given methods an object responds to. Use the<br /><code>.methods()</code> function for that.</p>
 
-<pre><code><span class="built_in">array</span>.methods()
+<pre><code>array.methods()
 <span class="comment">// [ 'addObject:',</span>
 <span class="comment">//   'copyWithZone:',</span>
 <span class="comment">//   'count',</span>
@@ -79,7 +79,7 @@ console.log(array)
 <ul>
 <li><a href="block.html">Block</a> - How to use an Objective-C "block" function.</li>
 <li><a href="class.html">Class</a> - Subclassing and adding methods at runtime.</li>
-<li><a href="exception.html">Exception</a> - <strong>NodObjC</strong> exceptions <em>are</em> JavaScript <code><span class="keyword">Error</span></code> objects.</li>
+<li><a href="exception.html">Exception</a> - <strong>NodObjC</strong> exceptions <em>are</em> JavaScript <code>Error</code> objects.</li>
 <li><a href="id.html">id</a> - The wrapper class for every Objective-C object.</li>
 <li><a href="import.html">Import</a> - Importing "Frameworks" into the process.</li>
 <li><a href="ivar.html">Ivars</a> - Instance variable definitions.</li>
@@ -93,16 +93,16 @@ console.log(array)
 <span class="keyword">var</span> nsString = $(jsString)
 
 $.NSLog(nsString)
-</code></pre></div><button class="show-code">Show Code</button><pre class="code"><code>function $ (o) {
-  <span class="keyword">var</span> t = typeof o
+</code></pre></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">$</span> <span class="params">(o)</span> {</span>
+  <span class="keyword">var</span> t = <span class="keyword">typeof</span> o
   <span class="keyword">if</span> (t == <span class="string">'string'</span>) {
     <span class="keyword">return</span> $.NSString(<span class="string">'stringWithUTF8String'</span>, String(o))
   } <span class="keyword">else</span> <span class="keyword">if</span> (t == <span class="string">'number'</span>) {
     <span class="keyword">return</span> $.NSNumber(<span class="string">'numberWithDouble'</span>, Number(o))
   } <span class="keyword">else</span> <span class="keyword">if</span> (isDate(o)) {
-    <span class="keyword">return</span> $.NSDate(<span class="string">'dateWithTimeIntervalSince1970'</span>, o /<span class="number"> 1000</span>)
+    <span class="keyword">return</span> $.NSDate(<span class="string">'dateWithTimeIntervalSince1970'</span>, o / <span class="number">1000</span>)
   }
-  throw <span class="built_in">new</span> Error(<span class="string">'Unsupported object passed in to convert: '</span> + o)
+  <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Unsupported object passed in to convert: '</span> + o)
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
 </div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>

@@ -1,24 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Id | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Id</h2><div class="part"><div class="desc"><p>The 'id' function is essentially the "base class" for all Objective-C<br />objects that get passed around JS-land.</p></div></div><div class="part"><div class="desc"><p>Wraps up a pointer that is expected to be a compatible Objective-C<br />object that can recieve messages. This function returns a cached version of the<br />wrapped function after the first time it is invoked on a given Pointer, using<br />Objective-C's internal association map for objects.</p></div><button class="show-code">Show Code</button><pre class="code"><code>function wrap (pointer) {
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Id | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Id</h2><div class="part"><div class="desc"><p>The 'id' function is essentially the "base class" for all Objective-C<br />objects that get passed around JS-land.</p></div></div><div class="part"><div class="desc"><p>Wraps up a pointer that is expected to be a compatible Objective-C<br />object that can recieve messages. This function returns a cached version of the<br />wrapped function after the first time it is invoked on a given Pointer, using<br />Objective-C's internal association map for objects.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">wrap</span> <span class="params">(pointer)</span> {</span>
   debug(<span class="string">'id#wrap(%d)'</span>, pointer.address)
-  <span class="keyword">var</span> rtn = <span class="keyword">null</span>
+  <span class="keyword">var</span> rtn = <span class="literal">null</span>
     , p = core.objc_getAssociatedObject(pointer, KEY)
   <span class="keyword">if</span> (p.isNull()) {
     rtn = createFunctionWrapper(pointer)
     <span class="comment">// Store the wrapped instance internally</span>
-    <span class="keyword">var</span> <span class="keyword">ref</span> = <span class="keyword">new</span> core.Pointer(core.TYPE_SIZE_MAP.Object)
+    <span class="keyword">var</span> ref = <span class="keyword">new</span> core.Pointer(core.TYPE_SIZE_MAP.Object)
     <span class="comment">// don't call free() automatically when ref gets GC'd</span>
     <span class="comment">// TODO: we're gonna have to free this pointer someday!</span>
     <span class="comment">// XXX: use node-weak to get a callback when the wrapper is GC'd</span>
-    <span class="keyword">ref</span>.free = <span class="keyword">false</span>
-    <span class="keyword">ref</span>.putObject(rtn)
-    core.objc_setAssociatedObject(pointer, KEY, <span class="keyword">ref</span>, <span class="number">0</span>)
+    ref.free = <span class="literal">false</span>
+    ref.putObject(rtn)
+    core.objc_setAssociatedObject(pointer, KEY, ref, <span class="number">0</span>)
   } <span class="keyword">else</span> {
     debug(<span class="string">'returning cached associated instance'</span>)
     rtn = p.getObject()
   }
   <span class="comment">//assert.equal(rtn.pointer.address, pointer.address)</span>
   <span class="keyword">return</span> rtn
-}</code></pre></div><div class="part"><h3>proto.msgSend()</h3><div class="desc"><p>A very important function that <em>does the message sending</em> between<br />Objective-C objects. When you do <code><span class="built_in">array</span>(<span class="comment">'addObject', anObject)</span></code>, this<br /><code><span class="title">msgSend</span></code> function is the one that finally gets called to do the dirty work.</p>
+}</code></pre></div><div class="part"><h3>proto.msgSend()</h3><div class="desc"><p>A very important function that <em>does the message sending</em> between<br />Objective-C objects. When you do <code>array('addObject', anObject)</code>, this<br /><code>msgSend</code> function is the one that finally gets called to do the dirty work.</p>
 
 <p>This function accepts a String selector as the first argument, and an Array<br />of (wrapped) values that get passed to the the message. This function takes<br />care of unwrapping the passing in arguments an wrapping up the result value,<br />if necessary.</p>
 
@@ -38,14 +38,14 @@
   <span class="keyword">return</span> core.wrapValue(rtn, types[<span class="number">0</span>])
 }</code></pre></div><div class="part"><h3>proto._getTypes()</h3><div class="desc"><p>Accepts a SEL and queries the current object for the return type and<br />argument types for the given selector. If current object does not implment<br />that selector, then check the superclass, and repeat recursively until<br />a subclass that responds to the selector is found, or until the base class<br />is found.</p>
 
-<p>TODO: Just merge this logic with <code><span class="title">msgSend</span>()</code>? It's not used anywhere else</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto._getTypes = <span class="keyword">function</span> getTypes (sel, args) {
-  var c = this.getClass()
-    , t = c._getTypesClass(sel, this.isClass)
+<p>TODO: Just merge this logic with <code>msgSend()</code>? It's not used anywhere else</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto._getTypes = <span class="function"><span class="keyword">function</span> <span class="title">getTypes</span> <span class="params">(sel, args)</span> {</span>
+  <span class="keyword">var</span> c = <span class="keyword">this</span>.getClass()
+    , t = c._getTypesClass(sel, <span class="keyword">this</span>.isClass)
   <span class="keyword">if</span> (!t) {
-    // Unknown selector being send <span class="keyword">to</span> object. This *may* still be valid, we
-    // assume <span class="keyword">all</span> args are <span class="keyword">type</span> 'id' <span class="keyword">and</span> <span class="keyword">return</span> <span class="keyword">is</span> 'id'.
-    debug(<span class="literal">'unknown selector being sent:'</span>, sel)
-    t = [ '@', [ '@', ':', ].concat(args.<span class="keyword">map</span>(<span class="keyword">function</span> () { <span class="keyword">return</span> '@' })) ]
+    <span class="comment">// Unknown selector being send to object. This *may* still be valid, we</span>
+    <span class="comment">// assume all args are type 'id' and return is 'id'.</span>
+    debug(<span class="string">'unknown selector being sent:'</span>, sel)
+    t = [ <span class="string">'@'</span>, [ <span class="string">'@'</span>, <span class="string">':'</span>, ].concat(args.map(<span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span> <span class="keyword">return</span> <span class="string">'@'</span> })) ]
   }
   <span class="keyword">return</span> t
 }</code></pre></div><div class="part"><h3>proto.getClass()</h3><div class="desc"><p>Retrieves the wrapped Class instance for this object.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClass = <span class="function"><span class="keyword">function</span> <span class="title">getClass</span> <span class="params">()</span> {</span>
@@ -81,39 +81,39 @@
       , ivar = core.object_getInstanceVariable(<span class="keyword">this</span>.pointer, name, ptr)
     <span class="keyword">return</span> core.wrapValue(ptr.getPointer(), core.ivar_getTypeEncoding(ivar))
   }
-}</code></pre></div><div class="part"><h3>proto.ivars()</h3><div class="desc"><p>Returns an Array of Strings of the names of the ivars that the current object<br />contains. This function can iterate through the object's superclasses<br />recursively, if you specify a 'maxDepth' argument.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.ivars = function ivars (maxDepth, sort) {
+}</code></pre></div><div class="part"><h3>proto.ivars()</h3><div class="desc"><p>Returns an Array of Strings of the names of the ivars that the current object<br />contains. This function can iterate through the object's superclasses<br />recursively, if you specify a 'maxDepth' argument.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.ivars = <span class="function"><span class="keyword">function</span> <span class="title">ivars</span> <span class="params">(maxDepth, sort)</span> {</span>
   <span class="keyword">var</span> rtn = []
     , c = <span class="keyword">this</span>.getClass()
     , md = maxDepth || <span class="number">1</span>
     , depth = <span class="number">0</span>
   <span class="keyword">while</span> (c &amp;&amp; depth++ &lt; md) {
-    <span class="keyword">var</span> <span class="keyword">is</span> = c.getInstanceVariables()
-      , i = <span class="keyword">is</span>.length
+    <span class="keyword">var</span> is = c.getInstanceVariables()
+      , i = is.length
     <span class="keyword">while</span> (i--) {
-      <span class="keyword">if</span> (!~rtn.indexOf(<span class="keyword">is</span>[i])) rtn.push(<span class="keyword">is</span>[i])
+      <span class="keyword">if</span> (!~rtn.indexOf(is[i])) rtn.push(is[i])
     }
     c = c.getSuperclass()
   }
-  <span class="keyword">return</span> sort === <span class="keyword">false</span> ? rtn : rtn.sort()
-}</code></pre></div><div class="part"><h3>proto.methods()</h3><div class="desc"><p>Returns an Array of Strings of the names of methods that the current object<br />will respond to. This function can iterate through the object's superclasses<br />recursively, if you specify a 'maxDepth' number argument.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.methods = <span class="function"><span class="keyword">function</span> <span class="title">methods</span> <span class="params">(maxDepth, sort)</span> <span class="comment">{
-  var rtn = []
-    , c = this.getClass()
-    , md = maxDepth || 1
-    , depth = 0
-  while (c &amp;&amp; depth++ &lt; md) {
-    var ms = c.getInstanceMethods()
+  <span class="keyword">return</span> sort === <span class="literal">false</span> ? rtn : rtn.sort()
+}</code></pre></div><div class="part"><h3>proto.methods()</h3><div class="desc"><p>Returns an Array of Strings of the names of methods that the current object<br />will respond to. This function can iterate through the object's superclasses<br />recursively, if you specify a 'maxDepth' number argument.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.methods = <span class="function"><span class="keyword">function</span> <span class="title">methods</span> <span class="params">(maxDepth, sort)</span> {</span>
+  <span class="keyword">var</span> rtn = []
+    , c = <span class="keyword">this</span>.getClass()
+    , md = maxDepth || <span class="number">1</span>
+    , depth = <span class="number">0</span>
+  <span class="keyword">while</span> (c &amp;&amp; depth++ &lt; md) {
+    <span class="keyword">var</span> ms = c.getInstanceMethods()
       , i = ms.length
-    while (i--) {
-      if (!~rtn.indexOf(ms[i])) rtn.push(ms[i])
-    }</span>
-    <span class="title">c</span> = <span class="title">c</span>.<span class="title">getSuperclass</span><span class="params">()</span>
+    <span class="keyword">while</span> (i--) {
+      <span class="keyword">if</span> (!~rtn.indexOf(ms[i])) rtn.push(ms[i])
+    }
+    c = c.getSuperclass()
   }
-  <span class="title">return</span> <span class="title">sort</span> === <span class="title">false</span> ? <span class="title">rtn</span> :</span> rtn.sort()
-}</code></pre></div><div class="part"><h3>proto.ref()</h3><div class="desc"><p>Returns a <strong>node-ffi</strong> pointer pointing to this object. This is a convenience<br />function for methods that take pointers to objects (i.e. <code>NSError<span class="variable">**</span></code>).</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.ref = <span class="function"><span class="keyword">function</span> <span class="title">ref</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> sort === <span class="literal">false</span> ? rtn : rtn.sort()
+}</code></pre></div><div class="part"><h3>proto.ref()</h3><div class="desc"><p>Returns a <strong>node-ffi</strong> pointer pointing to this object. This is a convenience<br />function for methods that take pointers to objects (i.e. <code>NSError**</code>).</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.ref = <span class="function"><span class="keyword">function</span> <span class="title">ref</span> <span class="params">()</span> {</span>
   debug(<span class="string">'id#ref()'</span>)
   <span class="keyword">var</span> ptr = <span class="keyword">this</span>.pointer.ref()
   <span class="keyword">return</span> ptr
-}</code></pre></div><div class="part"><h3>proto.toString()</h3><div class="desc"><p>The id wrap's overidden toString() function proxies up to the id's<br />description method: <code><span class="attr_selector">[[id description]</span> <span class="tag">UTF8String</span>]</code></p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.toString = <span class="function"><span class="keyword">function</span> <span class="title">toString</span> <span class="params">()</span> {</span>
+}</code></pre></div><div class="part"><h3>proto.toString()</h3><div class="desc"><p>The id wrap's overidden toString() function proxies up to the id's<br />description method: <code>[[id description] UTF8String]</code></p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.toString = <span class="function"><span class="keyword">function</span> <span class="title">toString</span> <span class="params">()</span> {</span>
   <span class="keyword">return</span> <span class="keyword">this</span>(<span class="string">'description'</span>)(<span class="string">'UTF8String'</span>)
 }
 
