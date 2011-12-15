@@ -22,7 +22,7 @@ html
                 h3 #{title}##{part.ctx.name}()
               else
                 h3 #{part.ctx.string}
-            .desc!= part.description.full
+            .desc!= part.description.full.replace(/\<br \/\>/g, ' ')
             if (part.code)
               button.show-code Show Code
               pre.code
