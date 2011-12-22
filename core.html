@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Core | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Core</h2><div class="part"><div class="desc"><p>This 'core' module is the <code>libffi</code> wrapper. All required native<br />functionality is instantiated and then exported in this module.</p></div></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> ffi = require(<span class="string">'node-ffi'</span>)
+<!DOCTYPE html><html><head><title>Core | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Core</h2><div class="part"><div class="desc"><p>This 'core' module is the <code>libffi</code> wrapper. All required native functionality is instantiated and then exported in this module.</p></div></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> ffi = require(<span class="string">'node-ffi'</span>)
   <span class="comment">// 'uintptr_t' isn't natively supported by node-ffi</span>
   , uintptr_t = ffi.Bindings.POINTER_SIZE == <span class="number">8</span> ? <span class="string">'uint64'</span> : <span class="string">'uint32'</span>
   <span class="comment">// TODO: These static ffi bindings could be replaced with native bindings</span>
@@ -81,7 +81,7 @@ exports.dlopen = <span class="function"><span class="keyword">function</span> <s
   <span class="keyword">return</span> <span class="keyword">new</span> ffi.DynamicLibrary(path)
 }
 
-exports.process = exports.dlopen()</code></pre></div><div class="part"><h3>exports.getClassList()</h3><div class="desc"><p>Convienience function to return an Array of Strings of the names of every<br />class currently in the runtime. This gets used at the during the import<br />process get a name of the new classes that have been loaded.<br />TODO: Could be replaced with a native binding someday for speed. Not overly<br />      important as this function is only called during import()</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.getClassList = <span class="function"><span class="keyword">function</span> <span class="title">getClassList</span> <span class="params">()</span> {</span>
+exports.process = exports.dlopen()</code></pre></div><div class="part"><h3>exports.getClassList()</h3><div class="desc"><p>Convienience function to return an Array of Strings of the names of every class currently in the runtime. This gets used at the during the import process get a name of the new classes that have been loaded. TODO: Could be replaced with a native binding someday for speed. Not overly       important as this function is only called during import()</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.getClassList = <span class="function"><span class="keyword">function</span> <span class="title">getClassList</span> <span class="params">()</span> {</span>
   <span class="comment">// First get just the count</span>
   <span class="keyword">var</span> num = objc.objc_getClassList(<span class="literal">null</span>, <span class="number">0</span>)
     , rtn = []
@@ -113,7 +113,7 @@ exports.process = exports.dlopen()</code></pre></div><div class="part"><h3>expor
   }
   ffi.free(protos)
   <span class="keyword">return</span> rtn
-}</code></pre></div><div class="part"><h3>exports.copyIvarList()</h3><div class="desc"><p>Copies and returns an Array of the instance variables defined by a given<br />Class pointer. To get class variables, call this function on a metaclass.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.copyIvarList = <span class="function"><span class="keyword">function</span> <span class="title">copyIvarList</span> <span class="params">(classPtr)</span> {</span>
+}</code></pre></div><div class="part"><h3>exports.copyIvarList()</h3><div class="desc"><p>Copies and returns an Array of the instance variables defined by a given Class pointer. To get class variables, call this function on a metaclass.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.copyIvarList = <span class="function"><span class="keyword">function</span> <span class="title">copyIvarList</span> <span class="params">(classPtr)</span> {</span>
   <span class="keyword">var</span> numIvars = <span class="keyword">new</span> ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
     , rtn = []
     , ivars = exports.class_copyIvarList(classPtr, numIvars)
@@ -127,7 +127,7 @@ exports.process = exports.dlopen()</code></pre></div><div class="part"><h3>expor
   }
   ffi.free(ivars)
   <span class="keyword">return</span> rtn
-}</code></pre></div><div class="part"><h3>exports.copyMethodList()</h3><div class="desc"><p>Copies and returns an Array of the instance methods the given Class pointer<br />implements. To get class methods, call this function with a metaclass.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.copyMethodList = <span class="function"><span class="keyword">function</span> <span class="title">copyMethodList</span> <span class="params">(classPtr)</span> {</span>
+}</code></pre></div><div class="part"><h3>exports.copyMethodList()</h3><div class="desc"><p>Copies and returns an Array of the instance methods the given Class pointer implements. To get class methods, call this function with a metaclass.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.copyMethodList = <span class="function"><span class="keyword">function</span> <span class="title">copyMethodList</span> <span class="params">(classPtr)</span> {</span>
   <span class="keyword">var</span> numMethods = <span class="keyword">new</span> ffi.Pointer(exports.TYPE_SIZE_MAP.uint32)
     , rtn = []
     , methods = exports.class_copyMethodList(classPtr, numMethods)
@@ -154,7 +154,7 @@ exports.process = exports.dlopen()</code></pre></div><div class="part"><h3>expor
   }
   ffi.free(methods)
   <span class="keyword">return</span> rtn
-}</code></pre></div><div class="part"><h3>exports.getMethodReturnType()</h3><div class="desc"><p>Convienience function to get the String return type of a Method pointer.<br />Takes care of free()ing the returned pointer, as is required.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.getMethodReturnType = <span class="function"><span class="keyword">function</span> <span class="title">getMethodReturnType</span> <span class="params">(method)</span> {</span>
+}</code></pre></div><div class="part"><h3>exports.getMethodReturnType()</h3><div class="desc"><p>Convienience function to get the String return type of a Method pointer. Takes care of free()ing the returned pointer, as is required.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.getMethodReturnType = <span class="function"><span class="keyword">function</span> <span class="title">getMethodReturnType</span> <span class="params">(method)</span> {</span>
   <span class="keyword">return</span> getStringAndFree(objc.method_copyReturnType(method))
 }
 
@@ -231,7 +231,7 @@ exports.objc_method_description = ffi.Struct([
   <span class="keyword">if</span> (rtn)
     rtn._type = type
   <span class="keyword">return</span> rtn
-}</code></pre></div><div class="part"><h3>exports.wrapValues()</h3><div class="desc"><p>Accepts an Array of raw objc pointers and other values, and an array of ObjC<br />types, and returns an array of wrapped values where appropriate.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.wrapValues = <span class="function"><span class="keyword">function</span> <span class="title">wrapValues</span> <span class="params">(values, types)</span> {</span>
+}</code></pre></div><div class="part"><h3>exports.wrapValues()</h3><div class="desc"><p>Accepts an Array of raw objc pointers and other values, and an array of ObjC types, and returns an array of wrapped values where appropriate.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.wrapValues = <span class="function"><span class="keyword">function</span> <span class="title">wrapValues</span> <span class="params">(values, types)</span> {</span>
   <span class="keyword">var</span> len = values.length
     , rtn = []
   <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;len; i++) {
@@ -259,7 +259,7 @@ exports.objc_method_description = ffi.Struct([
   <span class="keyword">if</span> (rtn)
     rtn._type = type
   <span class="keyword">return</span> rtn
-}</code></pre></div><div class="part"><h3>exports.unwrapValues()</h3><div class="desc"><p>Accepts an Array of wrapped NodObjC objects and other values, and an array<br />of their cooresponding ObjC types, and returns an array of unwrapped values.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.unwrapValues = <span class="function"><span class="keyword">function</span> <span class="title">unwrapValues</span> <span class="params">(values, types)</span> {</span>
+}</code></pre></div><div class="part"><h3>exports.unwrapValues()</h3><div class="desc"><p>Accepts an Array of wrapped NodObjC objects and other values, and an array of their cooresponding ObjC types, and returns an array of unwrapped values.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.unwrapValues = <span class="function"><span class="keyword">function</span> <span class="title">unwrapValues</span> <span class="params">(values, types)</span> {</span>
   <span class="keyword">var</span> len = values.length
     , rtn = []
   <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;len; i++) {
@@ -275,4 +275,4 @@ exports.objc_method_description = ffi.Struct([
   , IMP = require(<span class="string">'./imp'</span>)
   , block = require(<span class="string">'./block'</span>)</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
-</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>
+</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"></a></body></html>

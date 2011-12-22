@@ -1,14 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Struct | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Struct</h2><div class="part"><div class="desc"><p>Internal module that parses <em>struct type encodings</em> and turns them into<br />proper node-ffi <code>Struct</code> instances.</p>
+<!DOCTYPE html><html><head><title>Struct | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Struct</h2><div class="part"><div class="desc"><p>Internal module that parses <em>struct type encodings</em> and turns them into proper node-ffi <code>Struct</code> instances.</p>
 
-<p>NodObjC uses these functions internally and you <strong>do not</strong> have to use the<br />functions from this module in your code.</p></div></div><div class="part"><div class="desc"><p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.isStruct = isStruct
+<p>NodObjC uses these functions internally and you <strong>do not</strong> have to use the functions from this module in your code.</p></div></div><div class="part"><div class="desc"><p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.isStruct = isStruct
 exports.getStruct = getStruct
 exports.parseStructName = parseStructName
 exports.parseStruct = parseStruct</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> Struct = require(<span class="string">'./core'</span>).Struct
   , types = require(<span class="string">'./types'</span>)
   , test = <span class="regexp">/^\{.*?\}$/</span>
-  , structs = {}</code></pre></div><div class="part"><div class="desc"><p>Tests if the given arg is a <code>Struct</code> constructor or a string type encoding<br />describing a struct (then true), otherwise false.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">isStruct</span> <span class="params">(type)</span> {</span>
+  , structs = {}</code></pre></div><div class="part"><h3>isStruct()</h3><div class="desc"><p>Tests if the given arg is a <code>Struct</code> constructor or a string type encoding describing a struct (then true), otherwise false.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">isStruct</span> <span class="params">(type)</span> {</span>
   <span class="keyword">return</span> !!type.__isStructType__ || test.test(type)
-}</code></pre></div><div class="part"><div class="desc"><p>Returns the struct constructor function for the given struct name or type.</p>
+}</code></pre></div><div class="part"><h3>getStruct()</h3><div class="desc"><p>Returns the struct constructor function for the given struct name or type.</p>
 
 <pre><code>{CGPoint="x"d"y"d}
 </code></pre></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">getStruct</span> <span class="params">(type)</span> {</span>
@@ -31,13 +31,13 @@ exports.parseStruct = parseStruct</code></pre></div><div class="part"><div class
     props.push([ types.map(prop[<span class="number">1</span>]), prop[<span class="number">0</span>] ])
   })
   <span class="keyword">return</span> structs[parsed.name] = Struct(props)
-}</code></pre></div><div class="part"><div class="desc"><p>Extracts only the name of the given struct type encoding string.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">parseStructName</span> <span class="params">(struct)</span> {</span>
+}</code></pre></div><div class="part"><h3>parseStructName()</h3><div class="desc"><p>Extracts only the name of the given struct type encoding string.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">parseStructName</span> <span class="params">(struct)</span> {</span>
   <span class="keyword">var</span> s = struct.substring(<span class="number">1</span>, struct.length-<span class="number">1</span>)
     , equalIndex = s.indexOf(<span class="string">'='</span>)
   <span class="keyword">if</span> (~equalIndex)
     s = s.substring(<span class="number">0</span>, equalIndex)
   <span class="keyword">return</span> s
-}</code></pre></div><div class="part"><div class="desc"><p>Parses a struct type string into an Object with a <code>name</code> String and<br />a <code>props</code> Array (entries are a type string, or another parsed struct object)</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">parseStruct</span> <span class="params">(struct)</span> {</span>
+}</code></pre></div><div class="part"><h3>parseStruct()</h3><div class="desc"><p>Parses a struct type string into an Object with a <code>name</code> String and a <code>props</code> Array (entries are a type string, or another parsed struct object)</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">parseStruct</span> <span class="params">(struct)</span> {</span>
   <span class="keyword">var</span> s = struct.substring(<span class="number">1</span>, struct.length-<span class="number">1</span>)
     , equalIndex = s.indexOf(<span class="string">'='</span>)
     , rtn = {
@@ -86,4 +86,4 @@ exports.parseStruct = parseStruct</code></pre></div><div class="part"><div class
   <span class="keyword">return</span> rtn
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
-</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>
+</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"></a></body></html>

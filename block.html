@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Block | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Block</h2><div class="part"><div class="desc"><h4>NOTE: block support in NodObjC is currently experimental!</h4>
+<!DOCTYPE html><html><head><title>Block | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Block</h2><div class="part"><div class="desc"><h4>NOTE: block support in NodObjC is currently experimental!</h4>
 
 <p><strong>NodObjC</strong> implements support for <a href="http://en.wikipedia.org/wiki/Blocks_%28C_language_extension%29">C Blocks</a>!</p>
 
@@ -7,13 +7,13 @@
 <ul>
 <li><a href="http://en.wikipedia.org/wiki/Blocks_%28C_language_extension%29">Wikipedia "Blocks (C language extension)"</a></li>
 <li><a href='http://clang.llvm.org/docs/Block-ABI-Apple.txt'>http://clang.llvm.org/docs/Block-ABI-Apple.txt</a></li>
-</ul></div></div><div class="part"><div class="desc"><p>We have to simulate what the llvm compiler does when it encounters a Block<br />literal expression (see Block-ABI-Apple.txt above).<br />The "block literal" is the struct type for each Block instance.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> __block_literal_1 = ffi.Struct([
+</ul></div></div><div class="part"><div class="desc"><p>We have to simulate what the llvm compiler does when it encounters a Block literal expression (see Block-ABI-Apple.txt above). The "block literal" is the struct type for each Block instance.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> __block_literal_1 = ffi.Struct([
     [<span class="string">'pointer'</span>, <span class="string">'isa'</span>]
   , [<span class="string">'int32'</span>, <span class="string">'flags'</span>]
   , [<span class="string">'int32'</span>, <span class="string">'reserved'</span>]
   , [<span class="string">'pointer'</span>, <span class="string">'invoke'</span>]
   , [<span class="string">'pointer'</span>, <span class="string">'descriptor'</span>]
-])</code></pre></div><div class="part"><div class="desc"><p>The "block descriptor" is a static singleton struct. Probably used in more<br />complex Block scenarios involving actual closure variables needing storage<br />(in NodObjC, JavaScript closures are leveraged instead).</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> __block_descriptor_1 = ffi.Struct([
+])</code></pre></div><div class="part"><div class="desc"><p>The "block descriptor" is a static singleton struct. Probably used in more complex Block scenarios involving actual closure variables needing storage (in NodObjC, JavaScript closures are leveraged instead).</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> __block_descriptor_1 = ffi.Struct([
     [<span class="string">'ulonglong'</span>, <span class="string">'reserved'</span>]
   , [<span class="string">'ulonglong'</span>, <span class="string">'Block_size'</span>]
 ])
@@ -24,7 +24,7 @@ BD.Block_size = ffi.sizeOf(__block_literal_1)
 
 
 <span class="comment">// The class of the block instances; lazy-loaded</span>
-<span class="keyword">var</span> CGB</code></pre></div><div class="part"><div class="desc"><p>Creates a C block instance from a JS function and returns it's pointer</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createBlockPointer</span> <span class="params">(func, type)</span> {</span>
+<span class="keyword">var</span> CGB</code></pre></div><div class="part"><h3>createBlockPointer()</h3><div class="desc"><p>Creates a C block instance from a JS function and returns it's pointer</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createBlockPointer</span> <span class="params">(func, type)</span> {</span>
   <span class="keyword">if</span> (!func) <span class="keyword">return</span> <span class="literal">null</span>
   <span class="keyword">var</span> bl = <span class="keyword">new</span> __block_literal_1
   <span class="comment">// Set the class of the instance</span>
@@ -35,9 +35,9 @@ BD.Block_size = ffi.sizeOf(__block_literal_1)
   bl.invoke = imp.createWrapperPointer(func, type)
   bl.descriptor = BD.ref()
   <span class="keyword">return</span> bl.ref()
-}</code></pre></div><div class="part"><div class="desc"><p>Creates a C block instance from a JS Function.<br />Blocks are regular Objective-C objects in Obj-C, and can be sent messages;<br />thus Block instances need are creted using the id.wrap() function.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createBlock</span> <span class="params">(func, type)</span> {</span>
+}</code></pre></div><div class="part"><h3>createBlock()</h3><div class="desc"><p>Creates a C block instance from a JS Function. Blocks are regular Objective-C objects in Obj-C, and can be sent messages; thus Block instances need are creted using the id.wrap() function.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createBlock</span> <span class="params">(func, type)</span> {</span>
   <span class="keyword">return</span> id.wrap(createBlockPointer(func, type))
-}</code></pre></div><div class="part"><div class="desc"><p>Gets an ffi pointer to a C block from an existing wrapped Block instance, or<br />creates a new block with _createBlock(). The second case should be most common<br />since it will be rare to create your own Block intstances and pass them around.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">getPointer</span> <span class="params">(blockOrFunc, type)</span> {</span>
+}</code></pre></div><div class="part"><h3>getPointer()</h3><div class="desc"><p>Gets an ffi pointer to a C block from an existing wrapped Block instance, or creates a new block with _createBlock(). The second case should be most common since it will be rare to create your own Block intstances and pass them around.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">getPointer</span> <span class="params">(blockOrFunc, type)</span> {</span>
   <span class="keyword">if</span> (<span class="string">'pointer'</span> <span class="keyword">in</span> blockOrFunc) {
     <span class="keyword">return</span> blockOrFunc.pointer
   } <span class="keyword">else</span> {
@@ -45,4 +45,4 @@ BD.Block_size = ffi.sizeOf(__block_literal_1)
   }
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
-</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>
+</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"></a></body></html>

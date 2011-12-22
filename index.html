@@ -1,25 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Index | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Index</h2><div class="part"><div class="desc"><p><strong>NodObjC</strong> is the bridge between NodeJS and the Objective-C runtime and<br />frameworks, making it possible to write native Cocoa applications (both GUI and<br />command-line) using 100% NodeJS. Applications are written entirely in<br />JavaScript and interpreted at runtime.</p>
+<!DOCTYPE html><html><head><title>Index | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Index</h2><div class="part"><div class="desc"><p><strong>NodObjC</strong> is the bridge between NodeJS and the Objective-C runtime and frameworks, making it possible to write native Cocoa applications (both GUI and command-line) using 100% NodeJS. Applications are written entirely in JavaScript and interpreted at runtime.</p>
 
 <h2>Getting Started</h2>
 
-<p>Every <strong>NodObjC</strong> application begins with requiring the <code>NodObjC</code> module.<br />You can name the returned module variable anything you want, but the<br />"canonical" name for it is <code>$</code>. This is mostly because you're going to be using<br />the variable all over the place, and probably want to keep it short.</p>
+<p>Every <strong>NodObjC</strong> application begins with requiring the <code>NodObjC</code> module. You can name the returned module variable anything you want, but the "canonical" name for it is <code>$</code>. This is mostly because you're going to be using the variable all over the place, and probably want to keep it short.</p>
 
 <pre><code><span class="keyword">var</span> $ = require(<span class="string">'NodObjC'</span>)
 </code></pre>
 
-<p>The next step is to <a href="import.html"><code>import()</code></a> a desired "Framework" that is<br />installed on the system. These frameworks are the APIs provided to Objective-C,<br />which could be the default frameworks (provided by Apple) or 3rd party<br />frameworks written by others (or you). The "Foundation" framework is the...<br />well.. foundation of these APIs, providing the most basic and important<br />classes like <code>NSString</code> and <code>NSArray</code>.</p>
+<p>The next step is to <a href="import.html"><code>import()</code></a> a desired "Framework" that is installed on the system. These frameworks are the APIs provided to Objective-C, which could be the default frameworks (provided by Apple) or 3rd party frameworks written by others (or you). The "Foundation" framework is the... well.. foundation of these APIs, providing the most basic and important classes like <code>NSString</code> and <code>NSArray</code>.</p>
 
 <pre><code>$.import('Foundation')
 </code></pre>
 
-<p><a href="import.html"><code>import()</code></a> doesn't return anything, however it will throw an<br />Error if anything goes wrong. What happens after the import call is that the<br /><code>$</code> variable now has a whole bunch of new properties attached to it, the<br />exports from the imported framework. At this point, you can fully interact<br />with these Objective-C classes, creating instances, subclassing, swizzling,<br />etc.</p>
+<p><a href="import.html"><code>import()</code></a> doesn't return anything, however it will throw an Error if anything goes wrong. What happens after the import call is that the <code>$</code> variable now has a whole bunch of new properties attached to it, the exports from the imported framework. At this point, you can fully interact with these Objective-C classes, creating instances, subclassing, swizzling, etc.</p>
 
-<p>A lot of core classes expect an <code>NSAutoreleasePool</code> instance on the stack, so<br />the first Objective-C object instance you create is usually one of those.</p>
+<p>A lot of core classes expect an <code>NSAutoreleasePool</code> instance on the stack, so the first Objective-C object instance you create is usually one of those.</p>
 
 <pre><code><span class="keyword">var</span> pool = $.NSAutoreleasePool(<span class="string">'alloc'</span>)(<span class="string">'init'</span>)
 </code></pre>
 
-<p>Pretty simple! You don't need to worry about the autorelease pool after this.<br />Now, for an example, try creating an <code>NSArray</code> instance, well, an<br /><code>NSMutableArray</code> technically, so we can also add an <code>NSString</code> to it.</p>
+<p>Pretty simple! You don't need to worry about the autorelease pool after this. Now, for an example, try creating an <code>NSArray</code> instance, well, an <code>NSMutableArray</code> technically, so we can also add an <code>NSString</code> to it.</p>
 
 <pre><code><span class="keyword">var</span> array = $.NSMutableArray(<span class="string">'alloc'</span>)(<span class="string">'init'</span>)
 
@@ -31,22 +31,22 @@ console.log(array)
 <span class="comment">// )</span>
 </code></pre>
 
-<p>So there's an <code>NSArray</code> instance with a <code>count</code> (Objective-C's version of<br /><code>Array#length</code>) of <code>1</code>, containing an <code>NSString</code> with the text "Hello World!".<br />From here on out, you will need to refer to your Cocoa documentation for the<br />rest of the available methods <code>NSArray</code> offers.</p>
+<p>So there's an <code>NSArray</code> instance with a <code>count</code> (Objective-C's version of <code>Array#length</code>) of <code>1</code>, containing an <code>NSString</code> with the text "Hello World!". From here on out, you will need to refer to your Cocoa documentation for the rest of the available methods <code>NSArray</code> offers.</p>
 
 <h2>Message Sending Syntax</h2>
 
-<p>To send an Objective-C message to an Objective-C object using <strong>NodObjC</strong>, you<br />have to <strong>invoke the object as a function</strong>, where the <strong>even number arguments<br />make up the message name</strong> and the <strong>odd numbered arguments are the arguments</strong><br />to send to the <a href="id.html">object</a>.</p>
+<p>To send an Objective-C message to an Objective-C object using <strong>NodObjC</strong>, you have to <strong>invoke the object as a function</strong>, where the <strong>even number arguments make up the message name</strong> and the <strong>odd numbered arguments are the arguments</strong> to send to the <a href="id.html">object</a>.</p>
 
 <pre><code>object('messageNameWithArg', someArg, 'andArg', anotherArg)
 </code></pre>
 
-<p>This sounds and probably looks strange at first, but this is the cleanest<br />syntax while still being valid JS. It also maintains the "readabililty" of<br />typical Objective-C method names.</p>
+<p>This sounds and probably looks strange at first, but this is the cleanest syntax while still being valid JS. It also maintains the "readabililty" of typical Objective-C method names.</p>
 
 <h2>Dynamic Object Introspection</h2>
 
-<p>Since <strong>NodObjC</strong> runs in an interpreted environment, it is actually <em>very<br />easy</em> to dynamically inspect the defined methods, instance variables (ivars),<br />implemented protocols, and more of any given Objective-C object (a.k.a.<br /><a href="id.html"><code>id</code></a> instances).</p>
+<p>Since <strong>NodObjC</strong> runs in an interpreted environment, it is actually <em>very easy</em> to dynamically inspect the defined methods, instance variables (ivars), implemented protocols, and more of any given Objective-C object (a.k.a. <a href="id.html"><code>id</code></a> instances).</p>
 
-<p>Using the same <code>array</code> instance as before, you can retreive a list of the<br />type of class, and it's subclasses, by calling the <code>.ancestors()</code> function.</p>
+<p>Using the same <code>array</code> instance as before, you can retreive a list of the type of class, and it's subclasses, by calling the <code>.ancestors()</code> function.</p>
 
 <pre><code>array.ancestors()
 <span class="comment">// [ '__NSArrayM',</span>
@@ -55,7 +55,7 @@ console.log(array)
 <span class="comment">//   'NSObject' ]</span>
 </code></pre>
 
-<p>Also commonly of interest are the given methods an object responds to. Use the<br /><code>.methods()</code> function for that.</p>
+<p>Also commonly of interest are the given methods an object responds to. Use the <code>.methods()</code> function for that.</p>
 
 <pre><code>array.methods()
 <span class="comment">// [ 'addObject:',</span>
@@ -74,7 +74,7 @@ console.log(array)
 
 <h2>More Docs</h2>
 
-<p>Check out the rest of the doc pages for some of the other important<br /><strong>NodObjC</strong> pieces.</p>
+<p>Check out the rest of the doc pages for some of the other important <strong>NodObjC</strong> pieces.</p>
 
 <ul>
 <li><a href="block.html">Block</a> - How to use an Objective-C "block" function.</li>
@@ -85,9 +85,9 @@ console.log(array)
 <li><a href="ivar.html">Ivars</a> - Instance variable definitions.</li>
 <li><a href="method.html">Method</a> - Method definitions and swizzling.</li>
 <li><a href="struct.html">Structs</a> - Using Structs and C functions in <strong>NodObjC</strong>.</li>
-</ul></div></div><div class="part"><div class="desc"><p>This function accepts native JS types (String, Number, Date) and converts them<br />to the proper Objective-C type (NSString, NSNumber, NSDate).</p>
+</ul></div></div><div class="part"><div class="desc"><p>This function accepts native JS types (String, Number, Date) and converts them to the proper Objective-C type (NSString, NSNumber, NSDate).</p>
 
-<p>Often times, you will use this function to cast a JS String into an NSString<br />for methods that accept NSStrings (since NodObjC doesn't automatically cast to<br />NSStrings in those instances).</p>
+<p>Often times, you will use this function to cast a JS String into an NSString for methods that accept NSStrings (since NodObjC doesn't automatically cast to NSStrings in those instances).</p>
 
 <pre><code><span class="keyword">var</span> jsString = <span class="string">'a javascript String'</span>
 <span class="keyword">var</span> nsString = $(jsString)
@@ -105,4 +105,4 @@ $.NSLog(nsString)
   <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Unsupported object passed in to convert: '</span> + o)
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
-</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>
+</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"></a></body></html>

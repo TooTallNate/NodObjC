@@ -1,26 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Bridgesupport | NodObjC v0.0.8</title><link href="assets/styles.css" rel="stylesheet"/><link href="assets/ir_black.css" rel="stylesheet"/><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="http://github.com/TooTallNate/NodObjC" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Bridgesupport</h2><div class="part"><div class="desc"><p>This module takes care of loading the BridgeSupport XML files for a given<br />framework, and parsing the data into the given framework object.</p>
+<!DOCTYPE html><html><head><title>Bridgesupport | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Bridgesupport</h2><div class="part"><div class="desc"><p>This module takes care of loading the BridgeSupport XML files for a given framework, and parsing the data into the given framework object.</p>
 
 <h2>Reference</h2>
 
-<p><a href='http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html'>http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html</a></p>
-
-<p>Module exports.</p></div><button class="show-code">Show Code</button><pre class="code"><code>exports.bridgesupport = bridgesupport
-exports.classes = {}
-exports.informal_protocols = {}</code></pre></div><div class="part"><div class="desc"><p>Module dependencies.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> fs = require(<span class="string">'fs'</span>)
-  , sax = require(<span class="string">'sax'</span>)
-  , path = require(<span class="string">'path'</span>)
-  , assert = require(<span class="string">'assert'</span>)
-  , debug = require(<span class="string">'debug'</span>)(<span class="string">'NodObjC'</span>)
-  , IMP = require(<span class="string">'./imp'</span>)
-  , core = require(<span class="string">'./core'</span>)
-  , types = require(<span class="string">'./types'</span>)
-  , struct = require(<span class="string">'./struct'</span>)
-  , _global = require(<span class="string">'./index'</span>)
-  , Import = require(<span class="string">'./import'</span>).import
-  , join = path.join
-  , exists = path.existsSync
-  , DY_SUFFIX = <span class="string">'.dylib'</span>
-  , BS_SUFFIX = <span class="string">'.bridgesupport'</span></code></pre></div><div class="part"><div class="desc"><p>Architecture-specific functions that return the Obj-C type or value from one<br />of these BridgeSupport XML nodes.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> getType
+<p><a href='http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html'>http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html</a></p></div></div><div class="part"><div class="desc"><p>Architecture-specific functions that return the Obj-C type or value from one of these BridgeSupport XML nodes.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> getType
   , getValue
 <span class="keyword">if</span> (process.arch == <span class="string">'x64'</span>) {
   <span class="comment">// 64-bit specific functions</span>
@@ -40,7 +22,7 @@ exports.informal_protocols = {}</code></pre></div><div class="part"><div class="
   getValue = <span class="function"><span class="keyword">function</span> <span class="params">(a)</span> {</span>
     <span class="keyword">return</span> a.value
   }
-}</code></pre></div><div class="part"><div class="desc"><p>Attempts to retrieve the BridgeSupport files for the given framework.<br />It synchronously reads the contents of the bridgesupport files and parses<br />them in order to add the symbols that the Obj-C runtime functions cannot<br />determine.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">bridgesupport</span> <span class="params">(fw)</span> {</span>
+}</code></pre></div><div class="part"><h3>bridgesupport()</h3><div class="desc"><p>Attempts to retrieve the BridgeSupport files for the given framework. It synchronously reads the contents of the bridgesupport files and parses them in order to add the symbols that the Obj-C runtime functions cannot determine.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">bridgesupport</span> <span class="params">(fw)</span> {</span>
 
   <span class="keyword">var</span> bridgeSupportDir = join(fw.basePath, <span class="string">'Resources'</span>, <span class="string">'BridgeSupport'</span>)
     , bridgeSupportXML = join(bridgeSupportDir, fw.name + BS_SUFFIX)
@@ -167,7 +149,7 @@ exports.informal_protocols = {}</code></pre></div><div class="part"><div class="
   parser.write(contents).close()
 
   assert.ok(gotEnd, <span class="string">'could not parse BridgeSupport files synchronously'</span>)
-}</code></pre></div><div class="part"><div class="desc"><p>Sets up a <constant> tag onto the global exports.<br />These start out as simple JS getters, so that the underlying<br />symbol pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineConstant</span> <span class="params">(a, fw)</span> {</span>
+}</code></pre></div><div class="part"><h3>defineConstant()</h3><div class="desc"><p>Sets up a <constant> tag onto the global exports. These start out as simple JS getters, so that the underlying symbol pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineConstant</span> <span class="params">(a, fw)</span> {</span>
   <span class="keyword">var</span> name = a.name
     , type = getType(a)
   _global.__defineGetter__(name, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
@@ -176,18 +158,18 @@ exports.informal_protocols = {}</code></pre></div><div class="part"><div class="
     <span class="keyword">var</span> val = ptr.deref()
     <span class="keyword">return</span> val
   })
-}</code></pre></div><div class="part"><div class="desc"><p>Sets up a <function> tag onto the global exports.<br />These start out as simple JS getters, so that the underlying<br />function pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineFunction</span> <span class="params">(a, fw)</span> {</span>
+}</code></pre></div><div class="part"><h3>defineFunction()</h3><div class="desc"><p>Sets up a <function> tag onto the global exports. These start out as simple JS getters, so that the underlying function pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineFunction</span> <span class="params">(a, fw)</span> {</span>
   <span class="keyword">var</span> name = a.name
     , isInline = a.inline == <span class="string">'true'</span>
-  <span class="keyword">if</span> (isInline) {
-    assert.ok(fw.inline, name+<span class="string">', '</span>+fw.name+<span class="string">': declared inline but could not find inline dylib!'</span>)
-  }
   _global.__defineGetter__(name, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
     <span class="comment">//console.error(require('util').inspect(a, true, 10))</span>
     <span class="comment">// TODO: Handle 'variadic' arg functions (NSLog), will require</span>
     <span class="comment">//       a &quot;function generator&quot; to get a Function from the passed</span>
     <span class="comment">//       in args (and guess at the types that were passed in...)</span>
     debug(<span class="string">'loading function pointer for:'</span>, name)
+    <span class="keyword">if</span> (isInline) {
+      assert.ok(fw.inline, name+<span class="string">', '</span>+fw.name+<span class="string">': declared inline but could not find inline dylib!'</span>)
+    }
     <span class="keyword">var</span> ptr = (isInline ? fw.inline : fw.lib).get(name)
       , unwrapper = IMP.createUnwrapperFunction(ptr, a)
     unwrapper.info = a
@@ -196,4 +178,4 @@ exports.informal_protocols = {}</code></pre></div><div class="part"><div class="
   })
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.
-</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"/></a></body></html>
+</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"></a></body></html>
