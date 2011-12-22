@@ -41,5 +41,5 @@ function render () {
   html = highlight(html, false, true)
 
   // Output the result to stdout
-  process.stdout.write(html)
+  process.stdout.write(html + '\n')
 }
