@@ -22,10 +22,10 @@ docclean:
 
 gh-pages: docclean docs
 	rm -rf /tmp/NodObjC_docs \
-		&& cp -rfd docs /tmp/NodObjC_docs \
+		&& cp -drf docs /tmp/NodObjC_docs \
 		&& rm /tmp/NodObjC_docs/compile.js /tmp/NodObjC_docs/template.jade \
 		&& git checkout gh-pages \
-		&& cp -rf /tmp/NodObjC_docs/* . \
+		&& cp -drf /tmp/NodObjC_docs/* . \
 		&& echo "done"
 
 .PHONY: test docs
