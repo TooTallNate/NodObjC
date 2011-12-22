@@ -22,7 +22,8 @@ docclean:
 
 gh-pages: docclean docs
 	rm -rf /tmp/NodObjC_docs \
-		&& cp -rf docs /tmp/NodObjC_docs \
+		&& cp -rf docs/*.html /tmp/NodObjC_docs \
+		&& cp -rfd docs/assets /tmp/NodObjC_docs/assets \
 		&& git checkout gh-pages \
 		&& cp -rf /tmp/NodObjC_docs/* . \
 		&& echo "done"
