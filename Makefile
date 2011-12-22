@@ -17,4 +17,14 @@ docs/%.html: lib/%.js
 
 docs: $(DOC_DEPS)
 
+docclean:
+	rm docs/*.html
+
+gh-pages: docclean docs
+	rm -rf /tmp/NodObjC_docs \
+		&& cp -rf docs /tmp/NodObjC_docs \
+		&& git checkout gh-pages \
+		&& cp -rf /tmp/NodObjC_docs . \
+		&& echo "done"
+
 .PHONY: test docs
