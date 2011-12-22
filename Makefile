@@ -1,16 +1,18 @@
 TESTS = $(wildcard test/*.js)
 JS_FILES = $(wildcard lib/*.js)
-DOC_DEPS = $(JS_FILES:.js=.doc)
+DOC_DEPS := $(JS_FILES:.js=.html)
+DOC_DEPS := $(DOC_DEPS:lib/%=docs/%)
+DOC_COMPILE = "docs/compile.js"
 
 test:
 	@./test/run.sh $(TESTS)
 
-lib/%.doc: lib/%.js
-	./node_modules/.bin/dox < "$<" | node docs/compile.js "$<"
+docs/%.html: lib/%.js
+	./node_modules/.bin/dox < "$<" | node $(DOC_COMPILE) "$<"
 
-%.doc.debug: lib/%.js
+%.doc: lib/%.js
 	./node_modules/.bin/dox --debug < "$<"
 
 docs: $(DOC_DEPS)
 
-.PHONY: test
+.PHONY: test docs
