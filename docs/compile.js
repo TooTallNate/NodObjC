@@ -13,7 +13,7 @@ var fs = require('fs')
  * The output filename.
  */
 
-var filename = process.argv[2]
+var title = process.argv[2]
   , template = __dirname + '/template.jade'
 
 var input = ''
@@ -28,8 +28,7 @@ process.stdin.on('end', function () {
 process.stdin.resume()
 
 function render () {
-  var title = basename(filename, '.js')
-    , opts = {
+  var opts = {
         title: title[0].toUpperCase() + title.substring(1)
       , input: input
       , package: package
@@ -41,7 +40,6 @@ function render () {
   // Syntax highlighting
   html = highlight(html, false, true)
 
-  // XXX: Output to stdout when I can figure out the Makefile syntax
-  //process.stdout.write(html)
-  fs.writeFileSync(__dirname + '/' + title + '.html', html)
+  // Output the result to stdout
+  process.stdout.write(html)
 }
