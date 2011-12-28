@@ -8,6 +8,7 @@ var fs = require('fs')
   , jade = require('jade')
   , highlight = require('highlight').Highlight
   , package = JSON.parse(fs.readFileSync(__dirname + '/../package.json'))
+  , pages = process.env.PAGES.split(' ')
 
 /**
  * The output filename.
@@ -32,6 +33,7 @@ function render () {
         title: title[0].toUpperCase() + title.substring(1)
       , input: input
       , package: package
+      , pages: pages
     }
     , buf = fs.readFileSync(template)
     , fn = jade.compile(buf, opts)

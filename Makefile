@@ -6,6 +6,8 @@ JS_FILES := $(wildcard lib/*.js)
 DOC_DEPS := $(JS_FILES:.js=.html)
 DOC_DEPS := $(DOC_DEPS:lib/%=docs/%)
 
+export PAGES=$(notdir $(basename $(JS_FILES)))
+
 test:
 	@./test/run.sh $(TESTS)
 

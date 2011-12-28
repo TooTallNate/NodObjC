@@ -12,6 +12,10 @@ html
       a(href='index.html', id='title')
         h1= package.name
         h3 The NodeJS &#8646; Objective-C Bridge
+      .toc
+        each page in pages
+          span.page
+            a(href=page + '.html')= page
       h2= title
 
       each part in input
