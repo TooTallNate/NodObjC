@@ -35,6 +35,7 @@ pre {
 pre code {
   border: none;
   background-color: transparent;
+  overflow: auto;
 }
 
 #content {
