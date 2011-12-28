@@ -18,7 +18,7 @@ docs/%.html: lib/%.js
 docs: $(DOC_DEPS)
 
 docclean:
-	rm -f docs/*.html
+	rm -fv docs/*.html
 
 gh-pages: docclean docs
 	rm -rf /tmp/NodObjC_docs \
