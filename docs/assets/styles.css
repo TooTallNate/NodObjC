@@ -82,3 +82,10 @@ pre code {
   font-size: 12px;
   font-style: italic;
 }
+
+.caution {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url(caution.png);
+}
