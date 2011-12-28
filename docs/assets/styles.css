@@ -62,12 +62,12 @@ pre code {
   border: 0px;
 }
 
-.desc {
-  margin-left: 10px;
-}
-
 .part {
   padding-top: 20px;
+}
+
+.part h3 {
+  margin-left: 10px;
 }
 
 .code {
@@ -76,4 +76,9 @@ pre code {
 
 .code.shown {
   display: block;
+}
+
+.private {
+  font-size: 12px;
+  font-style: italic;
 }
