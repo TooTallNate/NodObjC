@@ -26,6 +26,7 @@ a:hover {
 pre, code {
   border: Solid 1px #000;
   background-color: rgba(0, 40, 80, 0.5);
+  text-shadow: none;
 }
 
 pre {
@@ -36,6 +37,11 @@ pre code {
   border: none;
   background-color: transparent;
   overflow: auto;
+}
+
+h1, h2, h3 {
+  margin-left: 10px;
+  text-shadow: 0 3px 2px #222;
 }
 
 #content {
@@ -64,10 +70,6 @@ pre code {
 
 .part {
   padding-top: 20px;
-}
-
-.part h3 {
-  margin-left: 10px;
 }
 
 .code {
