@@ -84,11 +84,14 @@ h1, h2, h3 {
 .private {
   font-size: 12px;
   font-style: italic;
+  line-height: 15px;
 }
 
 .caution {
+  background-image: url(caution.png);
   display: inline-block;
+  float: left;
   width: 16px;
   height: 16px;
-  background-image: url(caution.png);
+  margin-right: 4px;
 }
