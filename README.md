@@ -125,7 +125,6 @@ to check out the [#nodobjc][IRC] channel in the freenode IRC server.
 Additional topics of discussion can be found on the [Wiki][] page.
 
 
-
 [NodeJS]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
 [PyObjC]: http://pyobjc.sourceforge.net
