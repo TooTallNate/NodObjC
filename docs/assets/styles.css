@@ -34,8 +34,9 @@ pre {
 }
 
 pre code {
-  border: none;
   background-color: transparent;
+  border: none;
+  box-shadow: 3px 4px 15px #01001a;
   overflow: auto;
 }
 
@@ -47,8 +48,6 @@ h1, h2, h3 {
 #content {
   background-color: rgba(0, 0, 0, 0.2);
   border: Solid 1px #01001a;
-  -moz-box-shadow: 5px 7px 30px #01001a;
-  -webkit-box-shadow: 5px 7px 30px #01001a;
   box-shadow: 5px 7px 30px #01001a;
   margin: 30px 0px 200px 80px;
   max-width: 670px;
