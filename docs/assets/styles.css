@@ -37,6 +37,8 @@ pre code {
   background-color: transparent;
   border: none;
   box-shadow: 3px 4px 15px #01001a;
+  font-size: 12.5px;
+  line-height: 16px;
   overflow: auto;
 }
 
