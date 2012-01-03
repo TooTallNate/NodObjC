@@ -30,9 +30,10 @@ html
               if (part.isPrivate)
                 .private
                   .caution
-                  | This is a private function used internally by 
+                  | This is a private #{part.ctx.type} used internally by 
                   code NodObjC
-                  | . You should <b>not</b> need to use this function in your code.
+                  | . You should <b>not</b> need to use this #{part.ctx.type} in
+                  | your code.
               | !{part.description.full.replace(/\<br \/\>/g, ' ')}
             if (part.code)
               button.show-code Show Code
