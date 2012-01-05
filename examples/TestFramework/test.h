@@ -2,8 +2,10 @@
 
 @class NSTestClass;
 
-@interface NSTestClass : NSObject {
-}
+@interface NSTestClass : NSObject
+
+// Static
++ (NSString *) hello;
 
 // Instance
 - (NSInteger) hello;

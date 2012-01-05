@@ -5,18 +5,18 @@
       'product_name': 'Test Framework',
       'type': 'shared_library',
       'mac_bundle': 1,
-      'mac_framework_headers': [
-          'test.h'
-      ],
       'link_settings': {
         'libraries': [
-          '$(SDKROOT)/System/Library/Frameworks/Cocoa.framework',
+          '$(SDKROOT)/System/Library/Frameworks/Foundation.framework',
         ],
       },
       'sources': [
           'test.m'
       ],
       'libraries': [ '-lobjc' ],
+      'mac_framework_headers': [
+          'test.h'
+      ],
       'xcode_settings': {
           'INFOPLIST_FILE': 'Info.plist'
         , 'GCC_DYNAMIC_NO_PIC': 'NO'

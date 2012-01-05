@@ -2,8 +2,8 @@
 
 @implementation NSTestClass
 
-+ (NSInteger) hello {
-  return 1;
++ (NSString *) hello {
+  return @"Hello World!";
 }
 
 - (NSInteger) hello {
