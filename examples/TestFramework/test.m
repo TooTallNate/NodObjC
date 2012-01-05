@@ -1,11 +1,12 @@
+#include "test.h"
 
-@implementation TestClass
+@implementation NSTestClass
 
-+(NSInteger) hello {
++ (NSInteger) hello {
   return 1;
 }
 
--(NSInteger) hello {
+- (NSInteger) hello {
   return 0;
 }
 

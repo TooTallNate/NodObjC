@@ -1,10 +1,9 @@
+#import <Foundation/Foundation.h>
 
 @class NSTestClass;
 
-@interface NSTestClass
-
-// Static
-+ (NSInteger) hello;
+@interface NSTestClass : NSObject {
+}
 
 // Instance
 - (NSInteger) hello;
