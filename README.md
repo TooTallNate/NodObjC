@@ -14,7 +14,7 @@ scripting bridges:
  * [JSCocoa][]
  * [PyObjC][]
  * [RubyCocoa][]
- * [And the others...][others]
+ * [And the others…][others]
 
 So you can write entire Cocoa or iOS GUI applications entirely in NodeJS
 JavaScript! Applications are interpreted at runtime through the V8 engine,
