@@ -1,4 +1,4 @@
-var types = require('../types')
+var types = require('../lib/types')
   , assert = require('assert')
   , inspect = require('util').inspect
 

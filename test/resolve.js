@@ -1,4 +1,4 @@
-var imp = require('../import')
+var imp = require('../lib/import')
   , assert = require('assert')
 
 check(imp.resolve('Foundation'));

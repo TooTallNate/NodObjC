@@ -1,4 +1,4 @@
-var struct = require('../struct')
+var struct = require('../lib/struct')
   , assert = require('assert')
   , inspect = require('util').inspect
 
