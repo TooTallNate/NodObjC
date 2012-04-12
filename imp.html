@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>Imp | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Imp</h2><div class="part"><div class="desc"><p>Represents a wrapped <code>IMP</code> (a.k.a. method implementation). <code>IMP</code>s are function pointers for methods. The first two arguments are always:</p>
+<!DOCTYPE html><html><head><title>Imp | NodObjC v0.0.10</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Imp</h2><div class="part"><div class="desc"><p>Represents a wrapped <code>IMP</code> (a.k.a. method implementation). <code>IMP</code>s are function pointers for methods. The first two arguments are always:</p>
 
 <ol>
 <li><code>self</code> - The object instance the method is being called on.</li>
@@ -6,8 +6,11 @@
 </ol>
 
 <p>Any additional arguments that get passed are the actual arguments that get passed along to the method.</p>
-
-<p>The functions here should not be used in your code; NodObjC uses these internally.</p></div></div><div class="part"><h3>createWrapperPointer()</h3><div class="desc"><p>Creates an ffi Function Pointer to the passed in 'func' Function. The function gets wrapped in an "wrapper" function, which wraps the passed in arguments, and unwraps the return value.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createWrapperPointer</span> <span class="params">(func, type)</span> {</span>
+</div></div><div class="part"><h3>createWrapperPointer()</h3><div class="desc"><div class="private"><div class="caution"></div>This is a private function used internally by 
+<code>NodObjC</code>. You should <b>not</b> need to use this function in
+your code.
+</div><p>Creates an ffi Function Pointer to the passed in 'func' Function. The function gets wrapped in an "wrapper" function, which wraps the passed in arguments, and unwraps the return value.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createWrapperPointer</span> <span class="params">(func, type)</span> {</span>
   <span class="keyword">if</span> (func.pointer) {
     debug(<span class="string">'Detected an \'unwrapper\' function, returning original pointer'</span>)
     <span class="keyword">return</span> func.pointer
@@ -22,7 +25,11 @@
     <span class="keyword">return</span> core.unwrapValue(rtn, rtnType)
   }
   <span class="keyword">return</span> ffiCb.getPointer()
-}</code></pre></div><div class="part"><h3>createUnwrapperFunction()</h3><div class="desc"><p>Creates a JS Function from the passed in function pointer. When the returned function is invoked, the passed in arguments are unwrapped before being passed to the native function, and the return value is wrapped up before being returned for real.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createUnwrapperFunction</span> <span class="params">(funcPtr, type)</span> {</span>
+}</code></pre></div><div class="part"><h3>createUnwrapperFunction()</h3><div class="desc"><div class="private"><div class="caution"></div>This is a private function used internally by 
+<code>NodObjC</code>. You should <b>not</b> need to use this function in
+your code.
+</div><p>Creates a JS Function from the passed in function pointer. When the returned function is invoked, the passed in arguments are unwrapped before being passed to the native function, and the return value is wrapped up before being returned for real.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">createUnwrapperFunction</span> <span class="params">(funcPtr, type)</span> {</span>
   <span class="keyword">var</span> rtnType = type.retval || type[<span class="number">0</span>] || <span class="string">'v'</span>
     , argTypes = type.args || type[<span class="number">1</span>] || []
     , func = core.ForeignFunction.build(funcPtr

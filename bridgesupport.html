@@ -1,28 +1,13 @@
-<!DOCTYPE html><html><head><title>Bridgesupport | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Bridgesupport</h2><div class="part"><div class="desc"><p>This module takes care of loading the BridgeSupport XML files for a given framework, and parsing the data into the given framework object.</p>
+<!DOCTYPE html><html><head><title>Bridgesupport | NodObjC v0.0.10</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Bridgesupport</h2><div class="part"><div class="desc"><p>This module takes care of loading the BridgeSupport XML files for a given framework, and parsing the data into the given framework object.</p>
 
-<h2>Reference</h2>
+<h3>References:</h3>
 
-<p><a href='http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html'>http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html</a></p></div></div><div class="part"><div class="desc"><p>Architecture-specific functions that return the Obj-C type or value from one of these BridgeSupport XML nodes.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="keyword">var</span> getType
-  , getValue
-<span class="keyword">if</span> (process.arch == <span class="string">'x64'</span>) {
-  <span class="comment">// 64-bit specific functions</span>
-  debug(<span class="string">'using 64-bit &quot;type&quot; and &quot;value&quot; attributes'</span>)
-  getType = <span class="function"><span class="keyword">function</span> <span class="params">(a)</span> {</span>
-    <span class="keyword">return</span> a.type64 || a.type
-  }
-  getValue = <span class="function"><span class="keyword">function</span> <span class="params">(a)</span> {</span>
-    <span class="keyword">return</span> a.value64 || a.value
-  }
-} <span class="keyword">else</span> {
-  <span class="comment">// 32-bit / ARM specific functions</span>
-  debug(<span class="string">'using regular &quot;type&quot; and &quot;value&quot; attributes'</span>)
-  getType = <span class="function"><span class="keyword">function</span> <span class="params">(a)</span> {</span>
-    <span class="keyword">return</span> a.type
-  }
-  getValue = <span class="function"><span class="keyword">function</span> <span class="params">(a)</span> {</span>
-    <span class="keyword">return</span> a.value
-  }
-}</code></pre></div><div class="part"><h3>bridgesupport()</h3><div class="desc"><p>Attempts to retrieve the BridgeSupport files for the given framework. It synchronously reads the contents of the bridgesupport files and parses them in order to add the symbols that the Obj-C runtime functions cannot determine.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">bridgesupport</span> <span class="params">(fw)</span> {</span>
+<ul>
+<li><a href="http://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/BridgeSupport.5.html"><code>man 5 BridgeSupport</code></a></li>
+<li><a href="http://bridgesupport.macosforge.org">BridgeSupport MacOS Forge website</a></li>
+</ul>
+</div></div><div class="part"><h3>bridgesupport()</h3><div class="desc"><p>Attempts to retrieve the BridgeSupport files for the given framework. It synchronously reads the contents of the bridgesupport files and parses them in order to add the symbols that the Obj-C runtime functions cannot determine.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">bridgesupport</span> <span class="params">(fw)</span> {</span>
 
   <span class="keyword">var</span> bridgeSupportDir = join(fw.basePath, <span class="string">'Resources'</span>, <span class="string">'BridgeSupport'</span>)
     , bridgeSupportXML = join(bridgeSupportDir, fw.name + BS_SUFFIX)
@@ -40,7 +25,7 @@
     fw.inline = core.dlopen(bridgeSupportDylib)
   }
 
-  <span class="keyword">var</span> contents = fs.readFileSync(bridgeSupportXML, <span class="string">'utf8'</span>)
+  <span class="keyword">var</span> contents = read(bridgeSupportXML, <span class="string">'utf8'</span>)
     , parser = sax.parser(<span class="literal">true</span>)
     , gotEnd = <span class="literal">false</span>
     , curObj = <span class="literal">null</span>
@@ -149,7 +134,8 @@
   parser.write(contents).close()
 
   assert.ok(gotEnd, <span class="string">'could not parse BridgeSupport files synchronously'</span>)
-}</code></pre></div><div class="part"><h3>defineConstant()</h3><div class="desc"><p>Sets up a <constant> tag onto the global exports. These start out as simple JS getters, so that the underlying symbol pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineConstant</span> <span class="params">(a, fw)</span> {</span>
+}</code></pre></div><div class="part"><h3>defineConstant()</h3><div class="desc"><p>Sets up a <constant> tag onto the global exports. These start out as simple JS getters, so that the underlying symbol pointer can be lazy-loaded on-demand.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineConstant</span> <span class="params">(a, fw)</span> {</span>
   <span class="keyword">var</span> name = a.name
     , type = getType(a)
   _global.__defineGetter__(name, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
@@ -158,7 +144,8 @@
     <span class="keyword">var</span> val = ptr.deref()
     <span class="keyword">return</span> val
   })
-}</code></pre></div><div class="part"><h3>defineFunction()</h3><div class="desc"><p>Sets up a <function> tag onto the global exports. These start out as simple JS getters, so that the underlying function pointer can be lazy-loaded on-demand.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineFunction</span> <span class="params">(a, fw)</span> {</span>
+}</code></pre></div><div class="part"><h3>defineFunction()</h3><div class="desc"><p>Sets up a <function> tag onto the global exports. These start out as simple JS getters, so that the underlying function pointer can be lazy-loaded on-demand.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">defineFunction</span> <span class="params">(a, fw)</span> {</span>
   <span class="keyword">var</span> name = a.name
     , isInline = a.inline == <span class="string">'true'</span>
   _global.__defineGetter__(name, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>

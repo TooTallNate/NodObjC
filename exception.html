@@ -1,11 +1,57 @@
-<!DOCTYPE html><html><head><title>Exception | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Exception</h2><div class="part"><div class="desc"><p>Creates a JavaScript <code>Error</code> object from an Objective-C <code>NSException</code> pointer. You will not need to use any of these functions in your own code; NodObjC uses these internally.</p></div></div><div class="part"><h3>wrap()</h3><div class="desc"><p>Wraps a <code>Pointer</code> that should be an Objective-C <code>NSException</code> instance.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">wrap</span> <span class="params">(pointer)</span> {</span>
+<!DOCTYPE html><html><head><title>Exception | NodObjC v0.0.10</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Exception</h2><div class="part"><div class="desc"><p><code>NodObjC</code> makes it seamless to catch Objective-C exceptions, using the standard JavaScript <code><span class="keyword">try</span></code>/<code><span class="keyword">catch</span></code> syntax you are already familiar with.</p>
+
+<p>When an Objective-C method or function throws an <code>NSException</code>, you can catch the exception and inspect it further. The error object that gets passed can be invoked to send messages, just like any other Objective-C object in <code>NodObjC</code>. The error object also has it's <code>message</code> and <code>stack</code> properties set, so that you can easily retrieve the error message and get a dump of the stack trace.</p>
+
+<pre><code><span class="keyword">var</span> array = $.NSMutableArray(<span class="string">'alloc'</span>)(<span class="string">'init'</span>)
+
+<span class="keyword">try</span> {
+
+  <span class="comment">// This will throw an exception since you can't add a null pointer</span>
+  array(<span class="string">'addObject'</span>, <span class="literal">null</span>)
+
+} <span class="keyword">catch</span> (err) {
+
+  err(<span class="string">'name'</span>)
+  <span class="comment">// 'NSInvalidArgumentException'</span>
+
+  err(<span class="string">'reason'</span>)
+  <span class="comment">// '*** -[__NSArrayM insertObject:atIndex:]: object cannot be nil'</span>
+
+  err(<span class="string">'reason'</span>) == err.message
+  <span class="comment">// true</span>
+
+  err.stack
+  <span class="comment">// NSInvalidArgumentException: *** -[__NSArrayM insertObject:atIndex:]: object cannot be nil</span>
+  <span class="comment">//     at Function.msgSend (/Users/nrajlich/NodObjC/lib/id.js:139:21)</span>
+  <span class="comment">//     at id (/Users/nrajlich/NodObjC/lib/id.js:105:15)</span>
+  <span class="comment">//     at Object.&lt;anonymous&gt; (/Users/nrajlich/NodObjC/array-exception.js:8:3)</span>
+  <span class="comment">//     at Module._compile (module.js:411:26)</span>
+  <span class="comment">//     at Object..js (module.js:417:10)</span>
+  <span class="comment">//     at Module.load (module.js:343:31)</span>
+  <span class="comment">//     at Function._load (module.js:302:12)</span>
+  <span class="comment">//     at Array.0 (module.js:430:10)</span>
+  <span class="comment">//     at EventEmitter._tickCallback (node.js:126:26)</span>
+
+}
+</code></pre>
+</div></div><div class="part"><h3>wrap()</h3><div class="desc"><div class="private"><div class="caution"></div>This is a private function used internally by 
+<code>NodObjC</code>. You should <b>not</b> need to use this function in
+your code.
+</div><p>Wraps a <code>Pointer</code> that should be an Objective-C <code>NSException</code> instance.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">wrap</span> <span class="params">(pointer)</span> {</span>
   <span class="keyword">var</span> w = id.wrap(pointer)
   w.__proto__ = proto
   <span class="comment">// `name` is non-configurable on Functions, so don't bother</span>
   w.message = String(w(<span class="string">'reason'</span>))
-  Err.captureStackTrace(w, exports.wrap)
+  Error.captureStackTrace(w, exports.wrap)
   <span class="keyword">return</span> w
-}</code></pre></div><div class="part"><h3>Exception#toString()</h3><div class="desc"><p>A <code>toString()</code> override that mimics an <code>Error</code> object's <code>toString()</code>.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.toString = <span class="function"><span class="keyword">function</span> <span class="title">toString</span> <span class="params">()</span> {</span>
+}</code></pre></div><div class="part"><h3>Exception#toString()</h3><div class="desc"><p>A <code>toString()</code> override that mimics an <code>Error</code> object's <code>toString()</code>, using the equivalent Objective-C methods.</p>
+
+<pre><code><span class="comment">// `err` is a caught NSException instance</span>
+err.toString()
+<span class="comment">// 'NSInvalidArgumentException: *** -[__NSArrayM insertObject:atIndex:]: object cannot be nil'</span>
+</code></pre>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.toString = <span class="function"><span class="keyword">function</span> <span class="title">toString</span> <span class="params">()</span> {</span>
   <span class="keyword">return</span> <span class="keyword">this</span>(<span class="string">'name'</span>) + <span class="string">': '</span> + <span class="keyword">this</span>(<span class="string">'reason'</span>)
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
 <a href="https://github.com/visionmedia/dox">dox</a>.

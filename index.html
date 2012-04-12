@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>Index | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Index</h2><div class="part"><div class="desc"><p><strong>NodObjC</strong> is the bridge between NodeJS and the Objective-C runtime and frameworks, making it possible to write native Cocoa applications (both GUI and command-line) using 100% NodeJS. Applications are written entirely in JavaScript and interpreted at runtime.</p>
+<!DOCTYPE html><html><head><title>Index | NodObjC v0.0.10</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Index</h2><div class="part"><div class="desc"><p><strong>NodObjC</strong> is the bridge between NodeJS and the Objective-C runtime and frameworks, making it possible to write native Cocoa applications (both GUI and command-line) using 100% NodeJS. Applications are written entirely in JavaScript and interpreted at runtime.</p>
 
 <h2>Getting Started</h2>
 
@@ -85,7 +85,8 @@ console.log(array)
 <li><a href="ivar.html">Ivars</a> - Instance variable definitions.</li>
 <li><a href="method.html">Method</a> - Method definitions and swizzling.</li>
 <li><a href="struct.html">Structs</a> - Using Structs and C functions in <strong>NodObjC</strong>.</li>
-</ul></div></div><div class="part"><div class="desc"><p>This function accepts native JS types (String, Number, Date) and converts them to the proper Objective-C type (NSString, NSNumber, NSDate).</p>
+</ul>
+</div></div><div class="part"><div class="desc"><p>This function accepts native JS types (<code>String</code>, <code>Number</code>, <code>Date</code>) and converts them to the proper Objective-C type (<code>NSString</code>, <code>NSNumber</code>, <code>NSDate</code>).</p>
 
 <p>Often times, you will use this function to cast a JS String into an NSString for methods that accept NSStrings (since NodObjC doesn't automatically cast to NSStrings in those instances).</p>
 
@@ -93,7 +94,8 @@ console.log(array)
 <span class="keyword">var</span> nsString = $(jsString)
 
 $.NSLog(nsString)
-</code></pre></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">$</span> <span class="params">(o)</span> {</span>
+</code></pre>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">$</span> <span class="params">(o)</span> {</span>
   <span class="keyword">var</span> t = <span class="keyword">typeof</span> o
   <span class="keyword">if</span> (t == <span class="string">'string'</span>) {
     <span class="keyword">return</span> $.NSString(<span class="string">'stringWithUTF8String'</span>, String(o))

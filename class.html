@@ -1,6 +1,11 @@
-<!DOCTYPE html><html><head><title>Class | NodObjC v0.0.9</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><h2>Class</h2><div class="part"><div class="desc"><p>The <code>Class</code> class is a subclass of <code>id</code>. Instances of <code>Class</code> wrap an Objective C <em>"Class"</em> instance.</p>
+<!DOCTYPE html><html><head><title>Class | NodObjC v0.0.10</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Class</h2><div class="part"><div class="desc"><p>The <code>Class</code> class is a subclass of <code>id</code>. Instances of <code>Class</code> wrap an Objective C <em>"Class"</em> instance.</p>
 
-<p>You can retrieve <code>Class</code> instances by getting a reference to a global class (i.e. <code>$.NSObject</code>), or by other methods/functions that return <code>Class</code> instances normally (i.e. <code>$.NSClassFromString($('NSObject'))</code>).</p></div></div><div class="part"><h3>getClass()</h3><div class="desc"><p>Gets a wrapped Class instance based off the given name. Also takes care of returning a cached version when available.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">getClass</span> <span class="params">(className)</span> {</span>
+<p>You can retrieve <code>Class</code> instances by getting a reference to a global class (i.e. <code>$.NSObject</code>), or by other methods/functions that return <code>Class</code> instances normally (i.e. <code>$.NSClassFromString($('NSObject'))</code>).</p>
+</div></div><div class="part"><h3>getClass()</h3><div class="desc"><div class="private"><div class="caution"></div>This is a private function used internally by 
+<code>NodObjC</code>. You should <b>not</b> need to use this function in
+your code.
+</div><p>Gets a wrapped Class instance based off the given name. Also takes care of returning a cached version when available.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">getClass</span> <span class="params">(className)</span> {</span>
   debug(<span class="string">'getClass:'</span>, className)
   <span class="keyword">var</span> rtn = classCache[className]
   <span class="keyword">if</span> (rtn) {
@@ -10,7 +15,11 @@
     rtn = exports.wrap(pointer, className)
   }
   <span class="keyword">return</span> rtn
-}</code></pre></div><div class="part"><h3>wrap()</h3><div class="desc"><p>Wraps a Class pointer.</p></div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">wrap</span> <span class="params">(pointer, className)</span> {</span>
+}</code></pre></div><div class="part"><h3>wrap()</h3><div class="desc"><div class="private"><div class="caution"></div>This is a private function used internally by 
+<code>NodObjC</code>. You should <b>not</b> need to use this function in
+your code.
+</div><p>Wraps the given <em>pointer</em>, which should be an Objective-C Class, and returns a <code>Class</code> instance.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">wrap</span> <span class="params">(pointer, className)</span> {</span>
   debug(<span class="string">'Class#wrap(%d, %s)'</span>, pointer.address, className)
   <span class="keyword">var</span> w = id.wrap(pointer)
   w.__proto__ = proto
@@ -23,17 +32,20 @@
 }
 
 <span class="comment">// Flag used by id#msgSend()</span>
-proto.isClass = <span class="literal">true</span></code></pre></div><div class="part"><h3>Class#extend()</h3><div class="desc"><p>Creates a subclass of the current class with the given name and optionally a number of extra bytes that need to be allocated with each instance. The returned Class instance should have 'addMethod()' and 'addIvar()' called on it as needed, and then 'register()' when you're ready to use it.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.extend = <span class="function"><span class="keyword">function</span> <span class="title">extend</span> <span class="params">(className, extraBytes)</span> {</span>
+proto.isClass = <span class="literal">true</span></code></pre></div><div class="part"><h3>Class#extend()</h3><div class="desc"><p>Creates a subclass of this class with the given name and optionally a number of extra bytes that will be allocated with each instance. The returned <code>Class</code> instance should have <code>addMethod()</code> and <code>addIvar()</code> called on it as needed before use, and then <code>register()</code> when you're ready to use it.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.extend = <span class="function"><span class="keyword">function</span> <span class="title">extend</span> <span class="params">(className, extraBytes)</span> {</span>
   <span class="keyword">var</span> c = core.objc_allocateClassPair(<span class="keyword">this</span>.pointer, className, extraBytes || <span class="number">0</span>)
   <span class="keyword">if</span> (c.isNull()) {
     <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'New Class could not be allocated: '</span> + className)
   }
   <span class="keyword">return</span> exports.wrap(c, className)
-}</code></pre></div><div class="part"><h3>Class#register()</h3><div class="desc"><p>Calls objc_registerClassPair() on the class pointer. This must be called on the class <em>after</em> all 'addMethod()' and 'addIvar()' calls are made, and <em>before</em> the newly created class is used for real.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.register = <span class="function"><span class="keyword">function</span> <span class="title">register</span> <span class="params">()</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#register()</h3><div class="desc"><p>Calls objc_registerClassPair() on the class pointer. This must be called on the class <em>after</em> all 'addMethod()' and 'addIvar()' calls are made, and <em>before</em> the newly created class is used for real.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.register = <span class="function"><span class="keyword">function</span> <span class="title">register</span> <span class="params">()</span> {</span>
   core.objc_registerClassPair(<span class="keyword">this</span>.pointer)
   _global[<span class="keyword">this</span>.getName()] = <span class="keyword">this</span>
   <span class="keyword">return</span> <span class="keyword">this</span>
-}</code></pre></div><div class="part"><h3>Class#addMethod()</h3><div class="desc"><p>Adds a new Method to the Class. Instances of the class (even already existing ones) will have the ability to invoke the method. This may be called at any time on any class.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addMethod = <span class="function"><span class="keyword">function</span> <span class="title">addMethod</span> <span class="params">(selector, type, func)</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#addMethod()</h3><div class="desc"><p>Adds a new Method to the Class. Instances of the class (even already existing ones) will have the ability to invoke the method. This may be called at any time on any class.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.addMethod = <span class="function"><span class="keyword">function</span> <span class="title">addMethod</span> <span class="params">(selector, type, func)</span> {</span>
   <span class="keyword">var</span> parsed = types.parse(type)
     , selRef = SEL.toSEL(selector)
     , funcPtr = IMP.createWrapperPointer(func, parsed)
@@ -41,7 +53,8 @@ proto.isClass = <span class="literal">true</span></code></pre></div><div class="
     <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'method &quot;'</span> + selector + <span class="string">'&quot; was NOT sucessfully added to Class: '</span> + <span class="keyword">this</span>.getName())
   }
   <span class="keyword">return</span> <span class="keyword">this</span>
-}</code></pre></div><div class="part"><h3>Class#addIvar()</h3><div class="desc"><p>Adds an Ivar to the Class. Instances of the class will contain the specified instance variable. This MUST be called after .extend() but BEFORE .register()</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addIvar = <span class="function"><span class="keyword">function</span> <span class="title">addIvar</span> <span class="params">(name, type, size, alignment)</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#addIvar()</h3><div class="desc"><p>Adds an Ivar to the Class. Instances of the class will contain the specified instance variable. This MUST be called after .extend() but BEFORE .register()</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.addIvar = <span class="function"><span class="keyword">function</span> <span class="title">addIvar</span> <span class="params">(name, type, size, alignment)</span> {</span>
   <span class="keyword">if</span> (!size) {
     <span class="comment">// Lookup the size of the type when needed</span>
     <span class="keyword">var</span> ffiType = types.map(type)
@@ -56,7 +69,8 @@ proto.isClass = <span class="literal">true</span></code></pre></div><div class="
     <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'ivar &quot;'</span> + name + <span class="string">'&quot; was NOT sucessfully added to Class: '</span> + <span class="keyword">this</span>.getName())
   }
   <span class="keyword">return</span> <span class="keyword">this</span>
-}</code></pre></div><div class="part"><h3>Class#addProtocol()</h3><div class="desc"><p>Adds a Protocol to the list of protocols that this class "conforms to", or "implements". Usually, an implementation object is passed in that defined the Protocol's defined methods onto the class conveniently.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.addProtocol = <span class="function"><span class="keyword">function</span> <span class="title">addProtocol</span> <span class="params">(protocolName, impl)</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#addProtocol()</h3><div class="desc"><p>Adds a <code>Protocol</code> to the list of protocols that this class "conforms to", or "implements". Usually, an implementation object is passed in that defined the Protocol's defined methods onto the class conveniently.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.addProtocol = <span class="function"><span class="keyword">function</span> <span class="title">addProtocol</span> <span class="params">(protocolName, impl)</span> {</span>
   <span class="keyword">var</span> informal = require(<span class="string">'./bridgesupport'</span>).informal_protocols[protocolName]
     , formal = core.objc_getProtocol(protocolName)
 
@@ -84,7 +98,8 @@ proto.getInstanceSize = <span class="function"><span class="keyword">function</s
 
 proto.getIvarLayout = <span class="function"><span class="keyword">function</span> <span class="title">getIvarLayout</span> <span class="params">()</span> {</span>
   <span class="keyword">return</span> core.class_getIvarLayout(<span class="keyword">this</span>.pointer)
-}</code></pre></div><div class="part"><h3>Class#getSuperclass()</h3><div class="desc"><p>Get's a Class instance's superclass. If the current class is a base class, then this will return null.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getSuperclass = <span class="function"><span class="keyword">function</span> <span class="title">getSuperclass</span> <span class="params">()</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#getSuperclass()</h3><div class="desc"><p>Get's a Class instance's superclass. If the current class is a base class, then this will return null.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.getSuperclass = <span class="function"><span class="keyword">function</span> <span class="title">getSuperclass</span> <span class="params">()</span> {</span>
   <span class="keyword">var</span> superclassPointer = <span class="keyword">this</span>._getSuperclassPointer()
   <span class="keyword">if</span> (superclassPointer.isNull()) <span class="keyword">return</span> <span class="literal">null</span>
   <span class="keyword">return</span> exports.wrap(superclassPointer)
@@ -142,18 +157,22 @@ proto.getVersion = <span class="function"><span class="keyword">function</span> 
 
 proto.setVersion = <span class="function"><span class="keyword">function</span> <span class="title">setVersion</span> <span class="params">(v)</span> {</span>
   <span class="keyword">return</span> core.class_setVersion(<span class="keyword">this</span>.pointer, v)
-}</code></pre></div><div class="part"><h3>Class#getClassVariables()</h3><div class="desc"><p>Returns an Array of the class variables this Class has. Superclass variables are not included.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClassVariables = <span class="function"><span class="keyword">function</span> <span class="title">getClassVariables</span> <span class="params">()</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#getClassVariables()</h3><div class="desc"><p>Returns an Array of the class variables this Class has. Superclass variables are not included.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClassVariables = <span class="function"><span class="keyword">function</span> <span class="title">getClassVariables</span> <span class="params">()</span> {</span>
   <span class="keyword">return</span> core.copyIvarList(<span class="keyword">this</span>._getClassPointer())
-}</code></pre></div><div class="part"><h3>Class#getInstanceVariables()</h3><div class="desc"><p>Returns an Array of the instance variables this Class has. Superclass variables are not included.</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getInstanceVariables = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceVariables</span> <span class="params">()</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#getInstanceVariables()</h3><div class="desc"><p>Returns an Array of the instance variables this Class has. Superclass variables are not included.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.getInstanceVariables = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceVariables</span> <span class="params">()</span> {</span>
   <span class="keyword">return</span> core.copyIvarList(<span class="keyword">this</span>.pointer)
-}</code></pre></div><div class="part"><h3>Class#getClassMethods()</h3><div class="desc"><p>Returns an Array of all the class methods this Class responds to. This function returns the raw, unsorted result of copyMethodList().</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClassMethods = <span class="function"><span class="keyword">function</span> <span class="title">getClassMethods</span> <span class="params">()</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#getClassMethods()</h3><div class="desc"><p>Returns an Array of all the class methods this Class responds to. This function returns the raw, unsorted result of copyMethodList().</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.getClassMethods = <span class="function"><span class="keyword">function</span> <span class="title">getClassMethods</span> <span class="params">()</span> {</span>
   <span class="comment">// getClassPointer() on a Class actually gets a pointer to the metaclass</span>
   <span class="keyword">return</span> core.copyMethodList(<span class="keyword">this</span>._getClassPointer())
-}</code></pre></div><div class="part"><h3>Class#getInstanceMethods()</h3><div class="desc"><p>Returns an Array of all the instance methods an instance of this Class will respond to. This function returns the raw, unsorted result of copyMethodList().</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.getInstanceMethods = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceMethods</span> <span class="params">()</span> {</span>
+}</code></pre></div><div class="part"><h3>Class#getInstanceMethods()</h3><div class="desc"><p>Returns an Array of all the instance methods an instance of this Class will respond to. This function returns the raw, unsorted result of copyMethodList().</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.getInstanceMethods = <span class="function"><span class="keyword">function</span> <span class="title">getInstanceMethods</span> <span class="params">()</span> {</span>
   <span class="keyword">return</span> core.copyMethodList(<span class="keyword">this</span>.pointer)
-}</code></pre></div><div class="part"><h3>Class#createPointer()</h3><div class="desc"><p>Allocates a new pointer to this type. The pointer points to <code>nil</code> initially. This is meant for creating a pointer to hold an NSError*, and pass a ref() to it into a method that accepts an 'error' double pointer. XXX: Tentative API - name will probably change</p></div><button class="show-code">Show Code</button><pre class="code"><code>proto.createPointer = <span class="function"><span class="keyword">function</span> <span class="title">createPointer</span> <span class="params">()</span> {</span>
-  <span class="keyword">var</span> ptr = <span class="keyword">new</span> core.Pointer(core.TYPE_SIZE_MAP.pointer)
-  ptr.putPointer(core.Pointer.NULL)
+}</code></pre></div><div class="part"><h3>Class#createPointer()</h3><div class="desc"><p>Allocates a new pointer to this type. The pointer points to <code>nil</code> initially. This is meant for creating a pointer to hold an NSError*, and pass a ref() to it into a method that accepts an 'error' double pointer. XXX: Tentative API - name will probably change</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.createPointer = <span class="function"><span class="keyword">function</span> <span class="title">createPointer</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> ptr = core.Pointer.alloc(<span class="string">'pointer'</span>, core.Pointer.NULL)
   ptr._type = <span class="string">'@'</span>
   <span class="keyword">return</span> ptr
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 

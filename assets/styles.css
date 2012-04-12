@@ -26,6 +26,7 @@ a:hover {
 pre, code {
   border: Solid 1px #000;
   background-color: rgba(0, 40, 80, 0.5);
+  text-shadow: none;
 }
 
 pre {
@@ -33,15 +34,22 @@ pre {
 }
 
 pre code {
-  border: none;
   background-color: transparent;
+  border: none;
+  box-shadow: 3px 4px 15px #01001a;
+  font-size: 12.5px;
+  line-height: 16px;
+  overflow: auto;
+}
+
+h1, h2, h3 {
+  margin-left: 10px;
+  text-shadow: 0 3px 2px #222;
 }
 
 #content {
   background-color: rgba(0, 0, 0, 0.2);
   border: Solid 1px #01001a;
-  -moz-box-shadow: 5px 7px 30px #01001a;
-  -webkit-box-shadow: 5px 7px 30px #01001a;
   box-shadow: 5px 7px 30px #01001a;
   margin: 30px 0px 200px 80px;
   max-width: 670px;
@@ -49,6 +57,7 @@ pre code {
 }
 
 #footer {
+  background-color: rgba(0, 0, 0, 0.2);
   border-top: Solid 1px #01001a;
   text-align: right;
   padding: 5px;
@@ -61,10 +70,6 @@ pre code {
   border: 0px;
 }
 
-.desc {
-  margin-left: 10px;
-}
-
 .part {
   padding-top: 20px;
 }
@@ -75,4 +80,19 @@ pre code {
 
 .code.shown {
   display: block;
+}
+
+.private {
+  font-size: 12px;
+  font-style: italic;
+  line-height: 15px;
+}
+
+.caution {
+  background-image: url(caution.png);
+  display: inline-block;
+  float: left;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
 }
