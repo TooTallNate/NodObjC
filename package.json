@@ -12,7 +12,7 @@
 , "dependencies": {
     "debug": "*"
   , "node-ffi": "0.5.x"
-  , "sax": "0.3.x"
+  , "sax": "0.4.x"
   }
 , "devDependencies": {
     "dox": "0.1.x"
