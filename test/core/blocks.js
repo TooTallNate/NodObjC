@@ -1,4 +1,4 @@
-var b = require('../../core')
+var b = require('../../lib/core')
 
 var NSMutableSet = b.objc_getClass('NSMutableSet')
   , NSAutoreleasePool = b.objc_getClass('NSAutoreleasePool')

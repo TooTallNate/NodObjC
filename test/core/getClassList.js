@@ -1,7 +1,7 @@
-var b = require('../../core')
+var b = require('../../lib/core')
 
 
-b.dlopen("/System/Library/Frameworks/Foundation.framework/Foundation");
+b.dlopen('/System/Library/Frameworks/Foundation.framework/Foundation');
 
 // First get the number of classes
 var numClasses = b.objc_getClassList(null, 0);

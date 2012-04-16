@@ -1,4 +1,4 @@
-var b = require('../../core')
+var b = require('../../lib/core')
   , ffi = require('node-ffi')
   , className = process.argv[2] || 'NSMutableArray'
 
