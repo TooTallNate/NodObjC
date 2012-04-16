@@ -64,11 +64,11 @@ bl.reserved = 0
 console.log('reserved:', bl.reserved)
 bl.invoke = invokePtr
 console.log('invoke:', bl.invoke)
-bl.descriptor = bd.__pointer
+bl.descriptor = bd.pointer
 console.log('descriptor:', bl.descriptor)
 
 
-console.log(bl.__pointer)
-console.error(msgSend2(msgSend(bl.__pointer, description), UTF8String));
+console.log(bl.pointer)
+console.error(msgSend2(msgSend(bl.pointer, description), UTF8String));
 
-msgSend3(set, objectsPassingTest, bl.__pointer)
+msgSend3(set, objectsPassingTest, bl.pointer)
