@@ -1,4 +1,5 @@
 var b = require('../../lib/core')
+  , assert = require('assert')
 
 var NSMutableSet = b.objc_getClass('NSMutableSet')
   , NSAutoreleasePool = b.objc_getClass('NSAutoreleasePool')
