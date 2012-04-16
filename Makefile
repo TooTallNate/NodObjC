@@ -1,6 +1,6 @@
 NODE ?= node
 DOX ?= ./node_modules/.bin/dox
-TESTS := $(wildcard test/*.js)
+TESTS := $(wildcard test/core/*.js test/*.js)
 JS_FILES := $(wildcard lib/*.js)
 DOC_DEPS := $(JS_FILES:.js=.html)
 DOC_DEPS := $(DOC_DEPS:lib/%=docs/%)
