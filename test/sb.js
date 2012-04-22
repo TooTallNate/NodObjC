@@ -6,8 +6,8 @@ $.import('ScriptingBridge')
 
 var pool = $.NSAutoreleasePool('new')
 
-var bi = $.NSString('stringWithUTF8String', 'com.apple.iTunes')
-  , iTunes = $.SBApplication('applicationWithBundleIdentifier', bi)
+var bi = $.NSString('stringWithUTF8String', 'com.apple.Finder')
+  , Finder = $.SBApplication('applicationWithBundleIdentifier', bi)
 
-assert.ok(iTunes.toString().indexOf('iTunes') !== -1);
-assert.equal('iTunes', iTunes('name'));
+assert.ok(Finder.toString().indexOf('Finder') !== -1);
+assert.equal('Finder', Finder('name'));
