@@ -8,7 +8,8 @@ test('v@:'
 )
 
 // test types.map()
-//assert.equal(types.map('r^^{__CFData}'), 'pointer')
+assert.equal(types.map('r^v'), 'pointer')
+assert.equal(types.map('r^^{__CFData}'), 'pointer')
 assert.equal(types.map('^^{__CFData}'), 'pointer')
 
 
