@@ -12,13 +12,13 @@ test:
 	@./test/run.sh $(TESTS)
 
 docs/%.html: lib/%.js
-	$(NODE) $(DOX) \
+	$(NODE) $(DOX) --raw \
 	  < $< \
 	  | $(NODE) docs/compile.js $(notdir $(basename $^)) \
 	  > $@
 
 %.doc: lib/%.js
-	$(NODE) $(DOX) --debug < $<
+	$(NODE) $(DOX) --raw --debug < $<
 
 docs: $(DOC_DEPS)
 

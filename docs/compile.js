@@ -6,9 +6,20 @@
 var fs = require('fs')
   , basename = require('path').basename
   , jade = require('jade')
-  , highlight = require('highlight').Highlight
+  , marked = require('marked')
+  , highlight = require('highlight.js').highlight
   , package = JSON.parse(fs.readFileSync(__dirname + '/../package.json'))
   , pages = process.env.PAGES.split(' ')
+
+function markdown (code) {
+  if (!code) return code
+  return marked(code, {
+      gfm: true
+    , highlight: function (code) {
+        return highlight('javascript', code).value
+      }
+  })
+}
 
 /**
  * The output filename.
@@ -29,6 +40,17 @@ process.stdin.on('end', function () {
 process.stdin.resume()
 
 function render () {
+
+  // Apply Markdown conversion and syntax highlighting
+  input.forEach(function (i) {
+    var desc = i.description
+    desc.full = markdown(desc.full)
+    desc.summary = markdown(desc.summary)
+    desc.body = markdown(desc.body)
+
+    i.code && (i.code = highlight('javascript', i.code).value)
+  })
+
   var opts = {
         title: title[0].toUpperCase() + title.substring(1)
       , input: input
@@ -38,9 +60,6 @@ function render () {
     , buf = fs.readFileSync(template)
     , fn = jade.compile(buf, opts)
     , html = fn(opts)
-
-  // Syntax highlighting
-  html = highlight(html, false, true)
 
   // Output the result to stdout
   process.stdout.write(html + '\n')

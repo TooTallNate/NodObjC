@@ -15,7 +15,9 @@
   , "libxmljs": "0.5.x"
   }
 , "devDependencies": {
-    "dox": "0.1.x"
-  , "jade": "0.19.x"
+    "dox": "0.3.x"
+  , "highlight.js": "1"
+  , "jade": "0.25.x"
+  , "marked": "0.2.x"
   }
 }
