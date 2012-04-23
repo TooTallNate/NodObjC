@@ -1,21 +1,25 @@
-<!DOCTYPE html><html><head><title>Import | NodObjC v0.0.10</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Import</h2><div class="part"><div class="desc"><p>Logic for importing a Framework into the node process.</p>
+<!DOCTYPE html><html><head><title>Import | NodObjC v0.0.11</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Import</h2><div class="part"><div class="desc"><p>Logic for importing a Framework into the node process.
 
-<p>"Importing" a framework is a multi-step process:</p>
+</p>
+<p>&quot;Importing&quot; a framework is a multi-step process:
 
+</p>
 <ol>
 <li><code>resolve()</code> the absolute path of the given framework name.</li>
-<li>Load the framework's binary <code>dylib</code> file into the process.</li>
+<li>Load the framework&#39;s binary <code>dylib</code> file into the process.</li>
 <li>Usually locate the <code>BridgeSupport</code> files for the framework and process.</li>
 <li>Define any new class getters for newly loaded Objective-C classes.</li>
 </ol>
-</div></div><div class="part"><h3>importFramework()</h3><div class="desc"><p>Accepts a single framework name and imports it into the current node process. <code>framework</code> may be a relative (singular) framework name, or a path (relative or absolute) to a Framework directory.</p>
+</div></div><div class="part"><h3>importFramework()</h3><div class="desc"><p>Accepts a single framework name and imports it into the current node process.
+<code>framework</code> may be a relative (singular) framework name, or a path (relative or
+absolute) to a Framework directory.
 
+</p>
 <pre><code>$.NSObject   <span class="comment">// undefined</span>
 
 $.import(<span class="string">'Foundation'</span>)
 
-$.NSObject   <span class="comment">// [Class: NSObject]</span>
-</code></pre>
+$.NSObject   <span class="comment">// [Class: NSObject]</span></code></pre>
 </div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">importFramework</span> <span class="params">(framework, skip)</span> {</span>
   debug(<span class="string">'importing framework:'</span>, framework, skip)
   framework = exports.resolve(framework)
@@ -47,7 +51,7 @@ $.NSObject   <span class="comment">// [Class: NSObject]</span>
   <span class="comment">// and other symbols not introspectable at runtime.</span>
   bridgesupport(fw)
 
-  <span class="comment">// Iterate through the loaded classes list and define &quot;setup getters&quot; for them.</span>
+  <span class="comment">// Iterate through the loaded classes list and define "setup getters" for them.</span>
   <span class="keyword">if</span> (!skip) {
     <span class="keyword">var</span> classes = core.getClassList()
     debug(<span class="string">'loading ObjC Classes:'</span>, classes.length)
@@ -62,13 +66,15 @@ $.NSObject   <span class="comment">// [Class: NSObject]</span>
   }
 
   debug(<span class="string">'finished importing framework:'</span>, shortName)
-}</code></pre></div><div class="part"><h3>resolve()</h3><div class="desc"><p>Accepts a single framework name and resolves it into an absolute path to the base directory of the framework.</p>
+}</code></pre></div><div class="part"><h3>resolve()</h3><div class="desc"><p>Accepts a single framework name and resolves it into an absolute path
+to the base directory of the framework.
 
-<p>In most cases, you will not need to use this function in your code.</p>
+</p>
+<p>In most cases, you will not need to use this function in your code.
 
+</p>
 <pre><code>$.resolve(<span class="string">'Foundation'</span>)
-<span class="comment">//  '/System/Library/Frameworks/Foundation.framework'</span>
-</code></pre>
+<span class="comment">//  '/System/Library/Frameworks/Foundation.framework'</span></code></pre>
 </div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">resolve</span> <span class="params">(framework)</span> {</span>
   debug(<span class="string">'resolving framework name or path:'</span>, framework)
   <span class="comment">// strip off a trailing slash if present</span>
@@ -86,6 +92,4 @@ $.NSObject   <span class="comment">// [Class: NSObject]</span>
     <span class="keyword">if</span> (exists(rtn)) <span class="keyword">return</span> rtn
   }
   <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Could not resolve framework: '</span> + framework)
-}</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by 
-<a href="https://github.com/visionmedia/dox">dox</a>.
-</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"></a></body></html>
+}</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by <a href="https://github.com/visionmedia/dox">dox</a>.</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/camo.github.com/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a></body></html>
