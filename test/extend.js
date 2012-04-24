@@ -2,18 +2,19 @@ var $ = require('../')
   , assert = require('assert')
 
 $.import('Foundation')
-$.NSAutoreleasePool('alloc')('init')
+
+var pool = $.NSAutoreleasePool('alloc')('init')
 
 // Subclass 'NSObject', creating a new class named 'NRTest'
 var NRTest = $.NSObject.extend('NRTest')
   , counter = 0
 
 // Add a new method to the NRTest class responding to the "description" selector
-assert.ok(NRTest.addMethod('description', '@@:', function (self, _cmd) {
+NRTest.addMethod('description', '@@:', function (self, _cmd) {
   counter++
   assert.equal(_cmd, 'description')
   return $('test')
-}))
+})
 
 // Add an instance variable, an NSString* instance.
 assert.ok(NRTest.addIvar('name', '@'))
