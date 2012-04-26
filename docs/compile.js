@@ -7,16 +7,20 @@ var fs = require('fs')
   , basename = require('path').basename
   , jade = require('jade')
   , marked = require('marked')
-  , highlight = require('highlight.js').highlight
-  , package = JSON.parse(fs.readFileSync(__dirname + '/../package.json'))
+  , hljs = require('highlight.js')
+  , highlight = hljs.highlight
+  , package = require('../package')
   , pages = process.env.PAGES.split(' ')
 
 function markdown (code) {
   if (!code) return code
   return marked(code, {
       gfm: true
-    , highlight: function (code) {
-        return highlight('javascript', code).value
+    , highlight: function (code, lang) {
+        if (!hljs.LANGUAGES.hasOwnProperty(lang)) {
+          lang = 'javascript'
+        }
+        return highlight(lang, code).value
       }
   })
 }
