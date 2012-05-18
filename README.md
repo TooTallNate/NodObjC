@@ -13,7 +13,7 @@ scripting bridges:
 
  * [JSCocoa][]
  * [PyObjC][]
- * [RubyCocoa][]
+ * [MacRuby][]
  * [And the others…][others]
 
 So you can write entire Cocoa or iOS GUI applications entirely in NodeJS
@@ -127,7 +127,7 @@ Additional topics of discussion can be found on the [Wiki][] page.
 [NodeJS]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
 [PyObjC]: http://pyobjc.sourceforge.net
-[RubyCocoa]: http://en.wikipedia.org/wiki/RubyCocoa
+[MacRuby]: http://macruby.org
 [IRC]: http://webchat.freenode.net/?channels=nodobjc
 [Wiki]: https://github.com/TooTallNate/NodObjC/wiki
 [MacDev]: http://developer.apple.com/library/mac/navigation/
