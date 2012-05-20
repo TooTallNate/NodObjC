@@ -87,13 +87,15 @@ In Objective-C, the names of methods are part of the arguments that you pass
 along:
 
 ``` objective-c
-[array insertObject:obj atIndex:5];
+[array insertObject: obj
+       atIndex: 5]
 ```
 
 The equivalent of the above message invocation in NodObjC syntax would be:
 
 ``` javascript
-array('insertObject', obj, 'atIndex', 5)
+array('insertObject', obj,
+      'atIndex', 5)
 ```
 
 So the even numbered arguments are the parts of the method name that will be
