@@ -33,6 +33,8 @@ Install using `npm`, of course!
 $ npm install NodObjC
 ```
 
+Or add it to the `"dependencies"` section of your _package.json_ file.
+
 
 Hello World
 -----------
@@ -40,8 +42,8 @@ Hello World
 ``` javascript
 var $ = require('NodObjC')
 
-// First you need to "import" the Framework
-$.import('Foundation')
+// First you import the "Foundation" framework
+$.framework('Foundation')
 
 // Setup the recommended NSAutoreleasePool instance
 var pool = $.NSAutoreleasePool('alloc')('init')
@@ -50,12 +52,14 @@ var pool = $.NSAutoreleasePool('alloc')('init')
 // NSString from a JS String when an Objective-C class method requires one.
 var string = $.NSString('stringWithUTF8String', 'Hello Objective-C World!')
 
-// Print out the contents (calling [string description])
+// Print out the contents (toString() ends up calling [string description])
 console.log(string)
 //   → Prints "Hello Objective-C World!"
 
 pool('drain')
 ```
+
+Be sure to check out the [full API docs][docs].
 
 
 Introduction
@@ -126,6 +130,7 @@ to check out the [#nodobjc][IRC] channel in the freenode IRC server.
 Additional topics of discussion can be found on the [Wiki][] page.
 
 
+[docs]: http://tootallnate.github.com/NodObjC/
 [NodeJS]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
 [PyObjC]: http://pyobjc.sourceforge.net
