@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>Id | NodObjC v0.0.11</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Id</h2><div class="part"><div class="desc"><p>The &#39;id&#39; function is essentially the &quot;base class&quot; for all Objective-C
+<!DOCTYPE html><html><head><title>Id | NodObjC v0.0.12</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="global.html">global</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Id</h2><div class="part"><div class="desc"><p>The &#39;id&#39; function is essentially the &quot;base class&quot; for all Objective-C
 objects that get passed around JS-land.</p>
 </div></div><div class="part"><h3>wrap()</h3><div class="desc"><div class="private"><div class="caution"></div>This is a private function used internally by <code>NodObjC</code>. You should <b>not</b> need to use this function in
 your code.</div><p>Wraps up a pointer that is expected to be a compatible Objective-C
@@ -42,11 +42,57 @@ if necessary.</p>
     , msgSendFunc = core.get_objc_msgSend(types)
     , unwrappedArgs = core.unwrapValues([<span class="keyword">this</span>, sel].concat(args), argTypes)
     , rtn
+
+  debug(<span class="string">'msgSend: before'</span>, sel)
   <span class="keyword">try</span> {
     rtn = msgSendFunc.apply(<span class="literal">null</span>, unwrappedArgs)
   } <span class="keyword">catch</span> (e) {
-    <span class="keyword">throw</span> exception.wrap(e)
+    <span class="keyword">if</span> (!e.hasOwnProperty(<span class="string">'stack'</span>)) {
+      e = exception.wrap(e)
+    }
+    <span class="keyword">throw</span> e
   }
+  debug(<span class="string">'msgSend: after'</span>, sel)
+  <span class="comment">// Process the return value into a wrapped value if needed</span>
+  <span class="keyword">return</span> core.wrapValue(rtn, types[<span class="number">0</span>])
+}</code></pre></div><div class="part"><h3>Id#super()</h3><div class="desc"><p>Like regular message sending, but invokes the method implementation on the
+object&#39;s &quot;superclass&quot; instead. This is the equivalent of what happens when the
+Objective-C compiler encounters the <code>super</code> keyword:
+
+</p>
+<pre><code class="lang-objectivec"><span class="keyword">self</span> = [<span class="keyword">super</span> init];</code></pre>
+<p>To do the equivalent using NodObjC you call <code>super()</code>, as shown here:
+
+</p>
+<pre><code class="lang-js">self = self.super(<span class="string">'init'</span>)</code></pre>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.super = <span class="function"><span class="keyword">function</span> <span class="title">super_</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> args = []
+    , sel = parseArgs(arguments, args)
+  <span class="keyword">return</span> <span class="keyword">this</span>.msgSendSuper(sel, args)
+}</code></pre></div><div class="part"><h3>Id#msgSendSuper()</h3><div class="desc"><p>Calls <code>objc_msgSendSuper()</code> on the underlying Objective-C object.</p>
+</div><button class="show-code">Show Code</button><pre class="code"><code>proto.msgSendSuper = <span class="function"><span class="keyword">function</span> <span class="title">msgSendSuper</span> <span class="params">(sel, args)</span> {</span>
+  debug(<span class="string">'sending `super` message:'</span>, sel, args)
+
+  <span class="keyword">var</span> os = <span class="keyword">new</span> objc_super
+  os.receiver = <span class="keyword">this</span>.pointer
+  os.class = <span class="keyword">this</span>.getClass().getSuperclass().pointer
+
+  <span class="keyword">var</span> types = <span class="keyword">this</span>._getTypes(sel, args)
+    , argTypes = types[<span class="number">1</span>]
+    , msgSendSuperFunc = core.get_objc_msgSendSuper(types)
+    , unwrappedArgs = core.unwrapValues([os, sel].concat(args), argTypes)
+    , rtn
+
+  debug(<span class="string">'msgSendSuper: before'</span>, sel)
+  <span class="keyword">try</span> {
+    rtn = msgSendSuperFunc.apply(<span class="literal">null</span>, unwrappedArgs)
+  } <span class="keyword">catch</span> (e) {
+    <span class="keyword">if</span> (!e.hasOwnProperty(<span class="string">'stack'</span>)) {
+      e = exception.wrap(e)
+    }
+    <span class="keyword">throw</span> e
+  }
+  debug(<span class="string">'msgSendSuper: after'</span>, sel)
   <span class="comment">// Process the return value into a wrapped value if needed</span>
   <span class="keyword">return</span> core.wrapValue(rtn, types[<span class="number">0</span>])
 }</code></pre></div><div class="part"><h3>Id#_getTypes()</h3><div class="desc"><div class="private"><div class="caution"></div>This is a private method used internally by <code>NodObjC</code>. You should <b>not</b> need to use this method in
@@ -110,7 +156,7 @@ If a name and a new value are passed in, then this function sets the ivar.</p>
   }
 }</code></pre></div><div class="part"><h3>Id#ivars()</h3><div class="desc"><p>Returns an Array of Strings of the names of the ivars that the current object
 contains. This function can iterate through the object&#39;s superclasses
-recursively, if you specify a &#39;maxDepth&#39; argument.</p>
+recursively, if you specify a <code>maxDepth</code> argument.</p>
 </div><button class="show-code">Show Code</button><pre class="code"><code>proto.ivars = <span class="function"><span class="keyword">function</span> <span class="title">ivars</span> <span class="params">(maxDepth, sort)</span> {</span>
   <span class="keyword">var</span> rtn = []
     , c = <span class="keyword">this</span>.getClass()
@@ -127,7 +173,7 @@ recursively, if you specify a &#39;maxDepth&#39; argument.</p>
   <span class="keyword">return</span> sort === <span class="literal">false</span> ? rtn : rtn.sort()
 }</code></pre></div><div class="part"><h3>Id#methods()</h3><div class="desc"><p>Returns an Array of Strings of the names of methods that the current object
 will respond to. This function can iterate through the object&#39;s superclasses
-recursively, if you specify a &#39;maxDepth&#39; number argument.</p>
+recursively, if you specify a <code>maxDepth</code> number argument.</p>
 </div><button class="show-code">Show Code</button><pre class="code"><code>proto.methods = <span class="function"><span class="keyword">function</span> <span class="title">methods</span> <span class="params">(maxDepth, sort)</span> {</span>
   <span class="keyword">var</span> rtn = []
     , c = <span class="keyword">this</span>.getClass()
@@ -153,7 +199,7 @@ function for methods that take pointers to objects (i.e. <code>NSError**</code>)
 <code>description</code> method. In Objective-C, this is equivalent to:
 
 </p>
-<pre><code>[[id description] UTF8String]</code></pre>
+<pre><code class="lang-objectivec">[[<span class="keyword">id</span> description] UTF8String]</code></pre>
 </div><button class="show-code">Show Code</button><pre class="code"><code>proto.toString = <span class="function"><span class="keyword">function</span> <span class="title">toString</span> <span class="params">()</span> {</span>
   <span class="keyword">return</span> <span class="keyword">this</span>(<span class="string">'description'</span>)(<span class="string">'UTF8String'</span>)
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by <a href="https://github.com/visionmedia/dox">dox</a>.</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/camo.github.com/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>Types | NodObjC v0.0.11</title><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Types</h2><div class="part"><div class="desc"><p>Logic for translating a given Objective-C &quot;type&quot; encoding into a node-ffi
+<!DOCTYPE html><html><head><title>Types | NodObjC v0.0.12</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link href="assets/styles.css" rel="stylesheet"><link href="assets/ir_black.css" rel="stylesheet"><script src="assets/jquery-1.7.1.js" type="text/javascript"></script><script src="assets/script.js" type="text/javascript"></script></head><body><div id="content"><a href="index.html" id="title"><h1>NodObjC</h1><h3>The NodeJS &#8646; Objective-C Bridge</h3></a><div class="toc"><span class="page"><a href="block.html">block</a></span><span class="page"><a href="bridgesupport.html">bridgesupport</a></span><span class="page"><a href="class.html">class</a></span><span class="page"><a href="core.html">core</a></span><span class="page"><a href="exception.html">exception</a></span><span class="page"><a href="ffi-extend.html">ffi-extend</a></span><span class="page"><a href="global.html">global</a></span><span class="page"><a href="id.html">id</a></span><span class="page"><a href="imp.html">imp</a></span><span class="page"><a href="import.html">import</a></span><span class="page"><a href="index.html">index</a></span><span class="page"><a href="ivar.html">ivar</a></span><span class="page"><a href="method.html">method</a></span><span class="page"><a href="sel.html">sel</a></span><span class="page"><a href="struct.html">struct</a></span><span class="page"><a href="types.html">types</a></span></div><h2>Types</h2><div class="part"><div class="desc"><p>Logic for translating a given Objective-C &quot;type&quot; encoding into a node-ffi
 type.
 
 </p>
@@ -85,33 +85,40 @@ types.</p>
 return type is the first array value, and an Array of argument types is the
 array second value.</p>
 </div><button class="show-code">Show Code</button><pre class="code"><code><span class="function"><span class="keyword">function</span> <span class="title">parse</span> <span class="params">(types)</span> {</span>
-  <span class="keyword">var</span> rtn = []
-    , cur = []
-    , len = types.length
-    , depth = <span class="number">0</span>
-  <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;len; i++) {
-    <span class="keyword">var</span> c = types[i]
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> types === <span class="string">'string'</span>) {
+    <span class="keyword">var</span> rtn = []
+      , cur = []
+      , len = types.length
+      , depth = <span class="number">0</span>
+    <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;len; i++) {
+      <span class="keyword">var</span> c = types[i]
 
-    <span class="keyword">if</span> (depth || !<span class="regexp">/(\d)/</span>.test(c)) {
-      cur.push(c)
-    }
+      <span class="keyword">if</span> (depth || !<span class="regexp">/(\d)/</span>.test(c)) {
+        cur.push(c)
+      }
 
-    <span class="keyword">if</span> (c == <span class="string">'{'</span> || c == <span class="string">'['</span> || c == <span class="string">'('</span>) {
-      depth++
-    } <span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">'}'</span> || c == <span class="string">']'</span> || c == <span class="string">')'</span>) {
-      depth--
-      <span class="keyword">if</span> (!depth)
+      <span class="keyword">if</span> (c == <span class="string">'{'</span> || c == <span class="string">'['</span> || c == <span class="string">'('</span>) {
+        depth++
+      } <span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">'}'</span> || c == <span class="string">']'</span> || c == <span class="string">')'</span>) {
+        depth--
+        <span class="keyword">if</span> (!depth)
+          add()
+      } <span class="keyword">else</span> <span class="keyword">if</span> (~DELIMS.indexOf(c) &amp;&amp; !depth) {
         add()
-    } <span class="keyword">else</span> <span class="keyword">if</span> (~DELIMS.indexOf(c) &amp;&amp; !depth) {
-      add()
+      }
     }
+    <span class="function"><span class="keyword">function</span> <span class="title">add</span> <span class="params">()</span> {</span>
+      rtn.push(cur.join(<span class="string">''</span>))
+      cur = []
+      depth = <span class="number">0</span>
+    }
+    assert.equal(rtn[<span class="number">1</span>], <span class="string">'@'</span>, <span class="string">'_self argument expected as first arg: '</span> + types)
+    assert.equal(rtn[<span class="number">2</span>], <span class="string">':'</span>, <span class="string">'SEL argument expected as second arg: '</span> + types)
+    <span class="keyword">return</span> [ rtn[<span class="number">0</span>], rtn.slice(<span class="number">1</span>) ]
+  } <span class="keyword">else</span> {
+    <span class="keyword">var</span> args = types.args
+    assert.equal(args[<span class="number">0</span>], <span class="string">'@'</span>, <span class="string">'_self argument expected as first arg: '</span> + types)
+    assert.equal(args[<span class="number">1</span>], <span class="string">':'</span>, <span class="string">'SEL argument expected as second arg: '</span> + types)
+    <span class="keyword">return</span> [ types.retval, args ]
   }
-  <span class="function"><span class="keyword">function</span> <span class="title">add</span> <span class="params">()</span> {</span>
-    rtn.push(cur.join(<span class="string">''</span>))
-    cur = []
-    depth = <span class="number">0</span>
-  }
-  assert.equal(rtn[<span class="number">1</span>], <span class="string">'@'</span>, <span class="string">'_self argument expected as first arg: '</span> + types)
-  assert.equal(rtn[<span class="number">2</span>], <span class="string">':'</span>, <span class="string">'SEL argument expected as second arg: '</span> + types)
-  <span class="keyword">return</span> [ rtn[<span class="number">0</span>], rtn.slice(<span class="number">1</span>) ]
 }</code></pre></div></div><div id="footer">NodObjC &copy; 2011-2012 Nathan Rajlich. Documentation generated by <a href="https://github.com/visionmedia/dox">dox</a>.</div><a href="http://github.com/TooTallNate/NodObjC"><img id="ribbon" src="https://a248.e.akamai.net/camo.github.com/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a></body></html>
