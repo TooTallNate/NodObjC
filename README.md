@@ -43,7 +43,7 @@ Hello World
 var $ = require('NodObjC')
 
 // First you import the "Foundation" framework
-$.framework('Foundation')
+$.import('Foundation')
 
 // Setup the recommended NSAutoreleasePool instance
 var pool = $.NSAutoreleasePool('alloc')('init')
