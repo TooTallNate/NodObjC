@@ -125,12 +125,14 @@ Support / Getting Involved
 ---------------------------
 
 If you're looking for support for developing with/for `NodObjC` you might want
-to check out the [#nodobjc][IRC] channel in the freenode IRC server.
+to join the [mailing list][group], and check out the [#nodobjc][IRC] channel
+in the Freenode IRC server.
 
 Additional topics of discussion can be found on the [Wiki][] page.
 
 
-[docs]: http://tootallnate.github.com/NodObjC/
+[docs]: http://tootallnate.github.com/NodObjC
+[group]: https://groups.google.com/d/forum/nodobjc
 [NodeJS]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
 [PyObjC]: http://pyobjc.sourceforge.net
