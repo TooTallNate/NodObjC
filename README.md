@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/TooTallNate/NodObjC.png)](http://travis-ci.org/TooTallNate/NodObjC)
 NodObjC
 =======
 ### The [NodeJS][] ⇆ [Objective-C][ObjCWikipedia] bridge
