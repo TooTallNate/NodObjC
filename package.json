@@ -12,7 +12,7 @@
 , "dependencies": {
     "debug": "*"
   , "node-ffi": "~0.5.3"
-  , "libxmljs": "0.5.x"
+  , "libxmljs": "~0.6.1"
   }
 , "devDependencies": {
     "dox": "0.3.x"
