@@ -5,14 +5,14 @@
 , "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"
 , "repository": { "type": "git", "url": "git://github.com/TooTallNate/NodObjC.git" }
 , "main": "./lib/index.js"
-, "engines": { "node": ">= 0.6.0 && < 0.9.0" }
+, "engines": { "node": ">= 0.6.0 && < 0.11.0" }
 , "scripts": {
     "test": "make test"
   }
 , "dependencies": {
     "debug": "*"
-  , "node-ffi": "~0.5.3"
-  , "libxmljs": "~0.6.1"
+  , "node-ffi": "~0.5.7"
+  , "libxmljs": "~0.7.1"
   }
 , "devDependencies": {
     "dox": "0.3.x"
