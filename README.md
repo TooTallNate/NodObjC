@@ -131,7 +131,7 @@ in the Freenode IRC server.
 Additional topics of discussion can be found on the [Wiki][] page.
 
 
-[docs]: http://tootallnate.github.com/NodObjC
+[docs]: http://tootallnate.github.io/NodObjC
 [group]: https://groups.google.com/d/forum/nodobjc
 [NodeJS]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
