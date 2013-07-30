@@ -8,7 +8,7 @@ to use fashion. It uses the `BridgeSupport` files to dynamically generate an
 API from an Objective-C "Framework", and uses `node-ffi` to dynamically interact
 with the Objective-C runtime.
 
-Essentially, `NodObjC` is similar in nature to the other popular Objetive-C
+Essentially, `NodObjC` is similar in nature to the other popular Objective-C
 scripting bridges:
 
  * [JSCocoa][]
