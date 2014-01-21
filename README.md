@@ -142,4 +142,4 @@ Additional topics of discussion can be found on the [Wiki][] page.
 [MacDev]: http://developer.apple.com/library/mac/navigation/
 [iOSDev]: http://developer.apple.com/library/ios/navigation/
 [ObjCWikipedia]: http://en.wikipedia.org/wiki/Objective-C
-[others]: http://www.cocoadev.com/index.pl?CocoaBridges
+[others]: http://cocoadev.com/CocoaBridges
