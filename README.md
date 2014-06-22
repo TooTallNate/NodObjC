@@ -1,9 +1,9 @@
 NodObjC
 =======
-### The [NodeJS][] ⇆ [Objective-C][ObjCWikipedia] bridge
+### The [Node.js][] ⇆ [Objective-C][ObjCWikipedia] bridge
 
 
-`NodObjC` exposes the Objective-C runtime to [NodeJS][] in a high-level, easy
+`NodObjC` exposes the Objective-C runtime to [Node.js][] in a high-level, easy
 to use fashion. It uses the `BridgeSupport` files to dynamically generate an
 API from an Objective-C "Framework", and uses `node-ffi` to dynamically interact
 with the Objective-C runtime.
@@ -16,7 +16,7 @@ scripting bridges:
  * [MacRuby][]
  * [And the others…][others]
 
-So you can write entire Cocoa or iOS GUI applications entirely in NodeJS
+So you can write entire Cocoa or iOS GUI applications entirely in Node.js
 JavaScript! Applications are interpreted at runtime through the V8 engine,
 rather than compiled to a machine exectuable. This has the advantage of being
 able to tweak code without having to recompile; excellent for rapid prototyping
@@ -65,7 +65,7 @@ Be sure to check out the [full API docs][docs].
 Introduction
 ------------
 
-This module offers a bi-directional bridge between NodeJS and the Objective-C
+This module offers a bi-directional bridge between Node.js and the Objective-C
 runtime. What does that mean exactly? Well due to the design of the Objective-C
 runtime, it is possible to _port_ the entire API to other languages. There are
 quite a few bridges for Obj-C so one for node was a necessity.
@@ -133,7 +133,7 @@ Additional topics of discussion can be found on the [Wiki][] page.
 
 [docs]: http://tootallnate.github.io/NodObjC
 [group]: https://groups.google.com/d/forum/nodobjc
-[NodeJS]: http://nodejs.org
+[Node.js]: http://nodejs.org
 [JSCocoa]: http://inexdo.com/JSCocoa
 [PyObjC]: http://pyobjc.sourceforge.net
 [MacRuby]: http://macruby.org
