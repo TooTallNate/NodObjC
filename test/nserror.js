@@ -14,8 +14,8 @@ var errRef = $.NSError.createPointer().ref()
 // Result of NSString method call should be `nil`
 assert.ok(str === null)
 
-var err = errRef.deref()
-  , domain = err('domain')
+var err = errRef.deref();
+var domain = err('domain')
   , userInfo = err('userInfo')
 assert.equal('NSCocoaErrorDomain', domain)
 assert.ok(userInfo('isKindOfClass', $.NSDictionary))
