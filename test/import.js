@@ -1,5 +1,5 @@
 var $ = require('../')
-  , _global = require('../lib/global')
+  //, _global = require('../lib/global')
   , assert = require('assert')
 
 var s1 = s2 = size()
@@ -14,5 +14,5 @@ s2 = size()
 assert.ok(s2 > s1)
 
 function size () {
-  return Object.keys(_global).length
+  return Object.keys($).length
 }

@@ -1,4 +1,4 @@
-var struct = require('../lib/struct')
+var struct = require('../lib/core').Types
   , assert = require('assert')
   , inspect = require('util').inspect
 
