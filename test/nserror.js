@@ -3,9 +3,11 @@ var $ = require('../')
 
 $.import('Foundation')
 var pool = $.NSAutoreleasePool('alloc')('init')
+// API Change, this is now not on Class but on main api.
+//var errRef = $.NSError.createPointer().ref()
+var errRef = $.alloc($.NSError).ref();
 
-var errRef = $.NSError.createPointer().ref()
-  , str = $.NSString(
+var str = $.NSString(
             'stringWithContentsOfFile', $('DOES_NOT_EXIST'),
             'encoding', $.NSUTF8StringEncoding,
             'error', errRef
@@ -13,9 +15,8 @@ var errRef = $.NSError.createPointer().ref()
 
 // Result of NSString method call should be `nil`
 assert.ok(str === null)
-
-var err = errRef.deref();
-var domain = err('domain')
+var err = errRef.deref()
+  , domain = err('domain')
   , userInfo = err('userInfo')
 assert.equal('NSCocoaErrorDomain', domain)
 assert.ok(userInfo('isKindOfClass', $.NSDictionary))
