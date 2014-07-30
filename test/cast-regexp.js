@@ -14,4 +14,4 @@ var nsregularexpression = $(regexp);
 assert(/regularexpression/i.test(nsregularexpression.getClassName()));
 
 //var match = nsregularexpression();
-//console.log(nsregularexpression);
+console.log(nsregularexpression);
