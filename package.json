@@ -11,7 +11,7 @@
   }
 , "dependencies": {
     "debug": "*"
-  , "node-ffi": "~1.2.0"
+  , "ffi": "~1.2.7"
   , "libxmljs": "~0.7.1"
   }
 , "devDependencies": {
