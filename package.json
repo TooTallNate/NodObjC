@@ -1,24 +1,43 @@
-{ "name": "NodObjC"
-, "description": "The Node.js ⇆ Objective-C bridge"
-, "keywords": [ "obj", "objective", "c", "mac", "apple", "ios", "osx", "cocoa", "ffi", "bridge" ]
-, "version": "0.1.0"
-, "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"
-, "repository": { "type": "git", "url": "git://github.com/TooTallNate/NodObjC.git" }
-, "main": "./lib/index.js"
-, "engines": { "node": ">= 0.6.0 && < 0.11.0" }
-, "scripts": {
+{
+  "name": "NodObjC",
+  "description": "The Node.js ⇆ Objective-C bridge",
+  "keywords": [
+    "obj",
+    "objective",
+    "c",
+    "mac",
+    "apple",
+    "ios",
+    "osx",
+    "cocoa",
+    "ffi",
+    "bridge"
+  ],
+  "version": "0.1.0",
+  "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/TooTallNate/NodObjC.git"
+  },
+  "main": "./lib/index.js",
+  "engines": {
+    "node": ">= 0.6.0 && < 0.11.0"
+  },
+  "scripts": {
     "test": "make test"
-  }
-, "dependencies": {
-    "debug": "*"
-  , "ffi": "~1.2.7"
-  , "libxmljs": "~0.7.1"
-  }
-, "devDependencies": {
-    "dox": "0.3.x"
-  , "memwatch": "*"
-  , "highlight.js": "1"
-  , "jade": "0.25.x"
-  , "marked": "0.2.x"
+  },
+  "dependencies": {
+    "debug": "*",
+    "ffi": "~1.2.7",
+    "libxmljs": "~0.7.1",
+    "ref": "~0.3.2",
+    "ref-struct": "0.0.6"
+  },
+  "devDependencies": {
+    "dox": "0.3.x",
+    "memwatch": "*",
+    "highlight.js": "1",
+    "jade": "0.25.x",
+    "marked": "0.2.x"
   }
 }
