@@ -1,17 +1,20 @@
 // Unit test for:
 // https://github.com/TooTallNate/NodObjC/issues/36
-var $ = require('../'),
-	assert= require('assert');
+
+var $ = require('../');
+var assert= require('assert');
+
 $.framework('Cocoa')
+
 var pool = $.NSAutoreleasePool('alloc')('init')
 
 var count = 0;
 
 var interval = setInterval(function () {
   count++;
-  if(count==1000) {
-  	clearInterval(interval);
-  	return;
+  if (count == 1000) {
+    clearInterval(interval);
+    return;
   }
   var moveEvent = $.CGEventCreateMouseEvent(null, $.kCGEventMouseMoved, $.CGPointMake(1, 1), 0);
   $.CGEventPost($.kCGHIDEventTap, moveEvent);
