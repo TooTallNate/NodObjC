@@ -1,0 +1,50 @@
+var assert = require('assert');
+$ = require('../');
+$.import('Foundation',0);
+$.import('Cocoa',0);
+
+
+var memwatch = require('memwatch');
+/*memwatch.on('leak', function(e) {
+	console.log('suspected leak: ', e);
+});
+memwatch.on('stats', function(e) {
+	console.log('memory stats: ', e);
+});*/
+// NOTE: The number of tries (as you increase it) generally
+// indicates a level of confidence in results.
+var tries = 1;
+var failures = 0;
+var failuresSize = 0;
+
+for (var j=0; j < tries; j++) {
+	var pool = $.NSAutoreleasePool('alloc')('init');
+	var text = $.NSTextField('alloc')('initWithFrame', $.NSMakeRect(0,0,200,20) );
+	text('retain');
+	var hd = new memwatch.HeapDiff();
+	for(var i=10; i < 9000; i++) {
+		var q = $.NSMakeRect(0,0,100,i);
+		
+		var z = text('frame');
+		z.size.height = i;
+		text('setFrame',z);
+		var p = text('frame');
+		assert.ok(z.size.width == p.size.width, 'width was invalid: ',z.size.width,p.size.width);
+		assert.ok(z.size.height == p.size.height, 'height was invalid: ',z.size.height,p.size.height);
+		assert.ok(z.origin.x == p.origin.x, 'x was invalid: ',z.origin.x,p.origin.x);
+		assert.ok(z.origin.y == p.origin.y, 'y was invalid: ',z.origin.y,p.origin.y);
+	}
+	gc();
+	var diff = hd.end();
+	text('release');
+	pool('release');
+	delete text;
+	// Note we have a varience published at 15000 bytes, so we'll agree to allow
+	// this amount of memory leaking before we judge it as a failure.
+	if(diff.change.size_bytes > 0) {
+		failures++;
+		failuresSize += diff.change.size_bytes;
+	}
+}
+gc();
+assert.ok(failures == 0, ' '+failures+' out of '+tries+' tests failed. The amount of leaked memory was: '+failuresSize+' bytes');

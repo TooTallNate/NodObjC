@@ -21,7 +21,7 @@ assert.ok(NRTest.addIvar('name', '@'))
 
 // Test that the Class does not exist on $ before register() is called
 assert.ok(!$.NRTest)
-assert.notEqual(NRTest, $.NRTest)
+assert.equal(undefined, $.NRTest)
 
 // Finalize the class so the we can make instances of it
 NRTest.register()
