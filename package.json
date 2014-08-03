@@ -13,7 +13,7 @@
     "ffi",
     "bridge"
   ],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
   "repository": {
     "type": "git",
@@ -26,11 +26,11 @@
   "dependencies": {
     "debug": "*",
     "ffi": "~1.2.7",
-    "libxmljs": "~0.7.1",
     "ref": "~0.3.2",
     "ref-struct": "0.0.6"
   },
   "devDependencies": {
+    "libxmljs": "~0.7.1",
     "dox": "0.3.x",
     "memwatch": "*",
     "highlight.js": "1",
