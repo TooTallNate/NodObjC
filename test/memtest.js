@@ -13,7 +13,7 @@ memwatch.on('stats', function(e) {
 });*/
 // NOTE: The number of tries (as you increase it) generally
 // indicates a level of confidence in results.
-var tries = 1;
+var tries = 2;
 var failures = 0;
 var failuresSize = 0;
 
