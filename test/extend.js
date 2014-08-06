@@ -10,10 +10,15 @@ var NRTest = $.NSObject.extend('NRTest')
   , counter = 0
 
 // Add a new method to the NRTest class responding to the "description" selector
-NRTest.addMethod('description', '@@:', function (self, _cmd) {
+NRTest.addInstanceMethod('description', '@@:', function (self, _cmd) {
   counter++
   assert.equal(_cmd, 'description')
   return $('test')
+})
+
+NRTest.addInstanceMethod('instanceOnly', '@@:', function (self, _cmd) {
+  assert.equal(_cmd, 'instanceOnly')
+  return $('test2')
 })
 
 // Add an instance variable, an NSString* instance.
@@ -33,10 +38,20 @@ assert.strictEqual(NRTest, $.NRTest)
 var instance = NRTest('alloc')('init')
 
 // call [instance description] in a variety of ways (via toString())
-var str = 'test'
+var str = 'test', str2 = 'test2', success = false;
+//assert.equal(str, $.NRTest('description')+'')
+try {
+	process.stdout.write('** THIS ERROR IS EXPECTED: '); 
+	$.NRTest('instanceOnly')
+	process.stdout.write('**');
+} catch (e) {
+	success = true
+}
+assert.ok(success, 'Failed, instance was called on class.');
+assert.equal(str2, instance('instanceOnly'))
 assert.equal(str, instance('description')+'')
 assert.equal(str, instance.toString())
 assert.equal(str, ''+instance)
 assert.equal(str, instance+'')
-
 assert.equal(counter, 4)
+assert.equal($.NRTest, instance('class'))
