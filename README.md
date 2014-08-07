@@ -1,6 +1,7 @@
 NodObjC
 =======
 ### The [Node.js][] ⇆ [Objective-C][ObjCWikipedia] bridge
+[![Build Status](https://travis-ci.org/TooTallNate/NodObjC.svg?branch=master)](https://travis-ci.org/TooTallNate/NodObjC)
 
 
 `NodObjC` exposes the Objective-C runtime to [Node.js][] in a high-level, easy
