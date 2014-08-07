@@ -1,7 +1,17 @@
-os:
-  - osx
-language: node_js
-node_js:
-  - "0.6"
-  - "0.8"
-  - "0.10"
+# Mac OS X (https://github.com/travis-ci-tester/toolchain-table)
+
+language:
+  - objective-c
+
+env:
+  - NODE_VERSION="0.10"
+
+install:
+  - rm -rf ~/.nvm
+  - git clone https://github.com/creationix/nvm.git ~/.nvm
+  - source ~/.nvm/nvm.sh
+  - nvm install $NODE_VERSION
+  - node --version
+
+script:
+  - make test
