@@ -13,5 +13,5 @@ var nsdata = $(data);
 var bytes = nsdata('bytes');
 
 assert(data.length === nsdata('length'));
-assert(data.toString() === bytes.reinterpretUntilZeros(1).toString());
+assert(data.toString() === bytes.reinterpret(data.length).toString());
 assert(bytes.hexAddress() === data.hexAddress());
