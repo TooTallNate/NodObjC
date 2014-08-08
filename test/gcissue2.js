@@ -9,7 +9,6 @@ $.import('AppKit');
 // (e.g., without holding on to the variable result.)  
 // This is a race condition between the V8 GC collector
 // and nodobjc to see who gets to the FFI bridge first.
-var str = '';
 for(var i=0; i < 10000; i++) {
 	$('')('caseInsensitiveCompare',$(' '));
 }
