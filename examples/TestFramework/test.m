@@ -7,7 +7,7 @@
 }
 
 - (NSInteger) hello {
-  return 0;
+  return 13;
 }
 
 @end

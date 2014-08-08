@@ -1,13 +1,13 @@
-var $ = require('../')
-  , assert = require('assert')
-  , str = 'Hello Objective-C!'
+var $ = require('../');
+var assert = require('assert');
+var str = 'Hello Objective-C!';
 
-$.import('Foundation')
+$.import('Foundation');
 
-var pool = $.NSAutoreleasePool('alloc')('init')
-  , nsstr = $.NSString('stringWithUTF8String', 'Hello Objective-C!')
+var pool = $.NSAutoreleasePool('alloc')('init');
+var nsstr = $.NSString('stringWithUTF8String', 'Hello Objective-C!');
 
-assert.equal(str, nsstr.toString())
+assert.equal(str, nsstr.toString());
 
-nsstr = nsstr('stringByAppendingString', nsstr)
-assert.equal(str+str, nsstr.toString())
+nsstr = nsstr('stringByAppendingString', nsstr);
+assert.equal(str+str, nsstr.toString());

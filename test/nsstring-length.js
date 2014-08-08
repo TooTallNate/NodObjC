@@ -1,10 +1,10 @@
-var $ = require('../')
-  , assert = require('assert')
+var $ = require('../');
+var assert = require('assert');
 
-$.import('Foundation')
+$.import('Foundation');
 
-var pool = $.NSAutoreleasePool('alloc')('init')
+var pool = $.NSAutoreleasePool('alloc')('init');
 
-var str = 'Hello Objective-C!'
-  , nsstr = $.NSString('stringWithUTF8String', str)
-assert.equal(nsstr('length'), str.length)
+var str = 'Hello Objective-C!';
+var nsstr = $.NSString('stringWithUTF8String', str);
+assert.equal(nsstr('length'), str.length);
