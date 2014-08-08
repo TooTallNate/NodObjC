@@ -1,7 +1,7 @@
-var $ = require('../')
-  , assert = require('assert')
+var $ = require('../');
+var assert = require('assert');
 
-$.import('Foundation')
+$.import('Foundation');
 
-assert.ok(!$.NSObject('respondsToSelector', 'test'))
-assert.ok($.NSObject('respondsToSelector', 'alloc'))
+assert.ok(!$.NSObject('respondsToSelector', 'test'));
+assert.ok($.NSObject('respondsToSelector', 'alloc'));
