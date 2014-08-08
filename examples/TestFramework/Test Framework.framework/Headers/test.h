@@ -4,6 +4,10 @@
 
 @interface NSTestClass : NSObject
 
-- (NSInteger)hello;
+// Static
++ (NSString *) hello;
+
+// Instance
+- (NSInteger) hello;
 
 @end
