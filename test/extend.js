@@ -39,15 +39,8 @@ var instance = NRTest('alloc')('init')
 
 // call [instance description] in a variety of ways (via toString())
 var str = 'test', str2 = 'test2', success = false;
-//assert.equal(str, $.NRTest('description')+'')
-try {
-	process.stdout.write('** THIS ERROR IS EXPECTED: '); 
-	$.NRTest('instanceOnly')
-	process.stdout.write('**');
-} catch (e) {
-	success = true
-}
-assert.ok(success, 'Failed, instance was called on class.');
+
+assert.equal($.NRTest('respondsToSelector','instanceOnly'), false);
 assert.equal(str2, instance('instanceOnly'))
 assert.equal(str, instance('description')+'')
 assert.equal(str, instance.toString())
