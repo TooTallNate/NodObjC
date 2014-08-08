@@ -13,7 +13,7 @@
     "ffi",
     "bridge"
   ],
-  "version": "0.0.16",
+  "version": "0.0.15",
   "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
   "repository": {
     "type": "git",
