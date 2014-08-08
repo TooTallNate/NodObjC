@@ -19,7 +19,6 @@ $.import('CFNetwork')
 $.import('CalendarStore')
 $.import('CoreAudio')
 $.import('CoreAudioKit')
-$.import('CoreBluetooth')
 $.import('CoreData')
 $.import('CoreMedia')
 var hrend = process.hrtime(hrstart);
