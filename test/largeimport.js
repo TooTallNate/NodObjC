@@ -28,5 +28,5 @@ if(process.hrtime) {
 	process.stdout.write(" time ["+hrend[0]+"s "+(hrend[1]/1000000)+" ms] \033[0m");
 } else {
 	process.stdout.write("\033[90m memory ["+diff.change.size_bytes+' bytes]');
-	process.stdout.write(" time ["+((hrend - hrstart)/1000000)+" ms] \033[0m");
+	process.stdout.write(" time ["+((hrend - hrstart)/1000)+" s] \033[0m");
 }
