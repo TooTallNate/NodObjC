@@ -1,4 +1,6 @@
-var $ = require('../../')
+var $ = require('../'),
+	assert = require('assert');
+
 $.import('Foundation')
 $.NSAutoreleasePool('alloc')('init')
 
@@ -9,9 +11,10 @@ for (var i = 0; i<10; i++) {
   array('addObject', str)
 }
 
-console.error(array)
 
 // Enumerate using a Block
-array('enumerateObjectsUsingBlock', function (obj, index, stopPtr) {
-  console.error('%d: %s', index, obj)
-})
+array('enumerateObjectsUsingBlock', $(function (self, obj, index, bool) {
+	var d = array('objectAtIndex',index)('description')('UTF8String');
+	var v = obj('description')('UTF8String');
+	assert.equal(d,v);
+}, ['v',['?', '@','I','^B']]));
