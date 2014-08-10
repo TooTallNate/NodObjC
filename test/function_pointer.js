@@ -6,7 +6,6 @@ $.import('Foundation')
 var pool = $.NSAutoreleasePool('alloc')('init')
 
 assert.equal($.NSGetUncaughtExceptionHandler.args.length, 0)
-assert.ok($.NSGetUncaughtExceptionHandler.retval.function_pointer == 'true')
 
 assert.equal($.NSSetUncaughtExceptionHandler.args.length, 1)
 assert.equal($.NSSetUncaughtExceptionHandler.retval, 'v')
