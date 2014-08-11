@@ -1,7 +1,7 @@
 // V8 does not have an explicit way for memwatach to force garbage collection
 // within the version used for node 0.6, and 0.8.  Therefore we wont test
 // on those versions.
-if(!process.version.indexOf('0.6') && !process.version.indexOf('0.8'))
+if(process.version.indexOf('0.6') == -1 && process.version.indexOf('0.8') == -1)
 {
   var $ = require('../');
   var assert = require('assert');
@@ -19,7 +19,7 @@ if(!process.version.indexOf('0.6') && !process.version.indexOf('0.8'))
 
   // NOTE: The number of tries (as you increase it) generally
   // indicates a level of confidence in results.
-  var tries = 2;
+  var tries = 1;
   var failures = 0;
   var failuresSize = 0;
 
@@ -48,9 +48,9 @@ if(!process.version.indexOf('0.6') && !process.version.indexOf('0.8'))
     text = null;
     pool = null;
 
-    // Note we have a variance published at 15000 bytes, so we'll agree to allow
+    // Note we have a variance published at 30KB bytes, so we'll agree to allow
     // this amount of memory leaking before we judge it as a failure.
-    if (diff.change.size_bytes > 0) {
+    if (diff.change.size_bytes > 30*1024) {
       failures++;
       failuresSize += diff.change.size_bytes;
     }

@@ -10,7 +10,6 @@ assert.equal($.NSGetUncaughtExceptionHandler.args.length, 0)
 assert.equal($.NSSetUncaughtExceptionHandler.args.length, 1)
 assert.equal($.NSSetUncaughtExceptionHandler.retval, 'v')
 
-
 $.NSSetUncaughtExceptionHandler(function (exception) {
   gotCallback = true
   assert.equal(exception, 'test')
