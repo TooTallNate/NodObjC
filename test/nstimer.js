@@ -7,7 +7,7 @@ var pool = $.NSAutoreleasePool('alloc')('init')
 var Obj = $.NSObject.extend('Obj')
   , invokeCount = 0
 
-Obj.addMethod('sel:', 'v@:@', function (self, _cmd, timer) {
+Obj.addInstanceMethod('sel:', 'v@:@', function (self, _cmd, timer) {
   assert.equal('Info', timer('userInfo').toString())
   if (++invokeCount == 5) {
     timer('invalidate')
