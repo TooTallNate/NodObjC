@@ -1,4 +1,4 @@
-var $ = require('../'), 
+var $ = require('../'),
 	assert = require('assert'),
 	logfile = __filename + '.log',
 	fs = require('fs')
