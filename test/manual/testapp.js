@@ -47,11 +47,10 @@ var appDelegate = AppDelegate('alloc')('init');
 app('setDelegate', appDelegate);
  
 var RedRectView = ObjC.NSView.extend('RedRectView');
-RedRectView.addInstanceMethod('drawRect:', 'v@:@', function (self, _cmd, rect) {
+RedRectView.addInstanceMethod('drawRect:', [ObjC.void,[RedRectView,ObjC.selector,ObjC.NSRect]], function (self, _cmd, rect) {
 	//console.log(self);
 	ObjC.NSColor('redColor')('set');
 	ObjC.NSRectFill(ObjC.NSMakeRect(0,0,100,100));
- 
 	//self.super('drawRect',rect);
 	//RedRectView.getSuperclass()('drawRect', self);
 });
