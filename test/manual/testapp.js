@@ -1,5 +1,5 @@
 // dependencies
-var ObjC = require('../');
+var ObjC = require('../../');
  
 // ObjC dependencies
 ObjC.import('Foundation');
