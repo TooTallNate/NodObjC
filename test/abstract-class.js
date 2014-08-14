@@ -15,10 +15,10 @@ appSchema.addClassMethod('canonicalRequestForRequest:', '@@:@', function(self, c
 });
 
 // on the classes instance
-appSchema.addInstanceMethod('startLoading','v@:', function(self, cmd) {
+appSchema.addMethod('startLoading','v@:', function(self, cmd) {
 });
 
-appSchema.addInstanceMethod('stopLoading','v@:', function(self, cmd) {
+appSchema.addMethod('stopLoading','v@:', function(self, cmd) {
 });
 
 appSchema.register();

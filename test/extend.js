@@ -10,13 +10,13 @@ var NRTest = $.NSObject.extend('NRTest')
   , counter = 0
 
 // Add a new method to the NRTest class responding to the "description" selector
-NRTest.addInstanceMethod('description', '@@:', function (self, _cmd) {
+NRTest.addMethod('description', '@@:', function (self, _cmd) {
   counter++
   assert.equal(_cmd, 'description')
   return $('test')
 })
 
-NRTest.addInstanceMethod('instanceOnly', '@@:', function (self, _cmd) {
+NRTest.addMethod('instanceOnly', '@@:', function (self, _cmd) {
   assert.equal(_cmd, 'instanceOnly')
   return $('test2')
 })

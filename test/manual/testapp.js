@@ -37,7 +37,7 @@ window('setTitle', appName);
  
 // set up the app delegate
 var AppDelegate = ObjC.NSObject.extend('AppDelegate');
-AppDelegate.addInstanceMethod('applicationDidFinishLaunching:', 'v@:@', function (self, _cmd, notif) {
+AppDelegate.addMethod('applicationDidFinishLaunching:', 'v@:@', function (self, _cmd, notif) {
 	console.log('got applicationDidFinishLauching');
 	console.log(notif);
 });
@@ -47,7 +47,7 @@ var appDelegate = AppDelegate('alloc')('init');
 app('setDelegate', appDelegate);
  
 var RedRectView = ObjC.NSView.extend('RedRectView');
-RedRectView.addInstanceMethod('drawRect:', [ObjC.void,[RedRectView,ObjC.selector,ObjC.NSRect]], function (self, _cmd, rect) {
+RedRectView.addMethod('drawRect:', [ObjC.void,[RedRectView,ObjC.selector,ObjC.NSRect]], function (self, _cmd, rect) {
 	//console.log(self);
 	ObjC.NSColor('redColor')('set');
 	ObjC.NSRectFill(ObjC.NSMakeRect(0,0,100,100));
