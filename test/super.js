@@ -19,7 +19,7 @@ function description (self, _cmd) {
 // extend NSObject into a new class: NRObject
 NSObject
   .extend('NRObject')
-  .addInstanceMethod('description', { retval: '@', args: [ '@', ':' ] }, description)
+  .addMethod('description', { retval: '@', args: [ '@', ':' ] }, description)
   .register()
 
 var instance = NRObject('alloc')('init')

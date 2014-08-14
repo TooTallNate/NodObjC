@@ -9,10 +9,10 @@ $.import('Foundation');
 
 var MyClass = $.NSObject.extend('MyClass');
 
-MyClass.addInstanceMethod('init:','v@:@', function(self, sel, obj) {
+MyClass.addMethod('init:','v@:@', function(self, sel, obj) {
 	return self;
 });
-MyClass.addInstanceMethod('onlyAcceptsObjects:','v@:@', function(self, sel, obj) {
+MyClass.addMethod('onlyAcceptsObjects:','v@:@', function(self, sel, obj) {
 	// If this runs, it will segfault, hopefully internally we'll kick out an
 	// error message before this does.
 	console.log(obj);
