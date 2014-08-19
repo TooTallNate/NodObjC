@@ -12,7 +12,7 @@ test:
 	@./test/run.sh $(TESTS)
 
 docs/%.html: lib/%.js
-	$(NODE) $(DOX) --raw \
+	$(DOX) --raw \
 	  < $< \
 	  | $(NODE) docs/compile.js $(notdir $(basename $^)) \
 	  > $@
