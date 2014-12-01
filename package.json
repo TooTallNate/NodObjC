@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "debug": "*",
-    "ffi": "~1.2.7",
-    "ref": "~0.3.2",
+    "ffi": "https://github.com/icenium/node-ffi/tarball/master",
+    "ref": "https://github.com/icenium/ref/tarball/master",
     "ref-struct": "0.0.6"
   },
   "devDependencies": {
