@@ -2,11 +2,14 @@
 // blog article:
 //    http://cocoawithlove.com/2010/09/minimalist-cocoa-programming.html
 var $ = require('../../../../')
+var EventLoop = require('../../../EventLoop')
+EventLoop.initObjC($)
 
 $.import('Cocoa')
 
 var pool = $.NSAutoreleasePool('alloc')('init')
   , app  = $.NSApplication('sharedApplication')
+  , evtLoop = new EventLoop()
 
 app('setActivationPolicy', $.NSApplicationActivationPolicyRegular)
 
@@ -53,4 +56,6 @@ var delegate = AppDelegate('alloc')('init')
 app('setDelegate', delegate)
 
 app('activateIgnoringOtherApps', true)
-app('run')
+app('finishLaunching')
+
+evtLoop.start()
