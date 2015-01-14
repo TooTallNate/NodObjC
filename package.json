@@ -26,8 +26,8 @@
   "dependencies": {
     "debug": "*",
     "ffi": "~1.2.7",
-    "ref": "~0.3.2",
-    "ref-struct": "0.0.6"
+    "ref": "~0.3.3",
+    "ref-struct": "~1.0.0"
   },
   "devDependencies": {
     "libxmljs": "~0.7.1",
