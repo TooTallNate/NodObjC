@@ -14,9 +14,9 @@ var dealloc = $.NSObject.getInstanceMethod('dealloc')
 
 var instance = $.NSObject('alloc')('init')
 
+process.on('exit', function () {
+  assert(deallocCalled)
+})
+
 // 'release' the object in 1 second, [instance dealloc] should be called
 setTimeout(instance.bind(instance, 'release'), 1000)
-
-process.on('exit', function () {
-  assert.ok(deallocCalled)
-})
