@@ -4,7 +4,6 @@ language:
   - objective-c
 
 env:
-  - NODE_VERSION="0.6"
   - NODE_VERSION="0.8"
   - NODE_VERSION="0.10"
 
@@ -16,7 +15,6 @@ install:
   - source ~/.nvm/nvm.sh
   - nvm install $NODE_VERSION
   - node --version
-  - if [ "$NODE_VERSION" = "0.6" ]; then npm conf set strict-ssl false; fi;
   - npm install
 
 script:
