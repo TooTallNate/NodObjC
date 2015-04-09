@@ -6,6 +6,7 @@ language:
 env:
   - NODE_VERSION="0.8"
   - NODE_VERSION="0.10"
+  - NODE_VERSION="0.12"
 
 before_install:
 
