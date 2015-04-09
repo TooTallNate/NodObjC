@@ -1,4 +1,22 @@
 
+1.0.1 / 2015-04-09
+==================
+
+  * package: update "ffi", "ref" and "ref-struct" deps
+  * test: rearrange some stuff
+  * travis: remove node v0.6.x
+  * LICENSE: update year to 2015
+  * package: update "ref" and "ref-struct" deps
+  * Updated NodeCocoaHelloWorld.app example with NodeJS friendly EventLoop implementation
+  * Added eventLoop test using timers as alternative to NSRunLoop('mainRunLoop')('run')
+  * Fixed resolution of Framework constants like NSDefaultRunLoopMode as NSStirng*
+  * Added unittest for failing Framework constant NSString* resolve for NSDefaultRunLoopMode
+  * Added ref error/alloc to unit tests
+  * unittests: fixed private equal check to indexof
+  * Switched instanceof to isBuffer
+  * Added void test for issue 48
+  * Makefile: fix DOX invocation
+
 1.0.0 / 2014-08-19
 ==================
 
