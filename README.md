@@ -31,7 +31,7 @@ Installation
 Install using `npm`, of course!
 
 ``` bash
-$ npm install NodObjC
+$ npm install nodobjc
 ```
 
 Or add it to the `"dependencies"` section of your _package.json_ file.
@@ -41,7 +41,7 @@ Hello World
 -----------
 
 ``` javascript
-var $ = require('NodObjC')
+var $ = require('nodobjc')
 
 // First you import the "Foundation" framework
 $.framework('Foundation')
