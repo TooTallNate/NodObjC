@@ -1,22 +1,24 @@
-# Mac OS X (https://github.com/travis-ci-tester/toolchain-table)
-
-language:
-  - objective-c
-
+os:
+  - osx
+sudo: false
+language: cpp
 env:
-  - NODE_VERSION="0.8"
-  - NODE_VERSION="0.10"
-  - NODE_VERSION="0.12"
-
-before_install:
+  matrix:
+    - TRAVIS_NODE_VERSION="0.10"
+    - TRAVIS_NODE_VERSION="0.12"
+    - TRAVIS_NODE_VERSION="2"
+    - TRAVIS_NODE_VERSION="3.2"
+    - TRAVIS_NODE_VERSION="4.1"
 
 install:
-  - rm -rf ~/.nvm
-  - git clone https://github.com/creationix/nvm.git ~/.nvm
-  - source ~/.nvm/nvm.sh
-  - nvm install $NODE_VERSION
-  - node --version
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+  - PATH="`npm bin`:`npm bin -g`:$PATH"
+  # Install dependencies and build
   - npm install
 
 script:
+  # Output useful info for debugging
+  - node --version
+  - npm --version
+  # Run tests
   - make test
