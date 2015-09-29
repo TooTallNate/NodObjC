@@ -1,5 +1,4 @@
-os:
-  - osx
+os: osx
 sudo: false
 language: cpp
 env:
