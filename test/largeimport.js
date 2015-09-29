@@ -1,5 +1,5 @@
 var $ = require('../');
-var memwatch = require('memwatch');
+var memwatch = require('memwatch-next');
 var hd = new memwatch.HeapDiff();
 var hrstart = ( process.hrtime ? process.hrtime() : Date.now() )
 $.import('Foundation')

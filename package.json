@@ -31,9 +31,9 @@
     "ref-struct": "~1.0.2"
   },
   "devDependencies": {
-    "libxmljs": "~0.7.1",
+    "libxmljs": "~0.14.3",
     "dox": "0.3.x",
-    "memwatch": "*",
+    "memwatch-next": "*",
     "highlight.js": "1",
     "jade": "0.25.x",
     "marked": "0.2.x"
