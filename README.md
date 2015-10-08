@@ -6,7 +6,7 @@ NodObjC
 
 `NodObjC` exposes the Objective-C runtime to [Node.js][] in a high-level, easy
 to use fashion. It uses the `BridgeSupport` files to dynamically generate an
-API from an Objective-C "Framework", and uses `node-ffi` to dynamically interact
+API from an Objective-C "Framework", and uses the node `ffi` module to dynamically interact
 with the Objective-C runtime.
 
 Essentially, `NodObjC` is similar in nature to the other popular Objective-C
@@ -19,10 +19,10 @@ scripting bridges:
 
 So you can write entire Cocoa or iOS GUI applications entirely in Node.js
 JavaScript! Applications are interpreted at runtime through the V8 engine,
-rather than compiled to a machine exectuable. This has the advantage of being
+rather than (pre)compiled to a (binary) machine exectuable. This has the advantage of being
 able to tweak code without having to recompile; excellent for rapid prototyping
-and development, or for those GUI applications where absolute speed is not a
-requirement (i.e. _most_). So what are you waiting for? Get to coding!
+and development (or for those GUI applications where absolute speed is not a
+requirement, i.e. _most_). So what are you waiting for? Get to coding!
 
 
 Installation
