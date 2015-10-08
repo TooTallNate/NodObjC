@@ -33,4 +33,4 @@ gh-pages: docclean docs
 		&& cp -Lrf /tmp/NodObjC_docs/* . \
 		&& echo "done"
 
-.PHONY: test docs
+.PHONY: test docs gh-pages
