@@ -1,1 +1,3 @@
-global.__proto__ = module.exports = require('./');
+var nodobjc = require('./');
+require('setprototypeof')(global, nodobjc);
+module.exports = nodobjc;
