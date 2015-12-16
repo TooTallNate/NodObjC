@@ -1,4 +1,16 @@
 
+2.1.0 / 2015-12-16
+==================
+
+  * Update README.md
+  * package: update "libxmljs" and use "memwatch-next"
+  * package: add "license" field
+  * package: update deps
+  * travis: test more versions of node
+  * enabled `/Library` + `$USER/Library` framework search paths
+  * fixes for case-sensitive file systems
+  * support complex ivar, e.g. HTTPMethod from CococaHTTPServer
+
 2.0.0 / 2015-04-09
 ==================
 
