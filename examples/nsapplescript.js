@@ -18,5 +18,7 @@ var resultObj = appleScript('executeAndReturnError', null);
 // resultObj may be `null` or an NSAppleEventDescriptor instance, so check first
 if (resultObj) {
   // print out the value
-  console.dir(resultObj('stringValue').toString());
+  console.log(resultObj('stringValue'));
 }
+
+pool('release');
