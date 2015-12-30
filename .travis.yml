@@ -13,6 +13,7 @@ install:
 script:
   # Output useful info for debugging
   - node --version
+  - node -pe "process.arch + ' ' + process.platform"
   - npm --version
   # Run tests
   - make test
