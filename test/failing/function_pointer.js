@@ -1,3 +1,5 @@
+//XXX: this one is failing on Travis-CI for some reason, though
+//it seems to work as expected locally, and on master branch + Travis
 var $ = require('../')
   , assert = require('assert')
   , gotCallback = false
