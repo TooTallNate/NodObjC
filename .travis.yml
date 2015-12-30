@@ -1,0 +1,18 @@
+os: osx
+sudo: false
+language: cpp
+env:
+  - TRAVIS_NODE_VERSION="0.8"
+
+install:
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+  - PATH="`npm bin`:`npm bin -g`:$PATH"
+  # Install dependencies and build
+  - npm install
+
+script:
+  # Output useful info for debugging
+  - node --version
+  - npm --version
+  # Run tests
+  - make test
