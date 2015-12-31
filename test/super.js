@@ -1,29 +1,27 @@
+var $ = require('../');
+var assert = require('assert');
 
-var assert = require('assert')
+$.import('Foundation');
 
-require('../global.js')
-
-importFramework('Foundation')
-
-var pool = NSAutoreleasePool('alloc')('init')
-  , counter = 0
-  , orig
+var pool = $.NSAutoreleasePool('alloc')('init');
+var counter = 0;
+var orig;
 
 function description (self, _cmd) {
-  counter++
-  assert.equal(_cmd, 'description')
-  var s = self.super('description')
-  return s
+  counter++;
+  assert.equal(_cmd, 'description');
+  var s = self.super('description');
+  return s;
 }
 
 // extend NSObject into a new class: NRObject
-NSObject
+$.NSObject
   .extend('NRObject')
   .addMethod('description', { retval: '@', args: [ '@', ':' ] }, description)
-  .register()
+  .register();
 
-var instance = NRObject('alloc')('init')
+var instance = $.NRObject('alloc')('init');
 
-assert.equal(counter, 0)
-var desc = instance('description')
-assert.equal(counter, 1)
+assert.equal(counter, 0);
+var desc = instance('description');
+assert.equal(counter, 1);
