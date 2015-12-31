@@ -12,8 +12,11 @@ assert.throws(function () {
   $.NSObject('nonexistantMethod')
 })
 
+var e;
 try {
   $.NSObject('nonexistantMethod')
-} catch (e) {
-  assert.equal('NSInvalidArgumentException', e('name'))
+} catch (_e) {
+  e = _e;
 }
+
+assert.equal('NSInvalidArgumentException', e('name'))
