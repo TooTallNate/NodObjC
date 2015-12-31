@@ -1,4 +1,4 @@
-var $ = require('../../');
+var $ = require('../');
 var assert = require('assert');
 
 $.framework('Foundation');
