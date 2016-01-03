@@ -19,6 +19,7 @@ assert.equal('NSInvalidArgumentException', e1.name);
 assert.equal('function', typeof e1.msgSend);
 assert.equal('function', typeof e1.getClassName);
 assert.equal('NSException', e1.getClassName());
+assert.equal(e1.name + ': ' + e1.message, e1.toString());
 assert.ok(e1.stack.length > 0);
 assert.ok(e1.message.length > 0);
 assert.ok(e1 instanceof e1.constructor);
