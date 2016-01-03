@@ -11,9 +11,11 @@ var windowList = $.CFBridgingRelease(result);
 assert(windowList('class').getName().indexOf('Array') > -1);
 
 var error = $.alloc($.NSError).ref();
-var jsonData = $.NSJSONSerialization("dataWithJSONObject", windowList, "options", $.NSJSONWritingPrettyPrinted, "error", error);
-var jsonString = ($.NSString("alloc")("initWithData", jsonData, "encoding", $.NSUTF8StringEncoding)).toString();
+var jsonData = $.NSJSONSerialization('dataWithJSONObject', windowList, 'options', $.NSJSONWritingPrettyPrinted, 'error', error);
+var jsonString = $.NSString('alloc')('initWithData', jsonData, 'encoding', $.NSUTF8StringEncoding);
 
-assert(jsonString.length > 1);
+var parsed = JSON.parse(jsonString);
+assert.ok(Array.isArray(parsed));
+assert.ok(parsed.length > 0);
 
 pool('drain');
