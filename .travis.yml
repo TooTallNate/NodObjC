@@ -20,4 +20,4 @@ script:
   - node --version
   - npm --version
   # Run tests
-  - make test
+  - npm test
