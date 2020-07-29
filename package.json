@@ -13,7 +13,7 @@
     "ffi",
     "bridge"
   ],
-  "os": [ 
+  "os": [
     "darwin"
   ],
   "version": "2.1.0",
@@ -28,11 +28,12 @@
     "test": "./test/run.sh test/*.js"
   },
   "dependencies": {
+    "ffi-napi": "^3.0.1",
     "debug": "*",
-    "ffi": "2",
-    "function-class": "^1.0.0",
-    "ref": "^1.3.2",
-    "ref-struct": "^1.0.2",
+    "function-name": "^2.0.0",
+    "function-class": "github:TooTallNate/node-function-class#pull/1/head",
+    "ref-napi": "^2.0.3",
+    "ref-struct-napi": "^1.1.1",
     "setprototypeof": "^1.0.0"
   },
   "devDependencies": {

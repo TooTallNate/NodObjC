@@ -1,5 +1,5 @@
 var b = require('../../lib/core')
-  , ffi = require('node-ffi')
+  , ffi = require('ffi-napi')
   , assert = require('assert')
   , className = 'NSMutableArray'
 
