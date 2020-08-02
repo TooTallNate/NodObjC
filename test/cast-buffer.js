@@ -8,7 +8,7 @@ var assert = require('assert');
 
 $.framework('Foundation');
 
-var data = new Buffer('hello world');
+var data = new Buffer.from('hello world');
 var nsdata = $(data);
 var bytes = nsdata('bytes');
 
