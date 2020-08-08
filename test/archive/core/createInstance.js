@@ -1,4 +1,4 @@
-var ffi = require('node-ffi')
+var ffi = require('ffi-napi')
   , assert = require('assert')
   , b = require('../../lib/core')
 
